@@ -5,27 +5,22 @@ grammar CodexLatinus;
 // -----------------
 
 programa
-    : elementoGlobal* EOF
+    : seccionVariables? seccionMunera? seccionMaior EOF
     ;
 
-elementoGlobal
-    : bloqueEstructuras
-    | bloqueVariables
-    | definicionEstructura
-    | definicionFuncion
-    | instruccion
+//  Seccion global de declaracines 
+seccionVariables
+    : VARIABILES MAYOR declaracion*
     ;
 
-// --------------------
-// SECCIONES ESPECIALES
-// --------------------
-
-bloqueEstructuras
-    : ESTRUCTURAS COR_A definicionEstructura* COR_C
+//  Seccion de funciones 
+seccionMunera
+    : MUNERA MAYOR definicionFuncion*
     ;
 
-bloqueVariables
-    : VARIABILES COR_A declaracion* COR_C
+//  Seccion prinipal obligatoria
+seccionMaior
+    : MAIOR MAYOR instruccion* FIN_PROGRAMA PYC?
     ;
 
 
@@ -58,10 +53,10 @@ declaracion
     ;
 
 // El orden de las alternativas importa
-//  Primero estructura
-//  segundo booleana
-//  Terero con valor
-//  cuarto sin valor
+//  1 estructura  
+//  2 bbooleana    
+//  3 con valor   
+//  4 sin valor   
 declaracionVariable
     : ESTO ID DOS_PUNTOS ID literalEstructura PYC?      # DeclEstructura
     | ESTO ID DOS_PUNTOS valorBooleano expresion? PYC?  # DeclBooleana
@@ -70,9 +65,6 @@ declaracionVariable
     ;
 
 // series id[dim] : tipo {valores};
-// La dimension es opcional porque dentro de una definicion de
-// estructura no se especifica
-
 declaracionArreglo
     : SERIES ID dimension? DOS_PUNTOS tipo listaValores? PYC?  # ArregloTipado
     | SERIES ID dimension? DOS_PUNTOS listaValores PYC?        # ArregloInferido
@@ -89,7 +81,6 @@ listaValores
 
 // -----------
 // ESTRUCTURAS
-// Los campos se pueden separar con ; o con , 
 // -----------
 
 definicionEstructura
@@ -97,8 +88,8 @@ definicionEstructura
     ;
 
 campoEstructura
-    : ESTO ID DOS_PUNTOS tipo separadorCampo?           # CampoSimple
-    | ESTO ID DOS_PUNTOS valorBooleano separadorCampo?  # CampoBooleano
+    : ESTO ID DOS_PUNTOS tipo separadorCampo?               # CampoSimple
+    | ESTO ID DOS_PUNTOS valorBooleano separadorCampo?      # CampoBooleano
     | SERIES ID dimension? DOS_PUNTOS tipo separadorCampo?  # CampoArreglo
     ;
 
@@ -121,13 +112,24 @@ valorAtributo
     | expresion
     ;
 
+
+// ----------------------------------------------------
+// FUNCIONES
+// actio -> sin retorno   |   ratio TIPO -> con retorno
+// ----------------------------------------------------
+
 definicionFuncion
     : ACTIO ID PAR_A listaParametros? PAR_C cuerpoFuncion FINIS PYC?        # FuncionSinRetorno
     | RATIO tipo ID PAR_A listaParametros? PAR_C cuerpoFuncion FINIS PYC?   # FuncionConRetorno
     ;
 
 cuerpoFuncion
-    : LLAVE_A bloqueVariables? instruccion* LLAVE_C
+    : LLAVE_A bloqueVariablesLocal? instruccion* LLAVE_C
+    ;
+
+// Version local con corchetes, distinta de la seccion global
+bloqueVariablesLocal
+    : VARIABILES COR_A declaracion* COR_C
     ;
 
 listaParametros
@@ -145,6 +147,11 @@ llamadaFuncion
 listaArgumentos
     : expresion (COMA expresion)*
     ;
+
+
+// -------------
+// INSTRUCCIONES
+// -------------
 
 instruccion
     : asignacion
@@ -168,7 +175,7 @@ bloque
     : LLAVE_A instruccion* LLAVE_C
     ;
 
-// Objetivo de asignacion o acceso encadenado.
+// Cubre: id, id[expr], id.attr, id.attr[expr].attr
 objetivo
     : ID sufijoAcceso*
     ;
@@ -184,7 +191,7 @@ asignacion
     | objetivo IGUAL expresion PYC?           # AsignacionSimple
     ;
 
-// ++ y -- se aplican en cualquier ambito (foro, duda 7)
+// ++ y -- se aplican en cualquier ambito
 incremento
     : objetivo (MASMAS | MENOSMENOS) PYC?
     ;
@@ -196,7 +203,8 @@ llamadaInstruccion
 
 // -------------
 // CONDICIONALES
-// -------------
+// si (...) {} aliter (...) {} aliter {} finis;
+// ------------
 
 condicional
     : SI PAR_A expresion PAR_C bloque
@@ -214,7 +222,7 @@ ramaAliter
     ;
 
 
-// ------
+// -----
 // CICLOS
 // ------
 
@@ -254,10 +262,10 @@ reddere
     ;
 
 
-// ---------------------------------
+// --------------------------------
 // FUNCIONES ESPECIALES DEL SISTEMA
 // >> imprime   |   << lee
-// ---------------------------------
+// --------------------------------
 
 imprimir
     : (MAYORMAYOR expresion)+ PYC?
@@ -271,9 +279,8 @@ leer
 
 // -----------
 // EXPRESIONES
-// uso la recursividad por la izquierda de ANTLR4 con
-// alternativas ordenadas por precedencia (de mayor a menor)
-// ANTLR4 resuelve la precedencia por el orden de aparicion
+// Recursividad por la izquierda de ANTLR4 con alternativas
+// ordenadas por precedencia, de mayor a menor.
 // -----------
 
 expresion
@@ -302,25 +309,30 @@ literal
 
 // ----------------
 // REGLAS DEL LEXER
+// El lenguaje es case sensitive.
 // ----------------
 
-//   Secciones (en mayusculas
-VARIABILES  : 'VARIABILES';
-ESTRUCTURAS : 'ESTRUCTURAS';
+//  Marcadores de seccion (en mayusculas)
+VARIABILES : 'VARIABILES';
+MUNERA     : 'MUNERA';
+MAIOR      : 'MAIOR';
 
-//   declaracion
+// cierre del programa completo, distito de finis minuscula
+FIN_PROGRAMA : 'FINIS';
+
+//  Declaracion 
 ESTO      : 'esto';
 SERIES    : 'series';
 STRUCTURA : 'structura';
 FINIS     : 'finis';
 
-//  Tipos primitivos 
+//  Tipos primitivos
 NUMERUS   : 'numerus';
 DECIMALIS : 'decimalis';
 TEXTUM    : 'textum';
 LITTERA   : 'littera';
 
-//  Booleanos 
+//  Booleanos
 VERUM  : 'verum';
 FALSUS : 'falsus';
 
@@ -333,15 +345,15 @@ PER        : 'per';
 PERGE      : 'perge';
 INTERRUMPE : 'interrumpe';
 
-//  Funcioes 
+//  funciones 
 ACTIO   : 'actio';
 RATIO   : 'ratio';
 REDDERE : 'reddere';
 
-//  Operador logico de negacion 
+//  Negcion logica 
 NON : 'non';
 
-//  Operadores de dos carateres (deben ir antes que los de uno) 
+//  Operadores de dos caracteres (antes que los de uno) 
 MASMAS     : '++';
 MENOSMENOS : '--';
 MAYORMAYOR : '>>';
@@ -353,7 +365,7 @@ MAYORIGUAL : '>=';
 AND        : '&&';
 OR         : '||';
 
-//  Operadres de un caracter 
+//  Operadores de un caracter 
 MAS   : '+';
 MENOS : '-';
 POR   : '*';
@@ -362,7 +374,7 @@ IGUAL : '=';
 MENOR : '<';
 MAYOR : '>';
 
-//  signos de agrupacion y puntuacion 
+//  Agrupacion y puntuacion 
 PAR_A      : '(';
 PAR_C      : ')';
 LLAVE_A    : '{';
@@ -374,7 +386,7 @@ COMA       : ',';
 PUNTO      : '.';
 DOS_PUNTOS : ':';
 
-//  Literales 
+//  Literaes 
 DECIMAL : [0-9]+ '.' [0-9]+ ;
 ENTERO  : [0-9]+ ;
 
@@ -389,10 +401,11 @@ CARACTER
 
 ID : [a-zA-Z_] [a-zA-Z_0-9]* ;
 
-//  Comentrios y espacios 
+//  comentarios y espacios 
+// Bloque con ## ... ##  |  linea con //
+COMENTARIO_BLOQUE : '##' .*? '##' -> skip ;
 COMENTARIO_LINEA  : '//' ~[\r\n]* -> skip ;
-COMENTARIO_BLOQUE : '/*' .*? '*/' -> skip ;
 ESPACIOS          : [ \t\r\n]+ -> skip ;
 
-// Token de captura par errores lexicos.
+// Token de captura para errores lexicos. Permite reportar el
 ERROR_LEXICO : . ;

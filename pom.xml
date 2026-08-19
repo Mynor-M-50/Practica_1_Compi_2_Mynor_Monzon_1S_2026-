@@ -5,9 +5,46 @@
     <artifactId>Practica_1_Compi_2_Mynor_Monzon_1S_2026</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.Practica_1_Compi_2_Mynor_Monzon_1S_2026</exec.mainClass>
+        <antlr.version>4.13.2</antlr.version>
     </properties>
+    
+
+    <dependencies>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr.version}</version>
+                <configuration>
+                    <!-- Genera el Listener (se usa para construir el AST) -->
+                    <listener>true</listener>
+                    <!-- Genera tambien el Visitor por si se necesita despues -->
+                    <visitor>true</visitor>
+                    <sourceDirectory>${basedir}/src/main/antlr4</sourceDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>antlr</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
