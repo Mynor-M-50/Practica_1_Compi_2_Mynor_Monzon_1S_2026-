@@ -33,6 +33,7 @@ tipo
     | DECIMALIS     # TipoDecimalis
     | TEXTUM        # TipoTextum
     | LITTERA       # TipoLittera
+    | BOOL          # TipoBool
     | ID            # TipoEstructura
     ;
 
@@ -331,6 +332,7 @@ NUMERUS   : 'numerus';
 DECIMALIS : 'decimalis';
 TEXTUM    : 'textum';
 LITTERA   : 'littera';
+BOOL      : 'bool';
 
 //  Booleanos
 VERUM  : 'verum';
