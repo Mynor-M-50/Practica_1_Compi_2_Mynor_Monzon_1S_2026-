@@ -10,7 +10,7 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.tipos;
  */
 
 /**
- * tipos primitivos del lenguaje Codex Latinus.
+ *  Tipos primitivos del lenguaje Codex Latinus.
  *
  * El nivel representa la jerarquia de conversion implicita que define
  * el enunciado:

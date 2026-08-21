@@ -26,12 +26,6 @@ import java.util.List;
 
 /**
  * Prueba temporal de la gramatica.
- *
- * No forma parte del compilador final: sirve para verificar que la
- * gramatica acepta los archivos .lat antes de construir el AST encima.
- * Se puede borrar cuando ya exista la interfaz grafica.
- *
- * Mynor Miguel Monzon Martinez - 202230884
  */
 public class Pruebagramatica {
 

@@ -15,12 +15,6 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.tipos;
  * Concentra en un solo lugar todas las decisiones de tipado para que
  * el analizador semantico no las tenga dispersas. Tambien es la clase
  * que respalda la tabla de compatibilidad que pide el manual tecnico.
- *
- * Convencion: cuando una operacion no es valida se devuelve
- * Tipo.error(). Ese tipo se propaga en silencio para no encadenar
- * mensajes de error a partir de una sola falla real.
- *
- * Mynor Miguel Monzon Martinez - 202230884
  */
 public final class TablaTipos {
 
@@ -28,9 +22,9 @@ public final class TablaTipos {
         // Clase de utilidades, no se instancia
     }
 
-    // ------------------------------------------------------------
+    // --------------------
     // Operaciones binarias
-    // ------------------------------------------------------------
+    // --------------------
 
     /**
      * Calcula el tipo resultante de aplicar un operador binario.
@@ -75,9 +69,6 @@ public final class TablaTipos {
      * Regla del enunciado: textum solo se puede combinar mediante
      * concatenacion con el operador mas. Cualquier otro operador
      * aplicado a un textum es error.
-     *
-     * Para el resto de tipos el resultado toma el nivel jerarquico
-     * mas alto de los dos operandos.
      */
     private static Tipo resultadoAritmetico(Tipo izquierdo, Operador operador, Tipo derecho) {
         TipoPrimitivo a = izquierdo.getPrimitivo();
@@ -152,9 +143,9 @@ public final class TablaTipos {
         return Tipo.error();
     }
 
-    // ------------------------------------------------------------
+    // -------------------
     // Operaciones unarias
-    // ------------------------------------------------------------
+    // -------------------
 
     public static Tipo resultadoUnario(Operador operador, Tipo operando) {
         if (operando == null || operador == null) {
@@ -179,18 +170,13 @@ public final class TablaTipos {
         return Tipo.error();
     }
 
-    // ------------------------------------------------------------
+    // ----------
     // Asignacion
-    // ------------------------------------------------------------
+    // ----------
 
     /**
      * Determina si un valor de tipo origen se puede guardar en una
      * variable de tipo destino.
-     *
-     * Se permite el ensanchamiento implicito hacia arriba en la
-     * jerarquia, por ejemplo guardar un numerus en un decimalis.
-     * No se permite el estrechamiento, porque implicaria perdida de
-     * informacion silenciosa.
      */
     public static boolean esAsignable(Tipo destino, Tipo origen) {
         if (destino == null || origen == null) {
@@ -239,16 +225,16 @@ public final class TablaTipos {
     }
 
     /**
-     * Verifica que una expresion sirva como condicion de si, dum,
+     * Estop verifica que una expresion sirva como condicion de si, dum,
      * facere o per. El enunciado exige que sea estrictamente booleana.
      */
     public static boolean esCondicionValida(Tipo tipo) {
         return tipo != null && (tipo.esError() || tipo.esBooleano());
     }
 
-    // ------------------------------------------------------------
+    // -----------------
     // Mensajes de error
-    // ------------------------------------------------------------
+    // -----------------
 
     public static String mensajeBinario(Tipo izquierdo, Operador operador, Tipo derecho) {
         return "No se puede aplicar el operador " + operador.getSimbolo()
