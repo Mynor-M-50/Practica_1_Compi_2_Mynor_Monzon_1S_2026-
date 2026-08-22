@@ -1,38 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.mycompany.codexlatinus;
+package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026;
 
 import com.mycompany.codexlatinus.gramatica.CodexLatinusLexer;
 import com.mycompany.codexlatinus.gramatica.CodexLatinusParser;
+
+import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.analizador.ConstructorAST;
+import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.ast.NodoPrograma;
 
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.Trees;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Prueba temporal de la gramatica.
+ * Prueba temporal del analisis.
+ *
+ * Recorre las tres etapas que ya estan listas: analisis lexico,
+ * analisis sintactico y construccion del AST propio.
+ * Se puede borrar cuando exista la interfaz grafica.
  */
 public class Pruebagramatica {
 
     private static final List<String> errores = new ArrayList<>();
-
-    // Poner en true para ver la lista completa de tokens
-    private static final boolean MOSTRAR_TOKENS = false;
 
     public static void main(String[] args) {
         String ruta = (args.length > 0) ? args[0] : "entradas/ejemplo_completo.lat";
@@ -61,58 +58,40 @@ public class Pruebagramatica {
         parser.removeErrorListeners();
         parser.addErrorListener(new EscuchaSimple("SINTACTICO"));
 
-        ParseTree arbol = parser.programa();
+        ParseTree arbolAntlr = parser.programa();
 
-        if (MOSTRAR_TOKENS) {
-            tokens.fill();
-            System.out.println("=== TOKENS ===");
-            for (Token t : tokens.getTokens()) {
-                if (t.getType() == Token.EOF) {
-                    continue;
-                }
-                String nombre = CodexLatinusLexer.VOCABULARY.getSymbolicName(t.getType());
-                System.out.printf("  %-14s %s%n", nombre, t.getText());
-            }
-            System.out.println();
-        }
-
-        System.out.println("=== ARBOL DE ANALISIS ===");
-        System.out.print(dibujarArbol(arbol, parser, 0));
-        System.out.println();
-
-        System.out.println("=== RESULTADO ===");
-        if (errores.isEmpty()) {
-            System.out.println("Sin errores. La gramatica acepta el archivo.");
-        } else {
-            System.out.println("Errores encontrados: " + errores.size());
+        if (!errores.isEmpty()) {
+            System.out.println("=== ERRORES ===");
             for (String error : errores) {
                 System.out.println("  " + error);
             }
+            System.out.println();
+            System.out.println("No se construye el AST porque hay errores.");
+            return;
         }
+
+        // Construccion del AST propio recorriendo el parse tree
+        ConstructorAST constructor = new ConstructorAST();
+        ParseTreeWalker.DEFAULT.walk(constructor, arbolAntlr);
+        NodoPrograma programa = constructor.getPrograma();
+
+        if (programa == null) {
+            System.out.println("El AST quedo vacio. Revisar el ConstructorAST.");
+            return;
+        }
+
+        System.out.println("=== AST ===");
+        System.out.print(programa.aTexto(0));
+        System.out.println();
+
+        System.out.println("=== RESUMEN ===");
+        System.out.println("Declaraciones globales : " + programa.getDeclaracionesGlobales().size());
+        System.out.println("Funciones              : " + programa.getFunciones().size());
+        System.out.println("Instrucciones en MAIOR : " + programa.getInstruccionesPrincipales().size());
+        System.out.println();
+        System.out.println("AST construido sin errores.");
     }
 
-    /**
-     * Recorre el parse tree de ANTLR y lo imprime con sangria.
-     * Solo es para inspeccion visual, el AST propio viene despues.
-     */
-    private static String dibujarArbol(ParseTree nodo, Parser parser, int nivel) {
-        StringBuilder sb = new StringBuilder();
-        List<String> reglas = Arrays.asList(parser.getRuleNames());
-
-        sb.append("  ".repeat(nivel));
-        sb.append(Trees.getNodeText(nodo, reglas));
-        sb.append(System.lineSeparator());
-
-        for (int i = 0; i < nodo.getChildCount(); i++) {
-            sb.append(dibujarArbol(nodo.getChild(i), parser, nivel + 1));
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Recolecta los errores en lugar de imprimirlos en consola de error.
-     * Es una version minima de lo que sera EscuchaErrores en el Bloque 5.
-     */
     private static class EscuchaSimple extends BaseErrorListener {
 
         private final String tipo;
