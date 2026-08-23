@@ -6,6 +6,7 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.analizador;
 
 import com.mycompany.codexlatinus.gramatica.CodexLatinusLexer;
 import com.mycompany.codexlatinus.gramatica.CodexLatinusParser;
+import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.pila.RegistradorPila;
 
 import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.ast.NodoPrograma;
 import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.errores.EscuchaErrores;
@@ -44,6 +45,7 @@ public class Compilador {
     private ParseTree parseTree;
     private NodoPrograma programa;
     private TablaSimbolos tablaSimbolos;
+    private RegistradorPila registradorPila;
 
     public RecolectorErrores getErrores() {
         return errores;
@@ -61,6 +63,10 @@ public class Compilador {
         return tablaSimbolos;
     }
 
+    public RegistradorPila getRegistradorPila() {
+        return registradorPila;
+    }
+    
     /**
      * Ejecuta todas las fases sobre el codigo fuente recibido.
      * Devuelve true si el programa quedo libre de errores.
@@ -93,7 +99,10 @@ public class Compilador {
         ConstructorAST constructor = new ConstructorAST();
         ParseTreeWalker.DEFAULT.walk(constructor, parseTree);
         programa = constructor.getPrograma();
-
+        
+        registradorPila = new RegistradorPila(CodexLatinusParser.ruleNames);
+        ParseTreeWalker.DEFAULT.walk(registradorPila, parseTree);
+        
         if (programa == null) {
             return false;
         }
@@ -111,5 +120,6 @@ public class Compilador {
         parseTree = null;
         programa = null;
         tablaSimbolos = null;
+        registradorPila = null;
     }
 }

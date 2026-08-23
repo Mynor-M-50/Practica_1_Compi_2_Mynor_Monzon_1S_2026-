@@ -1,0 +1,20 @@
+digraph TablaSimbolos {
+  rankdir=TB;
+  bgcolor="white";
+  node [shape=plaintext, fontname="Helvetica"];
+
+  tabla [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+      <TR BGCOLOR="#1565C0"><TD><FONT COLOR="white"><B>Nombre</B></FONT></TD><TD><FONT COLOR="white"><B>Tipo</B></FONT></TD><TD><FONT COLOR="white"><B>Rol</B></FONT></TD><TD><FONT COLOR="white"><B>Ambito</B></FONT></TD><TD><FONT COLOR="white"><B>Linea</B></FONT></TD><TD><FONT COLOR="white"><B>Columna</B></FONT></TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>edad</TD><TD>numerus</TD><TD>Variable</TD><TD>global</TD><TD>7</TD><TD>1</TD></TR>
+      <TR BGCOLOR="#F5F5F5"><TD>cifrado</TD><TD>bool</TD><TD>Variable</TD><TD>global</TD><TD>8</TD><TD>1</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>comandante</TD><TD>textum</TD><TD>Variable</TD><TD>global</TD><TD>9</TD><TD>1</TD></TR>
+      <TR BGCOLOR="#F5F5F5"><TD>fuerza</TD><TD>numerus</TD><TD>Variable</TD><TD>global</TD><TD>10</TD><TD>1</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>poder</TD><TD>numerus</TD><TD>Variable</TD><TD>global</TD><TD>11</TD><TD>1</TD></TR>
+      <TR BGCOLOR="#F5F5F5"><TD>BuenDia</TD><TD>textum</TD><TD>Variable</TD><TD>global</TD><TD>13</TD><TD>1</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>calcularPoder</TD><TD>numerus</TD><TD>Funcion</TD><TD>global</TD><TD>20</TD><TD>1</TD></TR>
+      <TR BGCOLOR="#F5F5F5"><TD>fuerza</TD><TD>numerus</TD><TD>Parametro</TD><TD>calcularPoder</TD><TD>20</TD><TD>29</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>total</TD><TD>numerus</TD><TD>Variable</TD><TD>calcularPoder</TD><TD>22</TD><TD>8</TD></TR>
+    </TABLE>
+  >];
+}
