@@ -4,6 +4,7 @@ import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.analizador.Compilad
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.traductor.TraductorPiglatin;
 
 /**
  * Prueba del compilador completo desde consola.
@@ -41,6 +42,13 @@ public class Pruebagramatica {
             System.out.println("=== TABLA DE SIMBOLOS ===");
             System.out.print(compilador.getTablaSimbolos().aTexto());
             System.out.println();
+        }
+        
+        if (exito) {
+            System.out.println();
+            System.out.println("=== TRADUCCION A PIGLATIN ===");
+            TraductorPiglatin traductor = new TraductorPiglatin();
+            System.out.println(traductor.traducir(compilador.getPrograma()));
         }
 
         System.out.println("=== ERRORES ===");
