@@ -8,10 +8,8 @@ import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.traductor.Traductor
 
 /**
  * Prueba del compilador completo desde consola.
- *
- * Ejecuta las cuatro fases y muestra el AST, la tabla de simbolos y el
- * reporte de errores. Se puede borrar cuando exista la interfaz.
  */
+
 public class Pruebagramatica {
 
     public static void main(String[] args) {
@@ -33,30 +31,28 @@ public class Pruebagramatica {
         boolean exito = compilador.compilar(fuente);
 
         if (compilador.getPrograma() != null) {
-            System.out.println("=== AST ===");
+            System.out.println("AST");
             System.out.print(compilador.getPrograma().aTexto(0));
             System.out.println();
         }
 
         if (compilador.getTablaSimbolos() != null) {
-            System.out.println("=== TABLA DE SIMBOLOS ===");
+            System.out.println("TABLA DE SIMBOLOS");
             System.out.print(compilador.getTablaSimbolos().aTexto());
             System.out.println();
         }
         
         if (exito) {
             System.out.println();
-            System.out.println("=== TRADUCCION A PIGLATIN ===");
+            System.out.println("TRADUCCION A PIGLATIN");
             TraductorPiglatin traductor = new TraductorPiglatin();
             System.out.println(traductor.traducir(compilador.getPrograma()));
         }
 
-        System.out.println("=== ERRORES ===");
+        System.out.println("ERRORES");
         System.out.println(compilador.getErrores().aTexto());
 
         System.out.println();
-        System.out.println(exito
-                ? "Compilacion exitosa."
-                : "La compilacion termino con errores.");
+        System.out.println(exito ? "Compilacion exitosa." : "La compilacion termino con errores.");
     }
 }

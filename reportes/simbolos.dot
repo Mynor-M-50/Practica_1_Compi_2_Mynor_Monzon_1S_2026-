@@ -11,10 +11,9 @@ digraph TablaSimbolos {
       <TR BGCOLOR="#FFFFFF"><TD>comandante</TD><TD>textum</TD><TD>Variable</TD><TD>global</TD><TD>9</TD><TD>1</TD></TR>
       <TR BGCOLOR="#F5F5F5"><TD>fuerza</TD><TD>numerus</TD><TD>Variable</TD><TD>global</TD><TD>10</TD><TD>1</TD></TR>
       <TR BGCOLOR="#FFFFFF"><TD>poder</TD><TD>numerus</TD><TD>Variable</TD><TD>global</TD><TD>11</TD><TD>1</TD></TR>
-      <TR BGCOLOR="#F5F5F5"><TD>BuenDia</TD><TD>textum</TD><TD>Variable</TD><TD>global</TD><TD>13</TD><TD>1</TD></TR>
-      <TR BGCOLOR="#FFFFFF"><TD>calcularPoder</TD><TD>numerus</TD><TD>Funcion</TD><TD>global</TD><TD>20</TD><TD>1</TD></TR>
-      <TR BGCOLOR="#F5F5F5"><TD>fuerza</TD><TD>numerus</TD><TD>Parametro</TD><TD>calcularPoder</TD><TD>20</TD><TD>29</TD></TR>
-      <TR BGCOLOR="#FFFFFF"><TD>total</TD><TD>numerus</TD><TD>Variable</TD><TD>calcularPoder</TD><TD>22</TD><TD>8</TD></TR>
+      <TR BGCOLOR="#F5F5F5"><TD>calcularPoder</TD><TD>numerus</TD><TD>Funcion</TD><TD>global</TD><TD>18</TD><TD>1</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>fuerza</TD><TD>numerus</TD><TD>Parametro</TD><TD>calcularPoder</TD><TD>18</TD><TD>29</TD></TR>
+      <TR BGCOLOR="#F5F5F5"><TD>total</TD><TD>numerus</TD><TD>Variable</TD><TD>calcularPoder</TD><TD>20</TD><TD>8</TD></TR>
     </TABLE>
   >];
 }

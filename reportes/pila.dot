@@ -1,0 +1,25 @@
+digraph Pila {
+  rankdir=TB;
+  bgcolor="white";
+  node [shape=plaintext, fontname="Helvetica"];
+
+  pila [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+      <TR BGCOLOR="#6A1B9A"><TD><FONT COLOR="white"><B>Paso 203 - Shift</B></FONT></TD></TR>
+      <TR BGCOLOR="#FFE082"><TD>&quot;La puerta esta cifrada?&quot;   (cima)</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>&gt;&gt;</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>instruccion</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>instruccion</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>instruccion</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>instruccion</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>instruccion</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>instruccion</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>instruccion</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>instruccion</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>&gt;</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>MAIOR</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>seccionMunera</TD></TR>
+      <TR BGCOLOR="#FFFFFF"><TD>seccionVariables</TD></TR>
+    </TABLE>
+  >];
+}

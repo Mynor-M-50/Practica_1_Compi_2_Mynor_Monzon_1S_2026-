@@ -83,19 +83,9 @@ public final class TablaTipos {
             return Tipo.error();
         }
 
-        // PENDIENTE DE CONFIRMAR CON EL PROFESOR:
-        // La jerarquia del enunciado incluye bool en el nivel 1, lo que
-        // implicaria que  verum + 1  es valido y devuelve numerus.
-        // Como el lenguaje ahora es estrictamente tipado, aqui se
-        // prohibe la aritmetica sobre booleanos. Si el profesor
-        // confirma lo contrario, basta con borrar este bloque.
-        if (a == TipoPrimitivo.BOOLEANO || b == TipoPrimitivo.BOOLEANO) {
-            return Tipo.error();
-        }
-
         return Tipo.de(TipoPrimitivo.mayorNivel(a, b));
     }
-
+    
     /**
      * Comparaciones de orden: menor, mayor, menor igual, mayor igual.
      * Solo tienen sentido sobre tipos ordenables. El resultado siempre
@@ -178,7 +168,7 @@ public final class TablaTipos {
      * Determina si un valor de tipo origen se puede guardar en una
      * variable de tipo destino.
      */
-    public static boolean esAsignable(Tipo destino, Tipo origen) {
+        public static boolean esAsignable(Tipo destino, Tipo origen) {
         if (destino == null || origen == null) {
             return false;
         }
@@ -205,22 +195,8 @@ public final class TablaTipos {
             return false;
         }
 
-        // bool es estricto en ambos sentidos: no recibe ni entrega
-        // valores de otro tipo
-        if (d == TipoPrimitivo.BOOLEANO || o == TipoPrimitivo.BOOLEANO) {
-            return d == o;
-        }
-
-        // PENDIENTE DE CONFIRMAR CON EL PROFESOR:
-        // Por jerarquia pura, textum es el nivel mas alto y aceptaria
-        // cualquier valor. Como el enunciado dice que textum solo se
-        // combina por concatenacion, aqui se exige que el origen ya
-        // sea textum.
-        if (d == TipoPrimitivo.TEXTUM) {
-            return o == TipoPrimitivo.TEXTUM;
-        }
-
-        // Resto de casos: solo se ensancha hacia arriba
+        // Solo se ensancha hacia arriba en la jerarquia del enunciado:
+        // textum(5) > decimalis(4) > numerus(3) > littera(2) > bool(1)
         return d.getNivel() >= o.getNivel();
     }
 
