@@ -1,0 +1,80 @@
+##
+    Prueba de los dos cambios recientes en la gramatica
+
+    1. El separador >> entre valores impresos ahora es opcional,
+       para aceptar la forma del ejemplo del enunciado.
+    2. Los arreglos de estructuras se pueden inicializar en linea
+       con una lista de instancias entre llaves.
+
+    RESULTADO ESPERADO: 0 errores.
+##
+
+VARIABILES>
+
+structura Persona {
+    esto nombre : textum;
+    esto edad   : numerus
+} finis;
+
+structura Punto {
+    esto x : numerus;
+    esto y : numerus
+} finis;
+
+esto fuerza : numerus 10;
+esto nombre : textum "Comandante";
+
+## ----------------------------------------------------------------
+   CAMBIO 2: inicializacion en linea de un arreglo de estructuras
+   Antes solo se podia llenar posicion por posicion.
+   ---------------------------------------------------------------- ##
+series personas[2] : Persona {
+    { nombre: "Ana", edad: 30 },
+    { nombre: "Luis", edad: 25 }
+};
+
+## Lo mismo con otra estructura, en una sola linea ##
+series puntos[3] : Punto {{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 4 }};
+
+## La forma anterior debe seguir funcionando ##
+series vacios[2] : Persona;
+
+MUNERA>
+
+ratio numerus calcularPoder(esto valor : numerus) {
+    reddere valor * 2;
+} finis;
+
+MAIOR>
+
+## ----------------------------------------------------------------
+   CAMBIO 1: separador >> opcional al imprimir
+   ---------------------------------------------------------------- ##
+
+## Forma del ejemplo del enunciado: sin >> antes de la llamada ##
+>> "Tu poder es: >> " calcularPoder(fuerza);
+
+## Varios valores seguidos sin separador ##
+>> "Nombre: " nombre " Edad: " personas[0].edad;
+
+## La forma con separador debe seguir funcionando ##
+>> "Con separador: " >> fuerza >> " unidades";
+
+## Formas mezcladas en una misma instruccion ##
+>> "Mezcla: " >> fuerza " y " personas[1].nombre;
+
+## Un solo valor, sin cambios ##
+>> "Solo un valor";
+
+## ----------------------------------------------------------------
+   Verificacion del arreglo inicializado en linea
+   ---------------------------------------------------------------- ##
+>> "Primera persona: " >> personas[0].nombre;
+>> "Segunda persona: " >> personas[1].nombre;
+>> "Punto dos: " >> puntos[2].x >> ", " >> puntos[2].y;
+
+## Escritura posicion por posicion sigue siendo valida ##
+vacios[0] = { nombre: "Nuevo", edad: 1 };
+>> "Llenado despues: " >> vacios[0].nombre;
+
+FINIS;

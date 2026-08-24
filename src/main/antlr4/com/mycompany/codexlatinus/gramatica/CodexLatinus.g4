@@ -77,9 +77,15 @@ dimension
     ;
 
 listaValores
-    : LLAVE_A (expresion (COMA expresion)*)? COMA? LLAVE_C
+    : LLAVE_A (valorLista (COMA valorLista)*)? COMA? LLAVE_C
     ;
 
+// Un elemento de la lista puede ser una instancia de estructura,
+// para permitir  series personas[2] : Persona {{...}, {...}};
+valorLista
+    : literalEstructura
+    | expresion
+    ;
 
 // -----------
 // ESTRUCTURAS
@@ -276,7 +282,7 @@ reddere
 // --------------------------------
 
 imprimir
-    : (MAYORMAYOR expresion)+ PYC?
+    : MAYORMAYOR expresion (MAYORMAYOR? expresion)* PYC?
     ;
 
 leer

@@ -27,6 +27,8 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.nio.file.Files;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -98,7 +100,17 @@ public class VisorDot {
         JTabbedPane pestanias = new JTabbedPane();
 
         if (hayPng) {
-            JLabel imagen = new JLabel(new ImageIcon(archivoPng.getAbsolutePath()));
+            JLabel imagen;
+            try {
+                // Se lee con ImageIO y no con ImageIcon(ruta) porque
+                // ImageIcon cachea las imagenes por nombre de archivo.
+                // Como el archivo se sobrescribe en cada reporte, la
+                // cache devolveria siempre la primera version generada.
+                BufferedImage mapa = ImageIO.read(archivoPng);
+                imagen = new JLabel(new ImageIcon(mapa));
+            } catch (Exception e) {
+                imagen = new JLabel("No se pudo cargar la imagen: " + e.getMessage());
+            }
             JScrollPane scroll = new JScrollPane(imagen);
             scroll.getVerticalScrollBar().setUnitIncrement(16);
             scroll.getHorizontalScrollBar().setUnitIncrement(16);

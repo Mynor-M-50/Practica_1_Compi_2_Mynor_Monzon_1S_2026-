@@ -324,13 +324,18 @@ public class ConstructorAST extends CodexLatinusBaseListener {
     @Override
     public void exitListaValores(CodexLatinusParser.ListaValoresContext ctx) {
         List<Expresion> valores = new ArrayList<>();
-        for (CodexLatinusParser.ExpresionContext exp : ctx.expresion()) {
-            Expresion expresion = expresionDe(exp);
+        for (CodexLatinusParser.ValorListaContext val : ctx.valorLista()) {
+            Expresion expresion = expresionDe(val);
             if (expresion != null) {
                 valores.add(expresion);
             }
         }
         guardar(ctx, new LiteralLista(valores, linea(ctx), columna(ctx)));
+    }
+    
+    @Override
+    public void exitValorLista(CodexLatinusParser.ValorListaContext ctx) {
+        propagar(ctx, ctx.getChild(0));
     }
 
     @Override
