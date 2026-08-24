@@ -15,15 +15,15 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Cadena completa de condicionales:
+/*
+ Cadena completa de condicionales:
  *     si (...) { }
  *     aliter (...) { }
  *     aliter { }
  *     finis;
  *
- * La primera rama es el si. Las siguientes son los aliter con
- * condicion. El aliter sin condicion, si existe, va en ramaFinal.
+ La primera rama es el si. Las siguientes son los aliter con
+ condicion. El aliter sin condicion, si existe, va en ramaFinal.
  */
 
 public class Condicional extends Instruccion {

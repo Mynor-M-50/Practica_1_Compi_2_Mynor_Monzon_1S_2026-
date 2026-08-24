@@ -16,11 +16,10 @@ import java.util.List;
  */
 
 /**
- * Una rama con condicion dentro de un condicional.
- *
- * Cubre tanto el si inicial como cada aliter que trae condicion.
- * El aliter final sin condicion no usa esta clase: se guarda aparte
- * en Condicional.
+ Una rama con condicion dentro de un condicional
+ Cubre tanto el si inicial como cada aliter que trae condicion
+ El aliter final sin condicion no usa esta clase, se guarda aparte
+ en Condicional.
  */
 
 public class RamaCondicional extends Nodo {

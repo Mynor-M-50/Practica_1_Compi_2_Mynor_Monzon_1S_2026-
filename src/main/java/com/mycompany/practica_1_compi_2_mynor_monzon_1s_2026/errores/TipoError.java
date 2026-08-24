@@ -9,10 +9,8 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.errores;
  * @author mynorm50
  */
 
-/**
- * Las tres fases en las que se puede detectar un error.
- * El enunciado pide reportarlas por separado.
- */
+/*
+ Las tres fases en las que se puede detectar un error*/
 
 public enum TipoError {
 

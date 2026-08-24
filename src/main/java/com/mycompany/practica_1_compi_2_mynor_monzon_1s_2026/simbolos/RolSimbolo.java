@@ -9,12 +9,12 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.simbolos;
  * @author mynorm50
  */
 
-/**
- * Clasificacion de lo que representa un simbolo dentro de la tabla.
- *
- * Sirve para dos cosas: distinguir usos invalidos, como llamar a una
- * variable como si fuera funcion, y para agrupar los simbolos por
- * categoria al graficar la tabla.
+/*
+ Clasificacion de lo que representa un simbolo dentro de la tabla.
+ 
+ Sirve para dos cosas: distinguir usos invalidos, como llamar a una
+ariable como si fuera funcion, y para agrupar los simbolos por
+ categoria al graficar la tabla
  */
 public enum RolSimbolo {
 

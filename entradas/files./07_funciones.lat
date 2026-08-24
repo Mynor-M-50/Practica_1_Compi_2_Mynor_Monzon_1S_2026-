@@ -1,0 +1,122 @@
+##
+    Prueba: funciones actio y ratio en todas sus formas
+##
+VARIABILES>
+
+structura Punto {
+    esto x : numerus;
+    esto y : numerus
+} finis;
+
+esto global : numerus 100;
+esto resultado : numerus 0;
+
+MUNERA>
+
+## Funcion sin retorno y sin parametros ##
+actio saludar() {
+    >> "Hola desde una funcion";
+} finis;
+
+## Funcion sin retorno con parametros ##
+actio mostrar(esto mensaje : textum, esto veces : numerus) {
+    VARIABILES[
+        esto i : numerus 0;
+    ]
+    dum (i < veces) {
+        >> mensaje;
+        i++;
+    } finis;
+} finis;
+
+## Funcion con retorno simple ##
+ratio numerus duplicar(esto valor : numerus) {
+    reddere valor * 2;
+} finis;
+
+## Funcion con bloque de variables locales ##
+ratio numerus calcularPoder(esto fuerza : numerus, esto factor : decimalis) {
+    VARIABILES[
+        esto base : numerus fuerza * 2;
+        esto extra : numerus 10;
+    ]
+    reddere base + extra;
+} finis;
+
+## Retorno dentro de condicional: todas las ramas retornan ##
+ratio textum clasificar(esto valor : numerus) {
+    si (valor > 100) {
+        reddere "alto";
+    } aliter (valor > 50) {
+        reddere "medio";
+    } aliter {
+        reddere "bajo";
+    } finis;
+} finis;
+
+## Funcion que retorna una estructura, confirmado en el foro ##
+ratio Punto crearPunto(esto a : numerus, esto b : numerus) {
+    VARIABILES[
+        esto p : Punto { x: a, y: b };
+    ]
+    reddere p;
+} finis;
+
+## Estructura local dentro del bloque VARIABILES, confirmado en el foro ##
+ratio textum usarEstructuraLocal() {
+    VARIABILES[
+        structura Temporal {
+            esto etiqueta : textum
+        } finis;
+        esto t : Temporal { etiqueta: "local" };
+    ]
+    reddere t.etiqueta;
+} finis;
+
+## Funcion que llama a otra definida antes ##
+ratio numerus cuadruplicar(esto valor : numerus) {
+    reddere duplicar(duplicar(valor));
+} finis;
+
+## Funcion que llama a otra definida despues, valida por las dos pasadas ##
+ratio numerus usarPosterior(esto valor : numerus) {
+    reddere ayudante(valor);
+} finis;
+
+ratio numerus ayudante(esto valor : numerus) {
+    reddere valor + 1;
+} finis;
+
+## Funcion actio con reddere sin valor para salir antes ##
+actio validar(esto valor : numerus) {
+    si (valor < 0) {
+        reddere;
+    } finis;
+    >> "Valor valido";
+} finis;
+
+MAIOR>
+
+## Llamada como instruccion ##
+saludar();
+mostrar("Repetido", 2);
+validar(5);
+
+## Llamada dentro de expresion ##
+resultado = duplicar(21);
+esto poder : numerus calcularPoder(10, 0.5);
+esto categoria : textum clasificar(75);
+
+## Llamada anidada ##
+esto anidado : numerus duplicar(duplicar(5));
+
+## Uso del retorno de estructura ##
+esto punto : Punto crearPunto(3, 4);
+>> "Punto x: " >> punto.x;
+
+## Llamada usando variable global como argumento ##
+>> "Global duplicado: " >> duplicar(global);
+
+>> "Resultado: " >> resultado;
+>> "Categoria: " >> categoria;
+FINIS;

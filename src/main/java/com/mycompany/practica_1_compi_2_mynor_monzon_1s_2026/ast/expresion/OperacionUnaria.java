@@ -14,9 +14,9 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Operacion con un solo operando: negacion logica con non, o menos
- * unario para invertir el signo.
+/*
+ Operacion con un solo operando: negacion logica con non, o menos
+ unario para invertir el signo.
  */
 public class OperacionUnaria extends Expresion {
 

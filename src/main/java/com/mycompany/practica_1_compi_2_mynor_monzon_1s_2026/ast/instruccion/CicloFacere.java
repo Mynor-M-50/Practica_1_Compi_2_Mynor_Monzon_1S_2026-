@@ -15,12 +15,11 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Ciclo hacer mientras:  facere { } dum (condicion);
- *
- * La condicion se evalua despues del cuerpo, asi que el cuerpo se
- * ejecuta al menos una vez. Por eso el orden de los campos esta
- * invertido respecto a CicloDum.
+/*
+ Ciclo hacer mientras:  facere { } dum (condicion);
+ 
+ La condicion se evalua despues del cuerpo, asi que el cuerpo se
+ ejecuta al menos una vez.
  */
 
 public class CicloFacere extends Instruccion {

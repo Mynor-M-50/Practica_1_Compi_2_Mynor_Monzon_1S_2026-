@@ -48,17 +48,18 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Traduce el programa a PigLatin recorriendo el AST.
- *
- * IMPORTANTE
- * La traduccion se hace nodo por nodo, reconstruyendo el codigo desde
- * el arbol. En ningun momento se toca el texto original con replace ni
- * con expresiones regulares, tal como exige el enunciado.
- *
- * Solo se traducen identificadores y palabras reservadas. Los literales
- * de texto, los numeros y los simbolos del lenguaje quedan intactos.
- * Las funciones especiales cambian por la ley porcina.
+/*
+ Traduce el programa a piglatin recorriendo el AST
+
+ IMPORTANTE
+ La traduccion se hace nodo por nodo, reconstruyendo el codigo desde
+ el arbol. En ningun momento se toca el texto original con replace ni
+ con expresiones regulares, tal como exige el enunciado.
+ 
+ Solo se traducen identificadores y palabras reservadas. Los literales
+ de texto, los numeros y los simbolos del lenguaje quedan intactos.
+ Las funciones especiales cambian por la ley que se mciona
+
  */
 
 public class TraductorPiglatin {
@@ -67,10 +68,10 @@ public class TraductorPiglatin {
 
     private final StringBuilder salida = new StringBuilder();
 
-    /**s
-     * Recorre el AST completo y devuelve el codigo traducido.
-     * Se espera que el programa ya haya pasado el analisis semantico.
-     */
+    
+     //Recorre el AST completo y devuelve el codigo traducido
+     //Se espera que el programa ya haya pasado el analisis semantico
+     
     public String traducir(NodoPrograma programa) {
         salida.setLength(0);
 
@@ -78,7 +79,7 @@ public class TraductorPiglatin {
             return "";
         }
 
-        // ---- Seccion de variables globales ----
+        //  Seccion de variables globales 
         if (!programa.getDeclaracionesGlobales().isEmpty()) {
             salida.append(palabra("VARIABILES")).append(">").append(salto());
             for (Instruccion declaracion : programa.getDeclaracionesGlobales()) {
@@ -87,7 +88,7 @@ public class TraductorPiglatin {
             salida.append(salto());
         }
 
-        // ---- Seccion de funciones ----
+        //  Seccion de funciones 
         if (!programa.getFunciones().isEmpty()) {
             salida.append(palabra("MUNERA")).append(">").append(salto());
             for (DefinicionFuncion funcion : programa.getFunciones()) {
@@ -96,7 +97,8 @@ public class TraductorPiglatin {
             }
         }
 
-        // ---- Seccion principal ----
+        //  Seccion principal 
+        
         salida.append(palabra("MAIOR")).append(">").append(salto());
         for (Instruccion instruccion : programa.getInstruccionesPrincipales()) {
             traducirInstruccion(instruccion, 0);
@@ -108,9 +110,7 @@ public class TraductorPiglatin {
         return salida.toString();
     }
 
-    // ============================================================
-    // Funciones
-    // ============================================================
+    // Funciones----------------------------/--------------------------------------------
 
     private void traducirFuncion(DefinicionFuncion funcion) {
         StringBuilder linea = new StringBuilder();
@@ -154,9 +154,7 @@ public class TraductorPiglatin {
         escribir("} " + palabra("finis") + ";", 0);
     }
 
-    // ============================================================
-    // Instrucciones
-    // ============================================================
+    // Instrucciones-----------------------------------------------------------------------
 
     private void traducirInstruccion(Instruccion instruccion, int nivel) {
         if (instruccion == null) {
@@ -325,10 +323,10 @@ public class TraductorPiglatin {
         escribir("} " + palabra("finis") + ";", nivel);
     }
 
-    /**
-     * Version en una sola linea, sin punto y coma, para las partes del
-     * encabezado del ciclo per.
-     */
+    
+     // Version en una sola linea, sin punto y coma, para las partes del
+     // encabezado del ciclo per
+     
     private String traducirInstruccionEnLinea(Instruccion instruccion) {
         if (instruccion instanceof DeclaracionVariable) {
             DeclaracionVariable declaracion = (DeclaracionVariable) instruccion;
@@ -366,7 +364,7 @@ public class TraductorPiglatin {
         }
     }
 
-    /** Ley porcina: el operador de impresion se cambia por %OINK. */
+    // Ley porcina: el operador de impresion se cambia por %OINK
     private void traducirImprimir(Imprimir imprimir, int nivel) {
         StringBuilder linea = new StringBuilder();
         for (Expresion valor : imprimir.getValores()) {
@@ -376,7 +374,7 @@ public class TraductorPiglatin {
         escribir(linea.toString().trim() + ";", nivel);
     }
 
-    /** Ley porcina: el operador de lectura se cambia por %OINK_OINK. */
+    // Ley porcina: el operador de lectura se cambia por %OINK_OINK
     private void traducirLeer(Leer leer, int nivel) {
         if (leer.tieneObjetivo()) {
             escribir(traducirExpresion(leer.getObjetivo()) + " "
@@ -395,9 +393,7 @@ public class TraductorPiglatin {
         }
     }
 
-    // ============================================================
-    // Expresiones
-    // ============================================================
+    // Expresiones/------------------------------------------------------------------------------
 
     private String traducirExpresion(Expresion expresion) {
         if (expresion == null) {
@@ -451,10 +447,10 @@ public class TraductorPiglatin {
         return "";
     }
 
-    /**
-     * Los literales de texto, numero y caracter no se traducen.
-     * Los booleanos si, porque verum y falsus son palabras reservadas.
-     */
+    
+     // Los literales de texto, numero y caracter no se traducen
+     // Los booleanos si, porque verum y falsus son palabras reservadas
+    
     private String traducirLiteral(Literal literal) {
         if (literal.getTipoLiteral() == TipoPrimitivo.BOOLEANO) {
             boolean valor = Boolean.TRUE.equals(literal.getValor());
@@ -463,11 +459,11 @@ public class TraductorPiglatin {
         return literal.comoCodigoFuente();
     }
 
-    /**
-     * Reconstruye la operacion agregando parentesis solo donde hacen
-     * falta para conservar el significado original. La precedencia ya
-     * esta representada por la forma del arbol.
-     */
+    
+     // Reconstruye la operacion agregando parentesis solo donde hacen
+     // falta para conservar el significado original,la precedencia ya
+     // esta representada por la forma del arbol
+     
     private String traducirBinaria(OperacionBinaria operacion) {
         int precedenciaPadre = precedencia(operacion.getOperador());
 
@@ -491,7 +487,8 @@ public class TraductorPiglatin {
 
         // El hijo de menor precedencia necesita parentesis. En el lado
         // derecho tambien se ponen con igual precedencia, porque los
-        // operadores del lenguaje asocian a la izquierda.
+        // operadores del lenguaje asocian a la izquierda
+        
         boolean necesita = esDerecho
                 ? precedenciaHijo <= precedenciaPadre
                 : precedenciaHijo < precedenciaPadre;
@@ -568,14 +565,11 @@ public class TraductorPiglatin {
         return texto.toString();
     }
 
-    // ============================================================
-    // Tipos y utilidades
-    // ============================================================
+    // Tipos y utilidades/----------------------------------------------------------------
 
-    /**
-     * Los nombres de tipo son palabras reservadas y los nombres de
-     * estructura son identificadores, asi que ambos se traducen.
-     */
+     // Los nombres de tipo son palabras reservadas y los nombres de
+     // estructura son identificadores, asi que ambos se traducen.
+  
     private String traducirTipo(Tipo tipo) {
         if (tipo == null) {
             return "";

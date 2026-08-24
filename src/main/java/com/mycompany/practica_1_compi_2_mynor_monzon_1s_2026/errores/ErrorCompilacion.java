@@ -9,12 +9,11 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.errores;
  * @author mynorm50
  */
 
-/**
- * Un error detectado durante la compilacion.
- *
- * Se guarda el token o lexema que lo provoco ademas del mensaje,
- * porque el reporte de errores que pide el enunciado necesita mostrar
- * exactamente que fue lo que no se pudo procesar.
+/*
+ Un error detectado durante la compilacion
+ Se guarda el token o lexema que lo provoco ademas del mensaje,
+ porque el reporte de errores que pide el enunciado necesita mostrar
+ exactamente que fue lo que no se pudo procesar
  */
 
 public class ErrorCompilacion {

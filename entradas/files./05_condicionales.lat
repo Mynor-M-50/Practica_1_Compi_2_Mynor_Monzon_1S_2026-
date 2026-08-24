@@ -1,0 +1,52 @@
+##
+    Prueba: condicionales en todas sus formas
+##
+VARIABILES>
+esto contador : numerus 75;
+esto activo : bool verum;
+esto mensaje : textum "";
+
+MAIOR>
+
+## Si simple ##
+si (contador > 10) {
+    mensaje = "mayor que diez";
+} finis;
+
+## Si con aliter final ##
+si (contador > 100) {
+    mensaje = "muy alto";
+} aliter {
+    mensaje = "normal";
+} finis;
+
+## Cadena de aliter con condicion, mas aliter final ##
+si (contador > 100 && activo) {
+    mensaje = "alto y activo";
+} aliter (contador > 50) {
+    mensaje = "medio";
+} aliter (contador > 10) {
+    mensaje = "bajo";
+} aliter {
+    mensaje = "minimo";
+} finis;
+
+## Condicionales anidados ##
+si (activo) {
+    si (contador > 50) {
+        mensaje = "anidado interno";
+    } aliter {
+        mensaje = "anidado alterno";
+    } finis;
+} finis;
+
+## Entrada y salida dentro de bloques, confirmado en el foro ##
+si (contador > 0) {
+    >> "Contador positivo";
+    contador <<
+} aliter {
+    >> "Contador no positivo";
+} finis;
+
+>> "Mensaje final: " >> mensaje;
+FINIS;

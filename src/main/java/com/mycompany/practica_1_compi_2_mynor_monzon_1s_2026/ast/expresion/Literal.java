@@ -30,10 +30,7 @@ public class Literal extends Expresion {
         this.tipoLiteral = tipoLiteral;
     }
 
-    // ------------------------------------------------------------
     // Metodos de fabrica, uno por cada token literal de la gramatica
-    // ------------------------------------------------------------
-
     public static Literal entero(String texto, int linea, int columna) {
         return new Literal(Integer.parseInt(texto), TipoPrimitivo.NUMERUS, linea, columna);
     }
@@ -42,12 +39,12 @@ public class Literal extends Expresion {
         return new Literal(Double.parseDouble(texto), TipoPrimitivo.DECIMALIS, linea, columna);
     }
 
-    /** Recibe el texto con comillas incluidas y las quita. */
+    //ecibe el texto con comillas incluidas y las quita. 
     public static Literal cadena(String texto, int linea, int columna) {
         return new Literal(limpiarDelimitadores(texto), TipoPrimitivo.TEXTUM, linea, columna);
     }
 
-    /** Recibe el texto con comillas simples incluidas y las quita. */
+    // Recibe el texto con comillas simples incluidas y las quita. 
     public static Literal caracter(String texto, int linea, int columna) {
         String contenido = limpiarDelimitadores(texto);
         char valor = contenido.isEmpty() ? ' ' : contenido.charAt(0);
@@ -58,10 +55,10 @@ public class Literal extends Expresion {
         return new Literal(valor, TipoPrimitivo.BOOLEANO, linea, columna);
     }
 
-    /**
-     * Quita el primer y ultimo caracter, que son los delimitadores, y
-     * traduce las secuencias de escape mas comunes.
-     */
+    
+     //Quita el primer y ultimo caracter, que son los delimitadores, y
+     //traduce las secuencias de escape mas comunes.
+     
     private static String limpiarDelimitadores(String texto) {
         if (texto == null || texto.length() < 2) {
             return "";
@@ -98,10 +95,7 @@ public class Literal extends Expresion {
         return tipoLiteral;
     }
 
-    /**
-     * Devuelve el literal tal como se escribiria en el codigo fuente.
-     * Lo usa el traductor a PigLatin para reconstruir el archivo.
-     */
+    //Lo usa el traductor a Piglatin para econstruir el archivo.
     public String comoCodigoFuente() {
         switch (tipoLiteral) {
             case TEXTUM:

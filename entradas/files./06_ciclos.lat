@@ -1,0 +1,66 @@
+##
+    Prueba: los tres ciclos, control de flujo y anidamiento
+##
+VARIABILES>
+esto i : numerus 0;
+esto total : numerus 0;
+esto limite : numerus 5;
+
+MAIOR>
+
+## Ciclo dum ##
+dum (i < limite) {
+    total = total + i;
+    i++;
+} finis;
+
+## Ciclo facere, el cuerpo corre al menos una vez ##
+i = 0;
+facere {
+    total = total + 1;
+    i++;
+} dum (i < 3);
+
+## Ciclo per con declaracion en la inicializacion ##
+per (esto j : numerus 0; j < limite; j++) {
+    total = total + j;
+} finis;
+
+## Ciclo per con asignacion en la inicializacion ##
+per (i = 0; i < 3; i++) {
+    total = total + 1;
+} finis;
+
+## Ciclo per con asignacion en la actualizacion ##
+per (esto k : numerus 0; k < 10; k = k + 2) {
+    total = total + k;
+} finis;
+
+## Interrumpe dentro de un ciclo ##
+per (esto m : numerus 0; m < 100; m++) {
+    si (m > 5) {
+        interrumpe;
+    } finis;
+    total = total + m;
+} finis;
+
+## Perge dentro de un ciclo ##
+per (esto n : numerus 0; n < 10; n++) {
+    si (n == 3) {
+        perge;
+    } finis;
+    total = total + 1;
+} finis;
+
+## Ciclos anidados con control de flujo en el interno ##
+per (esto p : numerus 0; p < 3; p++) {
+    dum (i < 10) {
+        i++;
+        si (i == 7) {
+            interrumpe;
+        } finis;
+    } finis;
+} finis;
+
+>> "Total: " >> total;
+FINIS;

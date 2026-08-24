@@ -16,13 +16,9 @@ import java.util.List;
  */
 
 
-/**
- * Instancia de estructura escrita entre llaves:
- *
- * Todos los atributos esten inicializados, pero
- * permite que aparezcan en cualquier orden. Por eso se guardan como
- * lista y la verificacion queda a cargo del analizador semantico.
- */
+/*
+ Instancia de estructura escrita entre llaves
+*/
 
 public class LiteralEstructura extends Expresion {
 
@@ -37,7 +33,7 @@ public class LiteralEstructura extends Expresion {
         return Collections.unmodifiableList(atributos);
     }
 
-    /** Busca un atributo por nombre. Devuelve null si no esta. */
+    // Busca un atributo por nombre. Devuelve null si no esta
     public AtributoInicializado buscarAtributo(String nombre) {
         for (AtributoInicializado atributo : atributos) {
             if (atributo.getNombre().equals(nombre)) {
@@ -47,10 +43,10 @@ public class LiteralEstructura extends Expresion {
         return null;
     }
 
-    /**
-     * Devuelve el nombre del primer atributo que aparece repetido, o
-     * null si no hay repetidos.
-     */
+    
+      //Devuelve el nombre del primer atributo que aparece repetido, o
+      //null si no hay repetidos
+     
     public String primerAtributoRepetido() {
         List<String> vistos = new ArrayList<>();
         for (AtributoInicializado atributo : atributos) {

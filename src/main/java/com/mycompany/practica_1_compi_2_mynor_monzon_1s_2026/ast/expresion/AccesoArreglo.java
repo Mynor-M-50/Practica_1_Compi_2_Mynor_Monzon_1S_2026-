@@ -14,11 +14,8 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Acceso a un elemento de arreglo:  nombres[0]  o  selva.animales[1]
- *
- * La base es una expresion y no un simple nombre porque los accesos se
- * encadenan.
+/*
+ Acceso a un elemento de arreglo:  nombres[0]  o  selva.animales[1]
  */
 public class AccesoArreglo extends Expresion {
 
@@ -39,11 +36,8 @@ public class AccesoArreglo extends Expresion {
         return indice;
     }
 
-    /**
-     * Devuelve el nombre de la variable raiz de la cadena de accesos.
-     * Sirve para reportar errores y para la reinterpretacion de
-     * dimensiones descrita arriba.
-     */
+    
+    //Devuelve el nombre de la variable raiz de la cadena de accesos
     public String nombreRaiz() {
         Expresion actual = base;
         while (true) {

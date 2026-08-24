@@ -15,9 +15,9 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Operacion con dos operandos: aritmetica, relacional, de igualdad o
- * logica.
+/*
+ Operacion con dos operandos: aritmetica, relacional, de igualdad o
+ logica.
  */
 public class OperacionBinaria extends Expresion {
 

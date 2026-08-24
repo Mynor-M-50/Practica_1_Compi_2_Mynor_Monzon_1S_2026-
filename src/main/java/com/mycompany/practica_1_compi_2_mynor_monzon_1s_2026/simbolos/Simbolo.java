@@ -13,17 +13,15 @@ import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.tipos.Tipo;
  * @author mynorm50
  */
 
-/**
- * Entrada de la tabla de simbolos.
- *
- * Guarda todo lo que el analizador semantico necesita saber de un
- * nombre: que tipo tiene, que representa, en que ambito vive y en que
- * linea se declaro. La linea y la columna hacen falta para poder
- * reportar declaraciones duplicadas apuntando a la primera.
- *
- * Las referencias a la definicion de funcion y de estructura solo se
- * llenan cuando el rol corresponde. Permiten verificar argumentos y
- * atributos sin volver a recorrer el AST.
+/*
+ Entrada de la tabla de simbolos.
+ 
+ Guarda todo lo que el analizador semantico necesita saber de un
+ nombre
+ 
+ Las referencias a la definicion de funcion y de estructura solo se
+ llenan cuando el rol corresponde. Permiten verificar argumentos y
+ atributos sin volver a recorrer el AST
  */
 
 public class Simbolo {

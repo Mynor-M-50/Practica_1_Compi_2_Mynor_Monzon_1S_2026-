@@ -19,25 +19,12 @@ import org.antlr.v4.runtime.misc.IntervalSet;
  * @author mynorm50
  */
 
-/**
- * Recuperacion de errores en modo panico.
- *
- * Cuando el parser encuentra un error, en vez de detenerse descarta
- * tokens hasta llegar a uno que marque el final de una construccion.
- * Desde ahi vuelve a intentar el analisis. El resultado es que un solo
- * archivo puede reportar varios errores sintacticos en una pasada, en
- * lugar de morir en el primero.
- *
- * Los tokens de sincronizacion elegidos son los que cierran algo en
- * este lenguaje:
- *     ;        fin de instruccion
- *     finis    fin de bloque
- *     FINIS    fin de programa
- *     }        fin de cuerpo
- *
- * ANTLR4 ya trae recuperacion por defecto, que inserta o borra un solo
- * token. Esta version es mas agresiva y esta pensada para los casos en
- * que el error deja al parser muy perdido.
+/*
+ Recuperacion de errores en modo panico.
+ 
+ Cuando el parser encuentra un error, en vez de detenerse descarta
+ tokens hasta llegar a uno que marque el final de una construccion
+ Desde ahi vuelve a intentar el analisis
  */
 
 public class ModoPanico extends DefaultErrorStrategy {
@@ -69,8 +56,7 @@ public class ModoPanico extends DefaultErrorStrategy {
             tipoActual = entrada.LA(1);
         }
 
-        // El punto y coma se consume tambien: ya cerro la instruccion
-        // danada y el analisis debe seguir con la siguiente.
+        // El punto y coma se consume tambien: ya cerro la instruccion danada y el analisis debe seguir con la siguiente
         if (tipoActual == CodexLatinusParser.PYC) {
             recognizer.consume();
         }

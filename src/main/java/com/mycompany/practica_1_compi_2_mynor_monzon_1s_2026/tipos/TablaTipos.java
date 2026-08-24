@@ -9,12 +9,11 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.tipos;
  * @author mynorm50
  */
 
-/**
- * Reglas de compatibilidad e inferencia de tipos.
- *
- * Concentra en un solo lugar todas las decisiones de tipado para que
- * el analizador semantico no las tenga dispersas. Tambien es la clase
- * que respalda la tabla de compatibilidad que pide el manual tecnico.
+/*
+ Reglas de compatibilidad e inferencia de tipos.
+ 
+ Concentra en un solo lugar todas las decisiones de tipado para que
+ e analizador semantico no las tenga dispersas
  */
 public final class TablaTipos {
 
@@ -22,14 +21,12 @@ public final class TablaTipos {
         // Clase de utilidades, no se instancia
     }
 
-    // --------------------
-    // Operaciones binarias
-    // --------------------
+    // Operaciones binarias/--------------------------------------------------------------
 
-    /**
-     * Calcula el tipo resultante de aplicar un operador binario.
-     * Devuelve Tipo.error() si la combinacion no es valida.
-     */
+    
+     // Calcula el tipo resultante de aplicar un operador binario
+     // Devuelve Tipo.error() si la combinacion no es valida
+     
     public static Tipo resultadoBinario(Tipo izquierdo, Operador operador, Tipo derecho) {
         if (izquierdo == null || derecho == null || operador == null) {
             return Tipo.error();
@@ -40,8 +37,8 @@ public final class TablaTipos {
             return Tipo.error();
         }
 
-        // No se opera directamente sobre arreglos ni estructuras.
-        // Hay que acceder primero a un elemento o a un atributo.
+        // No se opera directamente sobre arreglos ni estructuras
+        // Hay que acceder primero a un elemento o a un atributo
         if (izquierdo.esArreglo() || derecho.esArreglo()) {
             return Tipo.error();
         }
@@ -63,12 +60,12 @@ public final class TablaTipos {
         }
     }
 
-    /**
-     * Aritmetica y concatenacion.
-     *
-     * Regla del enunciado: textum solo se puede combinar mediante
-     * concatenacion con el operador mas. Cualquier otro operador
-     * aplicado a un textum es error.
+    /*
+     Aritmetica y concatenacion
+    
+     solo se puede combinar mediante
+     concatenacion con el operador mas, cualquier otro operador
+     plicado a un textum es error
      */
     private static Tipo resultadoAritmetico(Tipo izquierdo, Operador operador, Tipo derecho) {
         TipoPrimitivo a = izquierdo.getPrimitivo();
@@ -86,11 +83,11 @@ public final class TablaTipos {
         return Tipo.de(TipoPrimitivo.mayorNivel(a, b));
     }
     
-    /**
-     * Comparaciones de orden: menor, mayor, menor igual, mayor igual.
-     * Solo tienen sentido sobre tipos ordenables. El resultado siempre
-     * es booleano.
-     */
+    
+     // Comparaciones de orden: menor, mayor, menor igual, mayor igual
+     // Solo tienen sentido sobre tipos ordenables, rl resultado siempre
+     // es booleano
+     
     private static Tipo resultadoRelacional(Tipo izquierdo, Tipo derecho) {
         TipoPrimitivo a = izquierdo.getPrimitivo();
         TipoPrimitivo b = derecho.getPrimitivo();
@@ -101,10 +98,9 @@ public final class TablaTipos {
         return Tipo.error();
     }
 
-    /**
-     * Igualdad y diferencia. Se permite entre tipos del mismo nivel o
-     * entre tipos numericos mezclados. El resultado siempre es booleano.
-     */
+     // Igualdad y diferencia, de permite entre tipos del mismo nivel o
+     // entre tipos numericos mezclados e,l resultado siempre es booleano
+     
     private static Tipo resultadoIgualdad(Tipo izquierdo, Tipo derecho) {
         TipoPrimitivo a = izquierdo.getPrimitivo();
         TipoPrimitivo b = derecho.getPrimitivo();
@@ -122,10 +118,10 @@ public final class TablaTipos {
         return ambosComparables ? Tipo.booleano() : Tipo.error();
     }
 
-    /**
-     * Operadores logicos. Ambos operandos deben ser booleanos
-     * estrictos, sin conversion implicita.
-     */
+    
+     // Operadores logicos. Ambos operandos deben ser booleanos
+     // estrictos, sin conversion implicita
+     
     private static Tipo resultadoLogico(Tipo izquierdo, Tipo derecho) {
         if (izquierdo.esBooleano() && derecho.esBooleano()) {
             return Tipo.booleano();
@@ -133,9 +129,7 @@ public final class TablaTipos {
         return Tipo.error();
     }
 
-    // -------------------
-    // Operaciones unarias
-    // -------------------
+    // Operaciones unarias-------------------------------------------------------------
 
     public static Tipo resultadoUnario(Operador operador, Tipo operando) {
         if (operando == null || operador == null) {
@@ -160,14 +154,11 @@ public final class TablaTipos {
         return Tipo.error();
     }
 
-    // ----------
-    // Asignacion
-    // ----------
+    // Asignacion------------------------------------------------------------------
 
-    /**
-     * Determina si un valor de tipo origen se puede guardar en una
-     * variable de tipo destino.
-     */
+     // Determina si un valor de tipo origen se puede guardar en una
+     // variable de tipo destino
+     
         public static boolean esAsignable(Tipo destino, Tipo origen) {
         if (destino == null || origen == null) {
             return false;
@@ -178,12 +169,12 @@ public final class TablaTipos {
             return true;
         }
 
-        // Arreglos: mismo tipo de elemento y ambos arreglos
+        // Arreglos. mismo tipo de elemento y ambos arreglos
         if (destino.esArreglo() || origen.esArreglo()) {
             return destino.mismoTipoQue(origen);
         }
 
-        // Estructuras: tienen que ser exactamente la misma
+        // Estructuras. tienen que ser exactamente la misma
         if (destino.esEstructura() || origen.esEstructura()) {
             return destino.mismoTipoQue(origen);
         }
@@ -195,22 +186,21 @@ public final class TablaTipos {
             return false;
         }
 
-        // Solo se ensancha hacia arriba en la jerarquia del enunciado:
+        // Solo se ensancha hacia arriba en la jerarquia
         // textum(5) > decimalis(4) > numerus(3) > littera(2) > bool(1)
+        
         return d.getNivel() >= o.getNivel();
     }
 
-    /**
-     * Estop verifica que una expresion sirva como condicion de si, dum,
-     * facere o per. El enunciado exige que sea estrictamente booleana.
-     */
+    
+     // Estop verifica que una expresion sirva como condicion de si, dum,
+     //facere o per. el enunciado exige que sea estrictamente booleana
+     
     public static boolean esCondicionValida(Tipo tipo) {
         return tipo != null && (tipo.esError() || tipo.esBooleano());
     }
 
-    // -----------------
-    // Mensajes de error
-    // -----------------
+    // Mensajes de error----------------------------------------------------------
 
     public static String mensajeBinario(Tipo izquierdo, Operador operador, Tipo derecho) {
         return "No se puede aplicar el operador " + operador.getSimbolo()

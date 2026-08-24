@@ -33,18 +33,8 @@ import java.nio.file.Files;
  * @author mynorm50
  */
 
-/**
- * Muestra un grafico generado con Graphviz.
- *
- * Escribe tres archivos en la carpeta reportes:
- *     .dot   codigo fuente del grafico
- *     .png   imagen para ver dentro del programa
- *     .svg   version vectorial, util cuando el grafico es muy grande
- *            porque no pierde calidad al acercarse
- *
- * Si Graphviz no esta instalado, el .dot igual se escribe y se ofrece
- * copiarlo para pegarlo en GraphvizOnline. Asi el reporte nunca queda
- * inaccesible por una dependencia externa.
+/*
+ Muestra un grafico generado con Graphviz.
  */
 public class VisorDot {
 
@@ -56,13 +46,10 @@ public class VisorDot {
         this.padre = padre;
     }
 
-    /**
-     * Genera los archivos y abre la ventana del reporte.
-     *
-     * @param titulo        titulo de la ventana
-     * @param dot           codigo DOT ya construido
-     * @param nombreBase    nombre de los archivos, sin extension
+    /*
+     Genera los archivos y abre la ventana del reporte.
      */
+
     public void mostrar(String titulo, String dot, String nombreBase) {
         File carpeta = new File(CARPETA_REPORTES);
         carpeta.mkdirs();
@@ -86,10 +73,6 @@ public class VisorDot {
         construirVentana(titulo, dot, carpeta, archivoPng, archivoSvg, hayPng, haySvg);
     }
 
-    /**
-     * Llama al programa dot de Graphviz.
-     * Devuelve false si no esta instalado o si fallo la conversion.
-     */
     private boolean ejecutarGraphviz(File entrada, File salida, String formato) {
         try {
             ProcessBuilder proceso = new ProcessBuilder(

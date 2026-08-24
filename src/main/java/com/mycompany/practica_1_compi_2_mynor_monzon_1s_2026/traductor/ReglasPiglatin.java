@@ -9,28 +9,29 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.traductor;
  * @author mynorm50
  */
 
-/**
- * Leyes de transformacion a PigLatin.
- *
+/*
+ Leyes de transformacion a piglatin.
+ 
  * LEY DE CONSONANTES
  * Si la palabra empieza con una o mas consonantes, se mueven al final
  * y se agrega el sufijo ay.
  *     fuerza -> uerzafay
  *     tabla  -> ablatay
- *
+ 
  * LEY DE VOCALES
  * Si la palabra empieza con vocal, solo se agrega el sufijo way.
  *     inicio  -> inicioway
  *     archivo -> archivoway
- *
+ 
  * LEY PORCINA
  * Las funciones especiales cambian de simbolo.
  *     <<  -> %OINK_OINK
  *     >>  -> %OINK
- *
- * Se aplica tanto a identificadores como a palabras reservadas. Los
- * simbolos del lenguaje no se tocan.
+ 
+ Se aplica tanto a identificadores como a palabras reservadas. Los
+ simbolos del lenguaje no se tocan.
  */
+
 public final class ReglasPiglatin {
 
     public static final String LEER = "%OINK_OINK";
@@ -42,13 +43,13 @@ public final class ReglasPiglatin {
         // Clase de utilidades
     }
 
-    /**
-     * Traduce una palabra aplicando la ley que corresponda.
-     *
-     * Si la palabra original estaba completamente en mayusculas, el
-     * resultado tambien lo queda. Eso mantiene legibles los marcadores
-     * de seccion, que son palabras reservadas en mayusculas.
+    /*
+     Traduce una palabra aplicando la ley que corresponda
+     Si la palabra original estaba completamente en mayusculas, el
+     resultado tambien lo queda. Eso mantiene legibles los macadores
+     de seccion, que son palabras reservadas en mayusculas
      */
+    
     public static String traducir(String palabra) {
         if (palabra == null || palabra.isEmpty()) {
             return palabra;
@@ -56,8 +57,9 @@ public final class ReglasPiglatin {
 
         boolean eraMayusculas = esTodoMayusculas(palabra);
 
-        // Los guiones bajos iniciales no son ni vocal ni consonante,
+        // Los guiones bajos iniciales no son ni vocal ni consonante
         // se conservan al inicio y no participan en el movimiento
+        
         int inicio = 0;
         while (inicio < palabra.length() && !esLetra(palabra.charAt(inicio))) {
             inicio++;
@@ -82,15 +84,15 @@ public final class ReglasPiglatin {
         return eraMayusculas ? resultado.toUpperCase() : resultado;
     }
 
-    /** La palabra empieza con vocal: solo se agrega el sufijo. */
+    // La palabra empieza con vocal: solo se agrega el sufijo
     private static String aplicarLeyVocales(String palabra) {
         return palabra + "way";
     }
 
-    /**
-     * La palabra empieza con consonantes: se mueve todo el grupo
-     * inicial al final y se agrega el sufijo.
-     */
+    
+     // La palabra empieza con consonantes: se mueve todo el grupo
+     // inicial al final y se agrega el sufijo.
+     
     private static String aplicarLeyConsonantes(String palabra) {
         int corte = 0;
         while (corte < palabra.length()

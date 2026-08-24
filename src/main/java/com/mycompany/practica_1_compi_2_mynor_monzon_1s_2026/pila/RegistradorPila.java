@@ -21,35 +21,22 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Simula la pila de un analizador ascendente usando los eventos del
- * Listener de ANTLR.
- *
- * COMO SE SIMULA
- *
- * Al visitar un token se apila su lexema, y eso se registra como SHIFT.
- * Al entrar a una regla se anota la altura actual de la pila. Al salir,
- * todo lo que se apilo desde esa altura son los simbolos de la regla:
- * se desapilan y en su lugar se apila el nombre del no terminal, lo que
- * se registra como REPLACE. Al cerrar la regla inicial se registra
- * ACCEPT.
- *
- * Cada paso guarda una copia del contenido de la pila, de modo que la
- * interfaz pueda avanzar y retroceder mostrando el estado exacto de ese
- * momento.
+/*
+simula la pila de un analizador ascendente usando los eventos del
+ Listener de ANTLR
  */
 
 public class RegistradorPila implements ParseTreeListener {
 
     private final String[] nombresReglas;
 
-    /** Pila real que se va modificando durante el recorrido. */
+    // Pila real que se va modificando durante el recorrido. 
     private final List<String> pila = new ArrayList<>();
 
-    /** Altura de la pila al entrar a cada regla activa. */
+    // Altura de la pila al entrar a cada regla activa. 
     private final Deque<Integer> alturas = new ArrayDeque<>();
 
-    /** Historial completo, uno por cada operacion realizada. */
+    // Historial completo, uno por cada operacion realizada. 
     private final List<PasoPila> pasos = new ArrayList<>();
 
     private int contador;
@@ -58,9 +45,7 @@ public class RegistradorPila implements ParseTreeListener {
         this.nombresReglas = nombresReglas;
     }
 
-    // ------------------------------------------------------------
-    // Eventos del recorrido
-    // ------------------------------------------------------------
+    // Eventos del recorrido-----------------------------------------------
 
     @Override
     public void visitTerminal(TerminalNode nodo) {
@@ -122,9 +107,7 @@ public class RegistradorPila implements ParseTreeListener {
         }
     }
 
-    // ------------------------------------------------------------
-    // Consulta del historial
-    // ------------------------------------------------------------
+    // Consulta del historial-------------------------------------------------
 
     private void registrar(OperacionPila operacion, String simbolo,
                            int linea, String detalle) {

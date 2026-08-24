@@ -13,10 +13,8 @@ import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.tipos.Tipo;
  * @author mynorm50
  */
 
-/**
- * Base de todo nodo que produce un valor.
- *
- */
+//Base de todo nodo que produce un valor.
+
 public abstract class Expresion extends Nodo {
 
     private Tipo tipoResuelto;

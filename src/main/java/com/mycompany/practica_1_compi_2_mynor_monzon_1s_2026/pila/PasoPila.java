@@ -13,14 +13,8 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Fotografia de la pila en un momento del analisis.
- *
- * Se guarda una copia del contenido y no una referencia, porque la
- * pila real cambia en cada paso. Sin la copia, al navegar hacia atras
- * se veria siempre el estado final.
- *
- * El indice cero de la lista es el fondo de la pila.
+/*
+ imahen de pila en un momento del analisis
  */
 
 public class PasoPila {
@@ -54,7 +48,7 @@ public class PasoPila {
         return simbolo;
     }
 
-    /** Contenido de la pila en este paso, del fondo hacia la cima. */
+    // Contenido de la pila en este paso, del fondo hacia la cima
     public List<String> getContenido() {
         return Collections.unmodifiableList(contenido);
     }
@@ -75,13 +69,13 @@ public class PasoPila {
         return contenido.isEmpty() ? "" : contenido.get(contenido.size() - 1);
     }
 
-    /** Linea del log de operaciones. */
+    // Linea del log de operaciones.
     public String comoLinea() {
         return String.format("%4d  %-8s  %-24s  linea %-4d  %s",
                 numero, operacion.getNombre(), simbolo, linea, detalle);
     }
 
-    /** Contenido en una sola linea, util para mostrarlo en una tabla. */
+    // Contenido en una sola linea, util para mostrarlo en una tabla. 
     public String contenidoComoTexto() {
         return String.join(" ", contenido);
     }

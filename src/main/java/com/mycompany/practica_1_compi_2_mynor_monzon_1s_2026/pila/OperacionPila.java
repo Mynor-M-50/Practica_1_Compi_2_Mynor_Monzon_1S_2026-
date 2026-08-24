@@ -9,23 +9,19 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.pila;
  * @author mynorm50
  */
 
-/**
- * Operaciones que se muestran en la simulacion de la pila.
- *
- * ANTLR4 usa analisis LL(*), que es descendente y no hace shift ni
- * reduce de verdad. Lo que se registra aqui es una simulacion armada
- * con los eventos del Listener, tal como lo confirmo el auxiliar en la
- * duda 8 del foro.
+/*
+ Operaciones que se muestran en la simulacion de la pila.
  */
 public enum OperacionPila {
 
-    /** Se apila un token leido de la entrada. */
+    // Se apila un token leido de la entrada. 
     SHIFT("Shift", "Se apila el token leido"),
 
-    /** Se sustituyen los simbolos de una regla por su no terminal. */
+    // Se sustituyen los simbolos de una regla por su no terminal. 
     REPLACE("Replace", "Se reemplazan los simbolos por el no terminal"),
 
-    /** El analisis termino correctamente. */
+    // El analisis termino correctamente. 
+    
     ACCEPT("Accept", "Analisis completado");
 
     private final String nombre;

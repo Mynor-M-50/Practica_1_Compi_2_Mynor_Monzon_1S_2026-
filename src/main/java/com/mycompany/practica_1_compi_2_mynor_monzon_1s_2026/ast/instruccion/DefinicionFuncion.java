@@ -17,14 +17,14 @@ import java.util.List;
  */
 
 /**
- * Definicion de una funcion, tanto actio como ratio.
- *
+ Definicion de una funcion, tanto actio como ratio.
+ * 
  *     actio saludar(esto nombre : textum) { ... } finis;
  *     ratio numerus calcular(esto x : numerus) { ... } finis;
  *
- * Las declaraciones locales se guardan aparte del cuerpo porque el
- * enunciado exige que solo puedan ir al inicio, dentro del bloque
- * VARIABILES[ ]. Tenerlas separadas hace trivial verificar esa regla.
+ Las declaraciones locales se guardan aparte del cuerpo porque el
+ enunciado exige que solo puedan ir al inicio, dentro del bloque
+ VARIABILES[ ]
  */
 
 public class DefinicionFuncion extends Instruccion {

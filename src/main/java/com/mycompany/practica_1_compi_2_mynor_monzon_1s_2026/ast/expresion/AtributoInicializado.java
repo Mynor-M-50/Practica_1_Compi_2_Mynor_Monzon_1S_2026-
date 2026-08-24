@@ -14,12 +14,8 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Para nombre y valor dentro de un literal de estructura:
- *
- * Se guarda como nodo propio y no como simple entrada de mapa para
- * conservar la linea y columna, que hacen falta al reportar errores
- * sobre un atributo especifico.
+/*
+ Para nombre y valor dentro de un literal de estructura
  */
 
 public class AtributoInicializado extends Nodo {

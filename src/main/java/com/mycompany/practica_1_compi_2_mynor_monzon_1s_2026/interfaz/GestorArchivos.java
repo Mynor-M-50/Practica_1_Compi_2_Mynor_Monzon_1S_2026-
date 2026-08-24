@@ -18,15 +18,12 @@ import java.nio.file.Path;
  * @author mynorm50
  */
 
-/**
- * Abrir, guardar y descargar archivos del proyecto.
- *
- * Se manejan dos extensiones:
+/*
+ Abrir, guardar y descargar archivos del proyecto
+ 
+ * Se manejan dos extensiones
  *     .lat   codigo fuente en Codex Latinus
- *     .pig   codigo traducido a PigLatin
- *
- * La clase recuerda el archivo abierto para que guardar no vuelva a
- * preguntar la ruta cada vez.
+ *     .pig   codigo traducido a piglatin
  */
 
 public class GestorArchivos {
@@ -52,10 +49,10 @@ public class GestorArchivos {
         archivoActual = null;
     }
 
-    /**
-     * Pide un archivo .lat y devuelve su contenido.
-     * Devuelve null si el usuario cancela o si ocurre un error.
-     */
+    
+     // Pide un archivo .lat y devuelve su contenido
+     // Devuelve null si el usuario cancela o si ocurre un error
+     
     public String abrir(Component padre) {
         JFileChooser selector = new JFileChooser(directorioInicial());
         selector.setDialogTitle("Abrir archivo Codex Latinus");
@@ -77,10 +74,10 @@ public class GestorArchivos {
         }
     }
 
-    /**
-     * Guarda sobre el archivo abierto. Si no hay ninguno, se comporta
-     * como guardar como.
-     */
+    
+     // Guarda sobre el archivo abierto. Si no hay ninguno, se comporta
+     // como guardar como
+     
     public boolean guardar(Component padre, String contenido) {
         if (archivoActual == null) {
             return guardarComo(padre, contenido);
@@ -101,10 +98,10 @@ public class GestorArchivos {
         return false;
     }
 
-    /**
-     * Descarga la traduccion a PigLatin. Propone como nombre el del
-     * archivo fuente pero con la otra extension.
-     */
+    
+      //Descarga la traduccion a piglatin. Propone como nombre el del
+     // archivo fuente pero con la otra extension.
+     
     public boolean descargarTraduccion(Component padre, String contenido) {
         String sugerido = "traduccion";
         if (archivoActual != null) {

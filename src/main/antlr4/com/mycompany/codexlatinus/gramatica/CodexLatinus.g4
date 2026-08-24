@@ -58,6 +58,7 @@ declaracion
 //  2 bbooleana    
 //  3 con valor   
 //  4 sin valor   
+
 declaracionVariable
     : ESTO ID DOS_PUNTOS ID literalEstructura PYC?      # DeclEstructura
     | ESTO ID DOS_PUNTOS valorBooleano expresion? PYC?  # DeclBooleana
@@ -408,6 +409,3 @@ ID : [a-zA-Z_] [a-zA-Z_0-9]* ;
 COMENTARIO_BLOQUE : '##' .*? '##' -> skip ;
 COMENTARIO_LINEA  : '//' ~[\r\n]* -> skip ;
 ESPACIOS          : [ \t\r\n]+ -> skip ;
-
-// Token de captura para errores lexicos. Permite reportar el
-ERROR_LEXICO : . ;

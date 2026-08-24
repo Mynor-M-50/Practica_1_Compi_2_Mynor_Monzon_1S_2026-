@@ -15,11 +15,11 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Ciclo mientras:  dum (condicion) { } finis;
- *
- * La condicion se evalua antes de cada vuelta, asi que el cuerpo puede
- * no ejecutarse nunca.
+/*
+ Ciclo mientras:  dum (condicion) { } finis;
+ 
+ La condicion se evalua antes de cada vuelta, asi que el cuerpo puede
+ no ejecutarse nunca.
  */
 public class CicloDum extends Instruccion {
 

@@ -16,23 +16,15 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Genera codigo DOT para graficar con Graphviz.
- *
- * El AST se recorre con los metodos etiqueta y hijos que define Nodo,
- * asi que un nodo nuevo no obliga a tocar esta clase: basta con que
- * implemente esos dos metodos.
- *
- * La tabla de simbolos y la pila usan etiquetas HTML de Graphviz, que
- * permiten dibujar celdas alineadas sin tener que calcular posiciones.
+/*
+ Genera codigo DOT para graficar con Graphviz.
+
  */
 public class GeneradorDot {
 
     private int contador;
 
-    // ============================================================
     // AST
-    // ============================================================
 
     public String generarAST(Nodo raiz) {
         contador = 0;
@@ -57,10 +49,6 @@ public class GeneradorDot {
         return dot.toString();
     }
 
-    /**
-     * Escribe el nodo y sus aristas hacia los hijos.
-     * Devuelve el identificador asignado para que el padre lo enlace.
-     */
     private String recorrerNodo(Nodo nodo, StringBuilder dot) {
         String id = "n" + (contador++);
 
@@ -88,9 +76,7 @@ public class GeneradorDot {
         return id;
     }
 
-    // ============================================================
     // Tabla de simbolos
-    // ============================================================
 
     public String generarTablaSimbolos(TablaSimbolos tabla) {
         StringBuilder dot = new StringBuilder();
@@ -142,14 +128,8 @@ public class GeneradorDot {
         return dot.toString();
     }
 
-    // ============================================================
     // Pila
-    // ============================================================
 
-    /**
-     * Dibuja el contenido de la pila en un paso concreto.
-     * La cima queda arriba, que es como se suele representar.
-     */
     public String generarPila(PasoPila paso) {
         StringBuilder dot = new StringBuilder();
 
@@ -194,9 +174,7 @@ public class GeneradorDot {
         return dot.toString();
     }
 
-    // ============================================================
     // Utilidades
-    // ============================================================
 
     private String celdaEncabezado(String texto) {
         return "<TD><FONT COLOR=\"white\"><B>" + escaparHtml(texto)
@@ -207,7 +185,7 @@ public class GeneradorDot {
         return "<TD>" + escaparHtml(texto) + "</TD>";
     }
 
-    /** Escapa lo que rompe una etiqueta normal de DOT. */
+    // Escapa lo que rompe una etiqueta normal de DOT
     private String escapar(String texto) {
         if (texto == null) {
             return "";
@@ -218,7 +196,7 @@ public class GeneradorDot {
                     .replace("\r", "");
     }
 
-    /** Escapa lo que rompe una etiqueta HTML de DOT. */
+    // Escapa lo que rompe una etiqueta HTML de DOT
     private String escaparHtml(String texto) {
         if (texto == null) {
             return "";

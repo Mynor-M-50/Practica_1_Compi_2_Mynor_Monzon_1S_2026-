@@ -15,15 +15,12 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Ciclo para:  per (inicializacion; condicion; actualizacion) { }
- *
- * La inicializacion puede ser una declaracion o una asignacion, y la
- * actualizacion puede ser un incremento o una asignacion. Por eso
- * ambas se guardan como Instruccion generica.
- *
- * La variable declarada en la inicializacion vive solo dentro del
- * ciclo, asi que el ciclo abre su propio ambito.
+/*
+ Ciclo para:  per (inicializacion; condicion; actualizacion) { }
+ 
+ La inicializacion puede ser una declaracion o una asignacion, y la
+ actualizacion puede ser un incremento o una asignacion. Por eso
+ ambas se guardan como Instruccion generica.
  */
 
 public class CicloPer extends Instruccion {

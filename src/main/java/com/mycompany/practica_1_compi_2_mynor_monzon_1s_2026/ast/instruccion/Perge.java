@@ -15,10 +15,9 @@ import java.util.List;
  */
 
 /**
- * Continua con la siguiente vuelta del ciclo.
- *
- * El analizador semantico verifica que solo aparezca dentro de un
- * ciclo. Fuera de uno es error.
+ Continua con la siguiente vuelta del ciclo.
+ El analizador semantico verifica que solo aparezca dentro de un
+ ciclo. Fuera de uno es error.
  */
 
 public class Perge extends Instruccion {

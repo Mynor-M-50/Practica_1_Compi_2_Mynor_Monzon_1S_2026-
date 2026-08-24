@@ -16,17 +16,16 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Declaracion de una variable simple:
+/*
+ Declaracion de una variable simple:
  *     esto edad : numerus 20;
  *     esto activo : bool verum;
  *     esto activo : verum;              forma especial sin tipo
  *     esto p : Persona { nombre: "X" };
  *
- * La bandera tipoExplicito distingue la forma tipada de la especial.
- * Hace falta para que el traductor a PigLatin reconstruya el codigo
- * tal como lo escribio el usuario.
+ La bandera tipoExplicito distingue la forma tipada de la especial.
  */
+
 public class DeclaracionVariable extends Instruccion {
 
     private final String nombre;

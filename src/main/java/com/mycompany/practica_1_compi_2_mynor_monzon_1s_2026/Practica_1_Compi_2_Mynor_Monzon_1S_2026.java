@@ -20,10 +20,8 @@ public class Practica_1_Compi_2_Mynor_Monzon_1S_2026 {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            // Si falla se usa el aspecto por defecto de Swing
+            
         }
-
-        // La interfaz debe construirse en el hilo de eventos de Swing
         SwingUtilities.invokeLater(() -> new VentanaPrincipal().setVisible(true));
     }
 }

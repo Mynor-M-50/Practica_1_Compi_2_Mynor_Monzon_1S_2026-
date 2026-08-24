@@ -9,11 +9,8 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.tipos;
  * @author mynorm50
  */
 
-/**
- * Operadores de Latinus
- *
- * La categoria se usa en TablaTipos para decidir que regla de
- * compatibilidad aplicar sin tener que enumerar cada operador.
+/*
+ Operadores de Latinus
  */
 public enum Operador {
 
@@ -77,11 +74,11 @@ public enum Operador {
                 || categoria == Categoria.LOGICO;
     }
 
-    /**
-     * Convierte el texto del token en el operador correspondiente.
-     * El parametro unario distingue el menos binario del menos unario,
-     * que comparten el mismo simbolo.
-     */
+    
+     // Convierte el texto del token en el operador correspondiente
+     // El parametro unario distingue el menos binario del menos unario,
+     // que comparten el mismo simbolo
+     
     public static Operador desdeSimbolo(String simbolo, boolean unario) {
         if (unario) {
             if ("-".equals(simbolo)) {

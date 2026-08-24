@@ -16,17 +16,13 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Campo dentro de la definicion de una estructura:
+/*
+ Campo dentro de la definicion de una estructura:
  *     esto nombre : textum
  *     series animales : Animal
  *
- * No lleva valor inicial: el enunciado prohibe valores por defecto al
- * definir la estructura (confirmado en el foro, duda 3).
- *
- * La dimension puede venir vacia, porque al definir la estructura no
- * hace falta conocerla (foro, duda 5). Se fija hasta declarar la
- * variable.
+ No lleva valor inicia, prohibe valores por defecto al
+ definir la estructura
  */
 
 public class CampoEstructura extends Nodo {

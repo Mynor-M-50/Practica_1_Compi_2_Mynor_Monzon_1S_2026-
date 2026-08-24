@@ -1,0 +1,59 @@
+##
+    Prueba: operadores, precedencia y agrupacion
+##
+VARIABILES>
+esto a : numerus 10;
+esto b : numerus 3;
+esto x : bool verum;
+esto y : bool falsus;
+esto texto : textum "Hola";
+
+## Aritmetica y precedencia: debe dar 10 + (3*2) = 16 ##
+esto r1 : numerus a + b * 2;
+
+## Agrupacion explicita: debe dar (10+3)*2 = 26 ##
+esto r2 : numerus (a + b) * 2;
+
+## Division y resta ##
+esto r3 : numerus a / b;
+esto r4 : numerus a - b - 1;
+
+## Menos unario ##
+esto r5 : numerus -a;
+esto r6 : numerus a * -1;
+
+## Relacionales ##
+esto c1 : bool a > b;
+esto c2 : bool a >= b;
+esto c3 : bool a < b;
+esto c4 : bool a <= b;
+
+## Igualdad ##
+esto c5 : bool a == b;
+esto c6 : bool a != b;
+
+## Logicos ##
+esto c7 : bool x && y;
+esto c8 : bool x || y;
+
+## Negacion ##
+esto c9 : bool non x;
+
+## Combinacion con precedencia mezclada ##
+esto c10 : bool a > b && b < 100 || non x;
+
+## Concatenacion de texto ##
+esto t1 : textum texto + " mundo";
+esto t2 : textum texto + a;
+
+MAIOR>
+
+## Incremento y decremento en ambito global, confirmado en el foro ##
+a++;
+b--;
+
+>> "r1: " >> r1;
+>> "r2: " >> r2;
+>> "c10: " >> c10;
+>> "t2: " >> t2;
+FINIS;

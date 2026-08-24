@@ -14,9 +14,9 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Referencia a una variable, parametro o arreglo por su nombre.
- */
+
+//Referencia a una variable, parametro o arreglo por su nombre.
+ 
 public class Identificador extends Expresion {
 
     private final String nombre;

@@ -12,11 +12,9 @@ import com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.ast.Nodo;
  */
 
 /**
- * Base de todo nodo que ejecuta una accion pero no produce un valor.
- *
- * La diferencia con Expresion es justamente esa: una expresion se
- * evalua y devuelve algo, una instruccion se ejecuta y no devuelve nada.
- * Por eso Instruccion no guarda tipo resuelto.
+ Base de todo nodo que ejecuta una accion pero no produce un valor.
+ La diferencia con Expresion es justamente esa: una expresion se
+ evalua y devuelve algo, una instruccion se ejecuta y no devuelve nada.
  */
 public abstract class Instruccion extends Nodo {
 

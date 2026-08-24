@@ -17,16 +17,16 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Declaracion de un arreglo:
+/*
+ Declaracion de un arreglo:
  *     series numeros[2] : numerus {1, 1};
  *     series numeros[2] : numerus;
  *     series banderas[2] : {verum, falsus};   tipo inferido
- *     series animales : Animal;               sin dimension, dentro de estructura
- *
- * La dimension es una expresion y no un entero porque la gramatica
- * acepta cualquier expresion entre los corchetes. El analizador
- * semantico la evalua si es constante.
+ *     series animales : Animal;               
+ sin dimension, dentro de estructura
+ La dimension es una expresion y no un entero porque la gramatica
+ acepta cualquier expresion entre los corchetes. El analizador
+ semantico la evalua si es constante.
  */
 
 public class DeclaracionArreglo extends Instruccion {

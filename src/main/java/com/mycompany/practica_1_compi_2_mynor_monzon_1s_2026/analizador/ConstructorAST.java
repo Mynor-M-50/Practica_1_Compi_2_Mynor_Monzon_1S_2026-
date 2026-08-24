@@ -59,22 +59,7 @@ import java.util.List;
 
 /**
  * Convierte el parse tree de ANTLR en el AST propio del compilador.
- *
- * COMO FUNCIONA
- *
- * Se usan los metodos exitX y no enterX porque el recorrido del
- * Listener es en post orden: cuando se ejecuta exitX, todos los hijos
- * de esa regla ya fueron procesados y sus nodos ya existen. Eso es
- * justo lo que se necesita para construir de abajo hacia arriba.
- *
- * Los metodos del Listener devuelven void, asi que hace falta guardar
- * los resultados intermedios en algun lado. Aqui se usa
- * ParseTreeProperty, que es un mapa de nodo del parse tree hacia nodo
- * del AST. Es mas seguro que una pila porque muchas reglas tienen
- * partes opcionales: con una pila habria que saber cuantos elementos
- * sacar en cada caso, mientras que con el mapa basta consultar por el
- * hijo que interesa y recibir null si no estaba.
- *
+ * Se usan los metodos exitX y no enterX porque el recorrido del Listener es en post orden.
  * Los tipos se guardan en un mapa aparte porque Tipo no hereda de Nodo.
  */
 public class ConstructorAST extends CodexLatinusBaseListener {
@@ -88,10 +73,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         return programa;
     }
 
-    // ============================================================
-    // Utilidades internas
-    // ============================================================
-
+    // Utilidades internas -----------------------------------------------------
     private void guardar(ParseTree ctx, Nodo nodo) {
         nodos.put(ctx, nodo);
     }
@@ -130,10 +112,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         }
     }
 
-    // ============================================================
-    // Raiz del programa
-    // ============================================================
-
+    // Raiz del programa 0------------------------------------------------------
     @Override
     public void exitPrograma(CodexLatinusParser.ProgramaContext ctx) {
         List<Instruccion> globales = new ArrayList<>();
@@ -171,9 +150,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         guardar(ctx, programa);
     }
 
-    // ============================================================
-    // Tipos
-    // ============================================================
+    // Tipos--------------------------------------------------------------------
 
     @Override
     public void exitTipoNumerus(CodexLatinusParser.TipoNumerusContext ctx) {
@@ -205,9 +182,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         tipos.put(ctx, Tipo.estructura(ctx.ID().getText()));
     }
 
-    // ============================================================
-    // Literales
-    // ============================================================
+    // Literales----------------------------------------------------------------
 
     @Override
     public void exitLitEntero(CodexLatinusParser.LitEnteroContext ctx) {
@@ -239,9 +214,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         guardar(ctx, Literal.booleano(false, linea(ctx), columna(ctx)));
     }
 
-    // ============================================================
-    // Expresiones
-    // ============================================================
+    // Expresiones----------------------------------------------------------------
 
     @Override
     public void exitExprAgrupada(CodexLatinusParser.ExprAgrupadaContext ctx) {
@@ -286,11 +259,6 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         construirBinaria(ctx);
     }
 
-    /**
-     * Las seis alternativas binarias tienen la misma forma:
-     * expresion OPERADOR expresion. El operador siempre es el hijo
-     * del medio, por eso se toma con getChild(1).
-     */
     private void construirBinaria(ParserRuleContext ctx) {
         Expresion izquierdo = expresionDe(ctx.getChild(0));
         Expresion derecho = expresionDe(ctx.getChild(2));
@@ -314,14 +282,10 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         propagar(ctx, ctx.literal());
     }
 
-    // ============================================================
-    // Accesos encadenados
-    // ============================================================
+    // Accesos encadenados------------------------------------------------------
 
     /**
      * Construye la cadena de accesos de izquierda a derecha.
-     * Para  persona.carro.placa  el resultado es
-     * Atributo(placa) sobre Atributo(carro) sobre Id(persona).
      */
     @Override
     public void exitObjetivo(CodexLatinusParser.ObjetivoContext ctx) {
@@ -340,9 +304,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         guardar(ctx, actual);
     }
 
-    // ============================================================
-    // Llamadas y listas
-    // ============================================================
+    // Llamadas y listas--------------------------------------------------------
 
     @Override
     public void exitLlamadaFuncion(CodexLatinusParser.LlamadaFuncionContext ctx) {
@@ -458,9 +420,8 @@ public class ConstructorAST extends CodexLatinusBaseListener {
     }
 
     /**
-     * Arreglo sin tipo explicito:  series banderas[2] : {verum, falsus};
-     * El tipo se deduce del primer valor de la lista. El auxiliar
-     * confirmo que si aparece un verum se asume booleano (foro, duda 4).
+     * Arreglo sin tipo explicito, erl tipo se deduce del primer valor de la 
+     * lista. si aparece un verum se asume booleano
      */
     @Override
     public void exitArregloInferido(CodexLatinusParser.ArregloInferidoContext ctx) {
@@ -484,9 +445,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         return Tipo.error();
     }
 
-    // ============================================================
-    // Estructuras
-    // ============================================================
+    // Estructuras--------------------------------------------------------------
 
     @Override
     public void exitCampoSimple(CodexLatinusParser.CampoSimpleContext ctx) {
@@ -522,9 +481,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
                 linea(ctx), columna(ctx)));
     }
 
-    // ============================================================
-    // Funciones
-    // ============================================================
+    // Funciones----------------------------------------------------------------
 
     @Override
     public void exitParametro(CodexLatinusParser.ParametroContext ctx) {
@@ -545,9 +502,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
     }
 
     /**
-     * Arma la funcion separando las declaraciones locales del cuerpo.
-     * Esa separacion es la que despues permite verificar que las
-     * variables solo se declaren dentro del bloque VARIABILES.
+     * Arma la funcion separando las declaraciones locales del cuerpo
      */
     private DefinicionFuncion construirFuncion(ParserRuleContext ctx, String nombre,
                                                Tipo tipoRetorno,
@@ -588,9 +543,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
                 declaraciones, cuerpo, linea(ctx), columna(ctx));
     }
 
-    // ============================================================
-    // Instrucciones
-    // ============================================================
+    // Instrucciones--------------------------------------------------------------
 
     @Override
     public void exitInstruccion(CodexLatinusParser.InstruccionContext ctx) {
@@ -644,9 +597,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         }
     }
 
-    // ============================================================
-    // Condicionales
-    // ============================================================
+    // Condicionales-------------------------------------------------------------
 
     @Override
     public void exitRamaAliterSi(CodexLatinusParser.RamaAliterSiContext ctx) {
@@ -681,9 +632,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         guardar(ctx, new Condicional(ramas, ramaFinal, linea(ctx), columna(ctx)));
     }
 
-    // ============================================================
-    // Ciclos
-    // ============================================================
+    // Ciclos-------------------------------------------------------------------
 
     @Override
     public void exitCicloDum(CodexLatinusParser.CicloDumContext ctx) {
@@ -747,9 +696,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         guardar(ctx, new Reddere(expresionDe(ctx.expresion()), linea(ctx), columna(ctx)));
     }
 
-    // ============================================================
-    // Entrada y salida
-    // ============================================================
+    // Entrada y salida---------------------------------------------------------
 
     @Override
     public void exitImprimir(CodexLatinusParser.ImprimirContext ctx) {

@@ -15,16 +15,17 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Definicion de una estructura:
+/*
+ Definicion de una estructura:
  *     structura Persona {
  *         esto nombre : textum;
  *         esto edad : numerus
  *     } finis;
  *
- * Puede aparecer a nivel global dentro de VARIABILES> o dentro del
- * bloque VARIABILES[ ] de una funcion (foro, duda 1).
+ Puede aparecer a nivel global dentro de VARIABILES> o dentro del
+ bloque VARIABILES[ ] de una funcion
  */
+
 public class DefinicionEstructura extends Instruccion {
 
     private final String nombre;
@@ -45,7 +46,7 @@ public class DefinicionEstructura extends Instruccion {
         return Collections.unmodifiableList(campos);
     }
 
-    /** Busca un campo por nombre. Devuelve null si no existe. */
+    // Busca un campo por nombre. Devuelve null si no existe.
     public CampoEstructura buscarCampo(String nombreCampo) {
         for (CampoEstructura campo : campos) {
             if (campo.getNombre().equals(nombreCampo)) {
@@ -55,10 +56,9 @@ public class DefinicionEstructura extends Instruccion {
         return null;
     }
 
-    /**
-     * Devuelve el nombre del primer campo repetido, o null si todos son
-     * distintos. El enunciado exige que los nombres no se repitan.
-     */
+     // Devuelve el nombre del primer campo repetido, o null si todos son
+     // distintos.
+     
     public String primerCampoRepetido() {
         List<String> vistos = new ArrayList<>();
         for (CampoEstructura campo : campos) {

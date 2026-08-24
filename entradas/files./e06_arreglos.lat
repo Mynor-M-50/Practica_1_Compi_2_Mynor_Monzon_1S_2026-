@@ -1,0 +1,45 @@
+##
+    Errores esperados: SEMANTICOS de arreglos
+##
+VARIABILES>
+series numeros[3] : numerus {1, 2, 3};
+series textos[2] : textum {"a", "b"};
+
+## Mas valores que la dimension declarada ##
+series desbordado[2] : numerus {1, 2, 3, 4};
+
+## Tipo de los valores distinto al declarado ##
+series tipoMalo[2] : numerus {"uno", "dos"};
+
+## Dimension no numerica ##
+series dimensionMala["dos"] : numerus;
+
+## Dimension cero o negativa ##
+series dimensionCero[0] : numerus;
+
+esto indice : numerus 1;
+esto texto : textum "x";
+
+MAIOR>
+
+## Indice constante fuera de rango ##
+>> numeros[5];
+>> numeros[10];
+numeros[7] = 1;
+
+## Indice negativo ##
+>> numeros[-1];
+
+## Indice que no es numerus ##
+>> numeros[texto];
+
+## Indexar algo que no es arreglo ##
+>> indice[0];
+
+## Imprimir el arreglo completo en vez de una posicion ##
+>> numeros;
+
+## Operar sobre el arreglo completo ##
+esto malo : numerus numeros + 1;
+
+FINIS;

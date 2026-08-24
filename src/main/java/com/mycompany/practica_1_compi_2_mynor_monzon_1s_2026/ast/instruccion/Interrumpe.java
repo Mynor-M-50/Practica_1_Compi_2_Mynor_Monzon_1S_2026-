@@ -15,9 +15,8 @@ import java.util.List;
  */
 
 /**
- * Corta la ejecucion del ciclo.
- *
- * Igual que Perge, solo es valido dentro de un ciclo.
+ Corta la ejecucion del ciclo.
+ Igual que Perge, solo es valido dentro de un ciclo.
  */
 public class Interrumpe extends Instruccion {
 

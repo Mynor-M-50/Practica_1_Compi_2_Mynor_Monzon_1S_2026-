@@ -11,19 +11,15 @@ import java.util.Objects;
  * @author mynorm50
  */
 
-/**
- * Representa el tipo completo de una expresion, variable o retorno.
- *
- * Un tipo puede ser:
- *   - primitivo:   numerus, decimalis, textum, littera, bool
- *   - estructura:  una definida por el usuario, identificada por nombre
- *   - arreglo:     de cualquiera de los anteriores
+/*
+ Representa el tipo completo de una expresion, variable o retorno
  */
+
 public final class Tipo {
 
-    /**
-     * Dimension usada cuando todavia no se conoce.
-     */
+    
+     // Dimension usada cuando todavia no se conoce
+     
     public static final int DIMENSION_DESCONOCIDA = -1;
 
     private final TipoPrimitivo primitivo;
@@ -39,9 +35,7 @@ public final class Tipo {
         this.dimension = dimension;
     }
 
-    // ------------------
-    // Metodos de fabrica
-    // ------------------
+    // Metodos de fabrica----------------------------------------------------
     public static Tipo de(TipoPrimitivo primitivo) {
         return new Tipo(primitivo, null, false, DIMENSION_DESCONOCIDA);
     }
@@ -78,11 +72,12 @@ public final class Tipo {
         return new Tipo(TipoPrimitivo.ESTRUCTURA, nombre, false, DIMENSION_DESCONOCIDA);
     }
 
-    /**
-     * Construye un arreglo a partir de un tipo base.
-     * El tipo base no puede ser a su vez un arreglo: el lenguaje no
-     * define arreglos de mas de una dimension.
+    /*
+     Construye un arreglo a partir de un tipo base
+     El tipo base no puede ser a su vez un arreglo: el lenguaje no
+     define arreglos de mas de una dimension
      */
+    
     public static Tipo arregloDe(Tipo base, int dimension) {
         if (base.arreglo) {
             return Tipo.error();
@@ -94,9 +89,7 @@ public final class Tipo {
         return arregloDe(base, DIMENSION_DESCONOCIDA);
     }
 
-    // ---------
-    // Consultas
-    // ---------
+    // Consultas------------------------------------------------------------------------------
     public TipoPrimitivo getPrimitivo() {
         return primitivo;
     }
@@ -138,10 +131,10 @@ public final class Tipo {
         return !arreglo;
     }
 
-    /**
-     * Devuelve el tipo de los elementos del arreglo.
-     * Si el tipo no es arreglo se devuelve a si mismo.
-     */
+    
+     // Devuelve el tipo de los elementos del arreglo
+     // Si el tipo no es arreglo se devuelve a si mismo
+     
     public Tipo tipoElemento() {
         if (!arreglo) {
             return this;
@@ -152,19 +145,17 @@ public final class Tipo {
         return de(primitivo);
     }
 
-    /** Copia el tipo cambiando unicamente la dimension. */
+    // Copia el tipo cambiando unicamente la dimension
     public Tipo conDimension(int nuevaDimension) {
         return new Tipo(primitivo, nombreEstructura, arreglo, nuevaDimension);
     }
 
-    // -------------------------
-    // Igualdad y representacion
-    // -------------------------
+    // Igualdad y representacion---------------------------------------------------
     
-    /**
-     * Compara tipos sin tomar en cuenta la dimension.
-     * Dos arreglos de numerus son el mismo tipo aunque midan distinto.
-     */
+    
+     // Compara tipos sin tomar en cuenta la dimension
+     // Dos arreglos de numerus son el mismo tipo aunque midan distinto
+     
     public boolean mismoTipoQue(Tipo otro) {
         if (otro == null) {
             return false;

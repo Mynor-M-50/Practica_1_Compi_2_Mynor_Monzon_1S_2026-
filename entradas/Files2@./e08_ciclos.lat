@@ -1,0 +1,45 @@
+##
+    Errores esperados: SEMANTICOS de control de flujo
+##
+VARIABILES>
+esto contador : numerus 0;
+esto texto : textum "x";
+esto bandera : bool verum;
+
+MUNERA>
+
+## Control de ciclo dentro de una funcion pero fuera de un ciclo ##
+actio malaFuncion() {
+    interrumpe;
+    perge;
+} finis;
+
+MAIOR>
+
+## Control de ciclo en el ambito principal, fuera de un ciclo ##
+interrumpe;
+perge;
+
+## Control de ciclo dentro de un condicional que no esta en un ciclo ##
+si (bandera) {
+    interrumpe;
+} finis;
+
+## Condiciones que no son booleanas ##
+dum (contador) {
+    contador++;
+} finis;
+
+facere {
+    contador++;
+} dum (texto);
+
+per (esto i : numerus 0; texto; i++) {
+    contador++;
+} finis;
+
+## Incremento sobre algo que no es numerico ##
+texto++;
+bandera--;
+
+FINIS;

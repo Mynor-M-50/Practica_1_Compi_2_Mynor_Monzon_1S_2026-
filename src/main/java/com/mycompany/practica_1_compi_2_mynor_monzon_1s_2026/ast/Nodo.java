@@ -10,9 +10,9 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Raiz de la jerarquia del AST propio.
- */
+
+ //Raiz de la jerarquia del AST propio.
+ 
 public abstract class Nodo {
 
     private final int linea;
@@ -31,13 +31,13 @@ public abstract class Nodo {
         return columna;
     }
 
-    /** Texto que se muestra dentro del nodo al graficar el arbol. */
+    // Texto que se muestra dentro del nodo al graficar el arbo
     public abstract String etiqueta();
 
-    /** Hijos directos, en el orden en que aparecen en el codigo. */
+    // Hijos directos, en el orden en que aparecen en el codigo
     public abstract List<Nodo> hijos();
 
-    /** Representacion con sangria, util para depurar en consola. */
+    // Representaion con sangria, util para depurar en consola.
     public String aTexto(int nivel) {
         StringBuilder sb = new StringBuilder();
         sb.append("  ".repeat(nivel)).append(etiqueta()).append(System.lineSeparator());

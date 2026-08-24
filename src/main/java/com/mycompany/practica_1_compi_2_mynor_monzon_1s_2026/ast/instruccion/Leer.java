@@ -15,12 +15,11 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Lectura desde consola:  comandante <<   o solo  <<
- *
- * Cuando no hay objetivo, el valor leido se descarta.
- * Al traducir a PigLatin, el operador << se convierte en %OINK_OINK.
- */
+ //Lectura desde consola:  comandante <<   o solo  <<
+ 
+ //Cuando no hay objetivo, el valor leido se descarta
+ //Al traducir a pigLatin, el operador << se convierte en %OINK_OINK
+
 public class Leer extends Instruccion {
 
     private final Expresion objetivo;

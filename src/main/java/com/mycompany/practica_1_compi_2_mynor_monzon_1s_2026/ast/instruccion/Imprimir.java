@@ -17,11 +17,11 @@ import java.util.List;
  */
 
 /**
- * Impresion en consola:  >> "Hola" >> nombre;
- *
- * Se guarda la lista completa de valores porque una sola instruccion
- * puede encadenar varios. Al traducir a PigLatin, el operador >> se
- * convierte en %OINK por la ley porcina.
+ Impresion en consola:  >> "Hola" >> nombre;
+
+ Se guarda la lista completa de valores porque una sola instruccion
+ puede encadenar varios, l traducir a piglatin, el operador >> se
+ convierte en %OINK
  */
 public class Imprimir extends Instruccion {
 

@@ -20,18 +20,16 @@ import java.awt.Color;
  * @author mynorm50
  */
 
-/**
- * Coloreado de sintaxis para el editor.
- *
- * En lugar de buscar patrones con expresiones regulares, se reutiliza
- * el mismo lexer que genera ANTLR a partir de la gramatica. Cada token
- * trae su tipo, su posicion inicial y su posicion final, que es
- * justamente lo que hace falta para pintar.
- *
- * La ventaja es que el coloreado nunca se desincroniza del lenguaje: si
- * se agrega una palabra reservada a la gramatica, el editor la reconoce
- * sin tocar esta clase.
+/*
+ Coloreado de sintaxis para el editor.
+ 
+ En lugar de buscar patrones con expresiones regulares, se reutiliza
+ el mismo lexer que genera ANTLR a partir de la gramatica. 
+
+Cada tokenntrae su tipo, su posicion inicial y su posicion final, que es
+ justamente lo que hace falta para pintar.
  */
+
 public class ResaltadorSintaxis {
 
     // Paleta
@@ -73,13 +71,12 @@ public class ResaltadorSintaxis {
         StyleConstants.setForeground(estiloNormal, COLOR_NORMAL);
     }
 
-    /**
-     * Aplica el coloreado sobre todo el documento.
-     *
-     * Los comentarios se buscan aparte porque en la gramatica llevan
-     * la instruccion skip, lo que significa que el lexer no los entrega
-     * en el flujo normal de tokens.
-     */
+    
+     // Aplica el coloreado sobre todo el documento.
+     
+     // Los comentarios se buscan aparte porque en la gramatica llevan
+     // la instruccion skip, lo que significa que el lexer no los entreganen el flujo normal de tokens
+     
     public void resaltar(StyledDocument documento, String texto) {
         if (documento == null || texto == null) {
             return;
@@ -174,11 +171,10 @@ public class ResaltadorSintaxis {
         }
     }
 
-    /**
-     * Los comentarios se descartan en el lexer, asi que se localizan
-     * recorriendo el texto. Se respeta que un ## dentro de una cadena
-     * no abre comentario.
-     */
+    
+     // Los comentarios se descartan en el lexer, asi que se localizan recorriendo el texto 
+     //* Se respeta que un ## dentro de una cadena no abre comentario
+    
     private void resaltarComentarios(StyledDocument documento, String texto) {
         int i = 0;
         while (i < texto.length()) {

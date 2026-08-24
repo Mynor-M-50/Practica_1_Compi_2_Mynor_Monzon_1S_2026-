@@ -15,17 +15,15 @@ import org.antlr.v4.runtime.Token;
  * @author mynorm50
  */
 
-/**
- * Captura los errores que reporta ANTLR y los manda al recolector.
- *
- * Por defecto ANTLR imprime los errores en la salida de error estandar,
- * lo cual no sirve para mostrarlos en una interfaz grafica. Al quitar
- * los listeners por defecto y poner este en su lugar, los errores
- * quedan disponibles como objetos.
- *
- * La misma clase sirve para el lexer y para el parser: se distingue
- * segun quien reporta.
+/*
+ Captura los errores que reporta ANTLR y los manda al recolector.
+
+ Por defecto ANTLR imprime los errors en la salida de error estandar,
+ lo cual no sirve para mostrarlos en una interfaz grafica.
+ La misma clase sirve para el lexer y para el parser: se distingue
+ asegun quien reporta
  */
+
 public class EscuchaErrores extends BaseErrorListener {
 
     private final RecolectorErrores recolector;
@@ -55,10 +53,10 @@ public class EscuchaErrores extends BaseErrorListener {
         recolector.agregar(tipo, traducido, lexema, linea, columna + 1);
     }
 
-    /**
-     * Traduce los mensajes mas comunes de ANTLR al espanol.
-     * Si el mensaje no coincide con ninguno conocido se deja tal cual.
-     */
+    
+    //Traduce los mensajes mas comunes de ANTLR al espanol
+      //i el mensaje no coincide con ninguno conocido se deja tal cua
+     
     private String traducir(String mensaje, boolean vieneDelLexer) {
         if (mensaje == null) {
             return "Error desconocido";

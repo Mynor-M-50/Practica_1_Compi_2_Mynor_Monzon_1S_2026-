@@ -14,8 +14,8 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Acceso a un atributo de estructura:  persona.nombre
+/*
+ Acceso a un atributo de estructura:  persona.nombre
  */
 public class AccesoAtributo extends Expresion {
 

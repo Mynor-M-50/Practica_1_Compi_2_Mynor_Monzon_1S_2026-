@@ -15,12 +15,11 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Retorno de una funcion:  reddere total;  o  reddere;
- *
- * El valor es opcional porque una funcion actio puede usar reddere sin
- * expresion para salir antes de tiempo. En una funcion ratio el valor
- * es obligatorio y su tipo debe coincidir con el declarado.
+/*
+ Retorno de una funcion:  reddere total o reddere el valor es opcional porque 
+ una funcion actio puede usar reddere sin expresion para salir antes de tiempo 
+ En una funcion ratio el valor
+ es obligatorio y su tipo debe coincidir con el declarado.
  */
 public class Reddere extends Instruccion {
 

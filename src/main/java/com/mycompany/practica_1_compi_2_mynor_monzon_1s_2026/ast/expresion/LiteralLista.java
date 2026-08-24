@@ -15,14 +15,13 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Lista de valores iniciales de un arreglo:  {1, 1}  o  {verum, falsus}
- *
- * Cuando la lista se escribe sin tipo, como en
- *     series banderas[2] : {verum, falsus};
- * el tipo se infiere de los elementos.
- *
- */
+/*
+ Lista de valores iniciales de un arreglo:  {1, 1}  o  {verum, falsus}
+ Cuando la lista se escribe sin tipo, como en
+ series banderas[2] : {verum, falsus};
+ el tipo se infiere de los elementos.
+*/
+
 public class LiteralLista extends Expresion {
 
     private final List<Expresion> valores;

@@ -15,12 +15,12 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Llamada a funcion usada como instruccion, no como expresion:
+/*
+ Llamada a funcion usada como instruccion, no como expresion:
  *     atacarCerdos(10, 0.5);
- *
- * Envuelve una LlamadaFuncion para que pueda aparecer en una lista de
- * instrucciones. El valor de retorno, si lo hay, simplemente se ignora.
+
+ Envuelve una LlamadaFuncion para que pueda aparecer en una lista de
+ instrucciones. El valor de retorno, si lo hay, simplemente se ignora.
  */
 
 public class LlamadaInstruccion extends Instruccion {

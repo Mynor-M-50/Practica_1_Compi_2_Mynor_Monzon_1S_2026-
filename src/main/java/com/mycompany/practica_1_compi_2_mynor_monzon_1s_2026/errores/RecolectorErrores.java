@@ -14,12 +14,12 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Lista central de errores de todas las fases.
- *
- * Se comparte entre el lexer, el parser y el analizador semantico para
- * que al final se pueda mostrar un solo reporte ordenado por linea, sin
- * importar en que etapa se detecto cada error.
+/*
+ Lista central de errores de todas las fases
+
+ e comparte entre el lexer, el parser y el analizador semantico para
+ que al final se pueda mostrar un solo reporte ordenado por linea, sin
+ importar en que etapa se detecto cada error
  */
 public class RecolectorErrores {
 
@@ -53,7 +53,7 @@ public class RecolectorErrores {
         return (int) errores.stream().filter(e -> e.getTipo() == tipo).count();
     }
 
-    /** Todos los errores ordenados por linea y luego por columna. */
+    // Todos los errores ordenados por linea y luego por columna. 
     public List<ErrorCompilacion> getErrores() {
         List<ErrorCompilacion> copia = new ArrayList<>(errores);
         copia.sort(Comparator

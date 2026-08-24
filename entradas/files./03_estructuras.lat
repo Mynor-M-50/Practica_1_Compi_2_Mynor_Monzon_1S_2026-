@@ -1,0 +1,80 @@
+##
+    Prueba: estructuras simples, anidadas y con arreglos
+    Incluye los dos separadores de campo permitidos por el foro
+##
+VARIABILES>
+
+## Separador con punto y coma ##
+structura Carro {
+    esto marca : textum;
+    esto modelo : numerus;
+} finis;
+
+## Separador con coma ##
+structura Animal {
+    esto nombre : textum,
+    esto apodo : textum
+} finis;
+
+## Estructura anidada y con campo booleano ##
+structura Persona {
+    esto nombre : textum;
+    esto edad : numerus;
+    esto vivo : bool;
+    esto miCarro : Carro
+} finis;
+
+## Estructura con campo de arreglo sin dimension ##
+structura Selva {
+    esto valida : bool,
+    series animales : Animal
+} finis;
+
+## Instancia simple ##
+esto miCarro : Carro {
+    marca: "Toyota",
+    modelo: 2020
+}
+
+## Instancia con estructura anidada dentro ##
+esto yo : Persona {
+    nombre: "Estudiante",
+    edad: 22,
+    vivo: verum,
+    miCarro: { marca: "Nissan", modelo: 2018 }
+}
+
+## Instancia que fija la dimension del arreglo interno ##
+esto miSelva : Selva {
+    valida: verum,
+    animales: Animal[3]
+}
+
+## Atributos en orden distinto al de la definicion, debe ser valido ##
+esto otroCarro : Carro {
+    modelo: 2015,
+    marca: "Mazda"
+}
+
+MAIOR>
+
+## Acceso simple a atributo ##
+>> "Marca: " >> miCarro.marca;
+
+## Acceso encadenado, confirmado en el foro ##
+>> "Mi carro: " >> yo.miCarro.marca;
+
+## Escritura de atributo ##
+yo.edad = 23;
+yo.miCarro.modelo = 2019;
+
+## Asignacion de instancia completa a un elemento de arreglo ##
+miSelva.animales[0] = {
+    nombre: "Perro",
+    apodo: "Canis"
+}
+
+## Acceso a atributo de un elemento de arreglo ##
+>> "Animal: " >> miSelva.animales[0].nombre;
+
+FINIS;

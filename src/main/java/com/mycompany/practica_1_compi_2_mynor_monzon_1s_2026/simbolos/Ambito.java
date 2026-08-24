@@ -13,17 +13,12 @@ import java.util.Map;
  * @author mynorm50
  */
 
-/**
- * Un nivel de alcance con sus simbolos y una referencia al ambito que
- * lo contiene.
- *
- * La busqueda sube por la cadena de padres, de modo que una funcion ve
- * las variables globales pero el ambito global no ve las locales. Eso
- * es lo que hace que dos funciones puedan tener variables con el mismo
- * nombre sin chocar.
- *
- * Se usa LinkedHashMap para conservar el orden de declaracion, que es
- * como conviene mostrar la tabla al graficarla.
+/*
+ Un nivel de alcance con sus simbolos y una referencia al ambito que
+ lo contiene
+ 
+ usa LinkedHashMap para conservar el orden de declaracion, que es
+ como conviene mostrar la tabla al graficarla
  */
 
 public class Ambito {
@@ -55,11 +50,11 @@ public class Ambito {
         return simbolos.values();
     }
 
-    /**
-     * Agrega un simbolo. Devuelve false si ya existia uno con el mismo
-     * nombre en este mismo ambito, lo que significa declaracion
-     * duplicada.
-     */
+    
+     // Agrega un simbolo. Devuelve false si ya existia uno con el mismo
+     // nombre en este mismo ambito, lo que significa declaracion
+     // duplicada
+     
     public boolean declarar(Simbolo simbolo) {
         if (simbolos.containsKey(simbolo.getNombre())) {
             return false;
@@ -70,12 +65,12 @@ public class Ambito {
         return true;
     }
 
-    /** Busca solo en este ambito, sin subir a los padres. */
+    // Busca solo en este ambito, sin subir a los padres
     public Simbolo buscarLocal(String nombreSimbolo) {
         return simbolos.get(nombreSimbolo);
     }
 
-    /** Busca en este ambito y luego hacia arriba en la cadena. */
+    // Busca en este ambito y luego hacia arriba en la cadena
     public Simbolo buscar(String nombreSimbolo) {
         Ambito actual = this;
         while (actual != null) {

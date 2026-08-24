@@ -16,10 +16,9 @@ import java.util.List;
  */
 
 
-/**
- * Parametro de una funcion:  esto fuerza : numerus
- *
- * No lleva valor inicial: el valor lo aporta la llamada.
+/*
+ Parametro de una funcion:  esto fuerza : numerus
+ No lleva valor inicial: el valor lo aporta la llamada
  */
 
 public class Parametro extends Nodo {

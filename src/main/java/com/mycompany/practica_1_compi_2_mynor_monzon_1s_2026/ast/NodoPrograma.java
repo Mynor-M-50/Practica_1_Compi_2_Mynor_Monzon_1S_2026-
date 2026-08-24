@@ -16,17 +16,8 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Raiz del AST. Refleja las tres secciones del archivo .lat:
- *
- *     VARIABILES>   declaraciones globales, opcional
- *     MUNERA>       funciones, opcional
- *     MAIOR>        instrucciones principales, obligatoria
- *
- * Tenerlas separadas permite que el analizador semantico haga la
- * primera pasada registrando estructuras y firmas de funciones antes
- * de validar los cuerpos. Sin eso, una funcion no podria llamar a otra
- * definida mas abajo.
+/*
+ Raiz del AST. Refleja las tres secciones del archivo .lat
  */
 
 public class NodoPrograma extends Nodo {
@@ -60,7 +51,7 @@ public class NodoPrograma extends Nodo {
         return Collections.unmodifiableList(instruccionesPrincipales);
     }
 
-    /** Busca una funcion por nombre. Devuelve null si no existe. */
+    // Busca una funcion por nombre devuelve null si no existe
     public DefinicionFuncion buscarFuncion(String nombre) {
         for (DefinicionFuncion funcion : funciones) {
             if (funcion.getNombre().equals(nombre)) {

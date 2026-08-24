@@ -15,12 +15,9 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Conjunto de instrucciones entre llaves.
- *
- * Es el cuerpo de los condicionales, los ciclos y las funciones. Cada
- * bloque abre un ambito nuevo en la tabla de simbolos, aunque en este
- * lenguaje no se pueden declarar variables dentro de el.
+/*
+ Conjunto de instrucciones entre llaves.
+ Es el cuerpo de los condicionales, los ciclos y las funciones.
  */
 public class Bloque extends Instruccion {
 

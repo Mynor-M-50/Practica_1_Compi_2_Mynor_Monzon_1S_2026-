@@ -56,21 +56,8 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Recorre el AST y aplica todas las validaciones semanticas.
- *
- * ESTRATEGIA DE DOS PASADAS
- *
- * Primero se registran las estructuras y las firmas de las funciones,
- * y solo despues se validan los cuerpos. Sin esa separacion, una
- * funcion no podria llamar a otra definida mas abajo en el archivo,
- * ni una estructura podria usarse antes de su definicion.
- *
- * PROPAGACION DE ERRORES
- *
- * Cuando una expresion no es valida se devuelve Tipo.error(), que
- * TablaTipos trata como comodin. Asi un solo error real no produce una
- * cascada de mensajes derivados.
+/*
+Recorre el AST y aplica todas las validaciones semanticas.
  */
 
 public class AnalizadorSemantico {
@@ -78,10 +65,10 @@ public class AnalizadorSemantico {
     private final TablaSimbolos tabla = new TablaSimbolos();
     private final RecolectorErrores errores;
 
-    /** Funcion que se esta validando, para verificar los retornos. */
+    // Funcion que se esta validando, para verificar los retornos
     private DefinicionFuncion funcionActual;
 
-    /** Cuantos ciclos anidados hay activos, para perge e interrumpe. */
+    // Cuantos ciclos anidados hay activos, para perge e interrumpe
     private int profundidadCiclo;
     private boolean permiteDeclaraciones;
     
@@ -93,11 +80,9 @@ public class AnalizadorSemantico {
         return tabla;
     }
 
-    // ============================================================
-    // Punto de entrada
-    // ============================================================
+    // Punto de entrada------------------------------------------------------
 
-        public void analizar(NodoPrograma programa) {
+            public void analizar(NodoPrograma programa) {
         if (programa == null) {
             return;
         }
@@ -109,7 +94,15 @@ public class AnalizadorSemantico {
             }
         }
 
-        // Pasada 2: variables globales
+        // Pasada 2: firmas de funciones
+        // Van antes que las variables globales para que una variable
+        // global pueda inicializarse llamando a una funcion
+        
+        for (DefinicionFuncion funcion : programa.getFunciones()) {
+            registrarFirmaFuncion(funcion);
+        }
+
+        // Pasada 3: variables globales
         permiteDeclaraciones = true;
         for (Instruccion instruccion : programa.getDeclaracionesGlobales()) {
             if (!(instruccion instanceof DefinicionEstructura)) {
@@ -117,11 +110,6 @@ public class AnalizadorSemantico {
             }
         }
         permiteDeclaraciones = false;
-
-        // Pasada 3: firmas de funciones
-        for (DefinicionFuncion funcion : programa.getFunciones()) {
-            registrarFirmaFuncion(funcion);
-        }
 
         // Pasada 4: cuerpos de funciones
         for (DefinicionFuncion funcion : programa.getFunciones()) {
@@ -132,9 +120,7 @@ public class AnalizadorSemantico {
         validarListaInstrucciones(programa.getInstruccionesPrincipales());
     }
 
-    // ============================================================
-    // Registro previo
-    // ============================================================
+    // Registro previ------------------------------------------------------------
 
     private void registrarEstructura(DefinicionEstructura definicion) {
         String repetido = definicion.primerCampoRepetido();
@@ -171,9 +157,7 @@ public class AnalizadorSemantico {
         }
     }
 
-    // ============================================================
-    // Funciones
-    // ============================================================
+    // Funciones-------------------------------------------------------------------
 
         private void validarFuncion(DefinicionFuncion funcion) {
         funcionActual = funcion;
@@ -214,11 +198,9 @@ public class AnalizadorSemantico {
         funcionActual = null;
     }
 
-    /**
-     * Verifica que todos los caminos terminen en un reddere con valor.
-     * Un condicional solo cuenta si tiene rama final y todas sus ramas
-     * retornan; de lo contrario existe un camino que se escapa.
-     */
+    
+    //Verifica que todos los caminos terminen en un reddere con valor
+
     private boolean todosLosCaminosRetornan(List<Instruccion> instrucciones) {
         for (Instruccion instruccion : instrucciones) {
             if (instruccion instanceof Reddere) {
@@ -246,14 +228,12 @@ public class AnalizadorSemantico {
         return false;
     }
 
-    // ============================================================
-    // Instrucciones
-    // ============================================================
+    // Instrucciones----------------------------------------------------------------------------
 
-    /**
-     * Valida una lista de instrucciones y detecta codigo inalcanzable
-     * despues de un reddere.
-     */
+    
+     // Valida una lista de instrucciones y detecta codigo inalcanzable
+     // despues de un reddere.
+     
     private void validarListaInstrucciones(List<Instruccion> instrucciones) {
         boolean yaRetorno = false;
 
@@ -319,9 +299,7 @@ public class AnalizadorSemantico {
         }
     }
 
-    // ------------------------------------------------------------
-    // Declaraciones
-    // ------------------------------------------------------------
+    // Declaraciones--------------------------------------------------------------------------------
 
     private void validarDeclaracionVariable(DeclaracionVariable declaracion) {
         Tipo tipo = declaracion.getTipo();
@@ -412,11 +390,11 @@ public class AnalizadorSemantico {
         }
     }
 
-    /**
-     * Valida una instancia de estructura contra su definicion.
-     * Comprueba que la estructura exista, que no falte ni sobre ningun
-     * atributo, y que los tipos coincidan. El orden no importa.
-     */
+    
+     // Valida una instancia de estructura contra su definicion
+     // Comprueba que la estructura exista, que no falte ni sobre ningun
+     // atributo, y que los tipos coincidan rl orden no importa
+     
     private void validarLiteralEstructura(LiteralEstructura literal, Tipo tipoEsperado) {
         if (tipoEsperado == null || !tipoEsperado.esEstructura()) {
             error("Solo se puede usar una instancia entre llaves cuando el tipo "
@@ -490,12 +468,12 @@ public class AnalizadorSemantico {
         }
     }
 
-    /**
-     * Detecta la forma  Animal[7]  usada para fijar la dimension de un
-     * arreglo dentro de una instancia de estructura. Se distingue de un
-     * acceso normal porque la base es el nombre de un tipo, no de una
-     * variable.
-     */
+    
+     // Detecta la forma  Animal[7]  usada para fijar la dimension de un
+     // arreglo dentro de una instancia de estructura se distingue de un
+     // acceso normal porque la base es el nombre de un tipo, no de una
+     // variable
+     
     private boolean esDeclaracionDeDimension(Expresion valor) {
         if (!(valor instanceof AccesoArreglo)) {
             return false;
@@ -513,9 +491,7 @@ public class AnalizadorSemantico {
         return simbolo != null && simbolo.esEstructura();
     }
 
-    // ------------------------------------------------------------
-    // Asignaciones
-    // ------------------------------------------------------------
+    // Asignaciones-----------------------------------------------------------------------
 
     private void validarAsignacion(Asignacion asignacion) {
         Expresion objetivo = asignacion.getObjetivo();
@@ -566,9 +542,7 @@ public class AnalizadorSemantico {
         }
     }
 
-    // ------------------------------------------------------------
-    // Control de flujo
-    // ------------------------------------------------------------
+    // Control de flujo------------------------------------------------------------
 
     private void validarCondicional(Condicional condicional) {
         for (RamaCondicional rama : condicional.getRamas()) {
@@ -672,9 +646,7 @@ public class AnalizadorSemantico {
         }
     }
 
-    // ------------------------------------------------------------
-    // Entrada y salida
-    // ------------------------------------------------------------
+    // Entrada y salid--------------------------------------------------------------
 
     private void validarImprimir(Imprimir imprimir) {
         for (Expresion valor : imprimir.getValores()) {
@@ -707,14 +679,11 @@ public class AnalizadorSemantico {
         }
     }
 
-    // ============================================================
-    // Evaluacion de expresiones
-    // ============================================================
+    // Evaluacion de expresiones---------------------------------------------------------------
 
-    /**
-     * Calcula el tipo de una expresion y lo guarda en el propio nodo
-     * para que el traductor no tenga que recalcularlo.
-     */
+     //Calcula el tipo de una expresion y lo guarda en el propio nodo
+     // para que el traductor no tenga que recalcularlo.
+     
     private Tipo evaluar(Expresion expresion) {
         if (expresion == null) {
             return Tipo.error();
@@ -893,15 +862,13 @@ public class AnalizadorSemantico {
         return definicion.getTipoRetorno();
     }
 
-    // ============================================================
-    // Utilidades
-    // ============================================================
+    // Utilidade----------------------------------------------------------------------------
 
-    /**
-     * Intenta calcular el valor de una expresion entera constante.
-     * Devuelve null si depende de variables y por lo tanto no se puede
-     * conocer durante el analisis.
-     */
+    
+     // Intenta calcular el valor de una expresion entera constante
+     // Devuelve null si depende de variables y por lo tanto no se puede
+     // conocer durante el analisis
+   
     private Integer evaluarConstanteEntera(Expresion expresion) {
         if (expresion instanceof Literal) {
             Literal literal = (Literal) expresion;

@@ -15,15 +15,11 @@ import java.util.List;
  * @author mynorm50
  */
 
-/**
- * Asignacion a una variable, elemento de arreglo o atributo:
+/*
+ Asignacion a una variable, elemento de arreglo o atributo
  *     edad = 23;
  *     nombres[0] = "Hola";
  *     selva.animales[1] = { nombre: "Perro" };
- *
- * El objetivo es una expresion porque puede ser una cadena de accesos.
- * El analizador semantico verifica que sea asignable, es decir que no
- * sea un literal ni el resultado de una operacion.
  */
 public class Asignacion extends Instruccion {
 

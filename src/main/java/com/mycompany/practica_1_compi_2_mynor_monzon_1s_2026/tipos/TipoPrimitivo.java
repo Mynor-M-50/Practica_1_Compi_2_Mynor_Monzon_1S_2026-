@@ -10,15 +10,14 @@ package com.mycompany.practica_1_compi_2_mynor_monzon_1s_2026.tipos;
  */
 
 /**
- *  Tipos primitivos del lenguaje Codex Latinus.
- *
- * El nivel representa la jerarquia de conversion implicita que define
- * el enunciado:
+ Tipos primitivos del lenguaje Codex Latinus
+ El nivel representa la jerarquia de conversion implicita que define
+ e enunciado:
  *
  *     textum (5) > decimalis (4) > numerus (3) > littera (2) > bool (1)
- *
- * El resultado de una operacion entre dos tipos toma siempre el nivel
- * mas alto de los dos
+ 
+ l resultado de una operacion entre dos tipos toma siempre el nivel
+ mas alto de los dos
  */
 public enum TipoPrimitivo {
 
@@ -28,16 +27,16 @@ public enum TipoPrimitivo {
     LITTERA(2, "littera"),
     BOOLEANO(1, "bool"),
 
-    /** Instancia de una estructura definida por el usuario. */
+    // Instancia de una estructura definida por el usuario
     ESTRUCTURA(0, "estructura"),
 
-    /** Retorno de una funcion actio, que no devuelve valor. */
+    // Retorno de una funcion actio, que no devuelve valor
     VACIO(0, "void"),
 
-    /**
-     * Tipo de error. Se propaga sin generar mensajes nuevos para
-     * evitar cascadas de errores a partir de una sola falla.
-     */
+    
+     // Tipo de error .se propaga sin generar mensajes nuevos para
+     // evitar cascadas de errores a partir de una sola falla
+     
     ERROR(0, "error");
 
     private final int nivel;
@@ -56,29 +55,30 @@ public enum TipoPrimitivo {
         return nombre;
     }
 
-    /** Indica si el tipo entra en la jerarquia de conversion implicita. */
+    // Indica si el tipo entra en la jerarquia de conversion implicita
     public boolean participaEnJerarquia() {
         return nivel > 0;
     }
 
-    /** Tipos sobre los que tiene sentido hacer aritmetica pura. */
+    // Tipos sobre los que tiene sentido hacer aritmetica pura
     public boolean esNumerico() {
         return this == NUMERUS || this == DECIMALIS;
     }
 
-    /**
-     * Tipos que se pueden comparar con menor, mayor, menor igual y
-     * mayor igual. Se incluye littera porque se compara por su valor
-     * en la tabla de caracteres.
-     */
+    
+     /* Tipos que se pueden comparar con menor, mayor, menor igual y
+      mayor igual, se incluye littera porque se compara por su valor
+      en la tabla de caracteres
+    */
+     
     public boolean esOrdenable() {
         return this == NUMERUS || this == DECIMALIS || this == LITTERA;
     }
 
-    /**
-     * Busca el tipo primitivo que corresponde a una palabra reservada.
-     * Devuelve null si el nombre no es un tipo primitivo, lo que
-     * significa que se trata del nombre de una estructura.
+    /*
+     Busca el tipo primitivo que corresponde a una palabra reservada
+     Devuelve null si el nombre no es un tipo primitivo, lo que
+     significa que se trata del nombre de una estructura
      */
     public static TipoPrimitivo desdeNombre(String nombre) {
         for (TipoPrimitivo tipo : values()) {
@@ -89,7 +89,7 @@ public enum TipoPrimitivo {
         return null;
     }
 
-    /** Devuelve el tipo de mayor nivel jerarquico entre los dos. */
+    // Devuelve el tipo de mayor nivel jerarquico entre los dos
     public static TipoPrimitivo mayorNivel(TipoPrimitivo a, TipoPrimitivo b) {
         return (a.nivel >= b.nivel) ? a : b;
     }

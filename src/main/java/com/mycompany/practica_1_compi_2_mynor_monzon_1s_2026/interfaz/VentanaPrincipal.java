@@ -42,13 +42,8 @@ import java.io.File;
  * @author mynorm50
  */
 
-/**
- * Ventana principal del entorno de Codex Latinus.
- *
- * El editor usa JTextPane y no JTextArea porque necesita colores por
- * caracter. El coloreado se dispara con cada cambio del documento, pero
- * en diferido con invokeLater: cambiar atributos desde dentro del
- * evento del documento lanza una excepcion de estado.
+/*
+ Ventana principal del entorno de Codex Latinus.
  */
 
 public class VentanaPrincipal extends JFrame {
@@ -58,7 +53,7 @@ public class VentanaPrincipal extends JFrame {
     private static final Color FONDO_CONSOLA = new Color(0x1E, 0x1E, 0x1E);
     private static final Color TEXTO_CONSOLA = new Color(0x9C, 0xCC, 0x65);
 
-    /** Una pestania del editor, con su archivo asociado. */
+    // Una pestania del editor, con su archivo asociado
     private class Pestania {
 
         final JTextPane editor = new JTextPane();
@@ -97,11 +92,7 @@ public class VentanaPrincipal extends JFrame {
             editor.addCaretListener(seguidor);
         }
 
-        /**
-         * Se llama en cada edicion. El coloreado se hace en diferido
-         * porque no se pueden modificar atributos mientras el documento
-         * esta notificando un cambio.
-         */
+       
         void alCambiar() {
             SwingUtilities.invokeLater(() -> {
                 colorear();

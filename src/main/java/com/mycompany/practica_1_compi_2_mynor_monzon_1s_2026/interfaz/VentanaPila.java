@@ -36,16 +36,8 @@ import java.awt.Rectangle;
  * @author mynorm50
  */
 
-/**
- * Visualizacion de la pila de analisis paso a paso.
- *
- * La tabla de la derecha es a la vez el log de operaciones y el
- * navegador: seleccionar una fila muestra el estado de la pila en ese
- * momento. Los botones mueven la seleccion.
- *
- * Esto funciona porque cada PasoPila guarda una copia del contenido de
- * la pila, no una referencia. Sin esa copia, al retroceder se veria
- * siempre el estado final.
+/*
+ Visualizacion de la pila de analisis paso a paso.
  */
 
 public class VentanaPila extends JFrame {
@@ -91,7 +83,7 @@ public class VentanaPila extends JFrame {
 
         add(barraControles(), BorderLayout.NORTH);
 
-        // ---- Pila a la izquierda ----
+        //  Pila a la izuierda 
         listaPila.setFont(new Font("Monospaced", Font.PLAIN, 14));
         listaPila.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listaPila.setBackground(new Color(0xFA, 0xFA, 0xFA));
@@ -102,7 +94,7 @@ public class VentanaPila extends JFrame {
                 "Contenido de la pila (cima arriba)"));
         scrollPila.setPreferredSize(new Dimension(280, 0));
 
-        // ---- Log a la derecha ----
+        //  Log a la dercha 
         tablaLog.setFont(new Font("Monospaced", Font.PLAIN, 12));
         tablaLog.setRowHeight(20);
         tablaLog.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -129,7 +121,7 @@ public class VentanaPila extends JFrame {
         division.setDividerLocation(280);
         add(division, BorderLayout.CENTER);
 
-        // ---- Detalle abajo ----
+        //  Detalle abajo 
         etiquetaDetalle.setFont(new Font("SansSerif", Font.PLAIN, 12));
         etiquetaDetalle.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
         add(etiquetaDetalle, BorderLayout.SOUTH);
@@ -164,9 +156,7 @@ public class VentanaPila extends JFrame {
         return barra;
     }
 
-    // ------------------------------------------------------------
-    // Carga y navegacion
-    // ------------------------------------------------------------
+    // Carga y navegacion--------------------------------------------------------
 
     private void cargarPasos() {
         modeloLog.setRowCount(0);
@@ -198,7 +188,7 @@ public class VentanaPila extends JFrame {
         tablaLog.scrollRectToVisible(celda);
     }
 
-    /** Reconstruye la vista de la pila con el paso seleccionado. */
+    // Reconstruye la vista de la pila con el paso seleccionado. 
     private void mostrarPasoSeleccionado() {
         PasoPila paso = pasoActual();
 
@@ -240,7 +230,7 @@ public class VentanaPila extends JFrame {
         new VisorDot(this).mostrar("Pila - paso " + paso.getNumero(), dot, "pila");
     }
 
-    /** Pinta cada fila segun la operacion que representa. */
+    // Pinta cada fila segun la operacion que representa
     private static class RenderadorOperacion extends DefaultTableCellRenderer {
         
         @Override

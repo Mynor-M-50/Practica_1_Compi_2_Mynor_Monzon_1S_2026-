@@ -16,12 +16,11 @@ import java.util.List;
  */
 
 
-/**
- * Llamada a una funcion:  calcularPoder(fuerza, 0.5)
- *
- * Es una expresion porque puede aparecer dentro de otra expresion. Si
- * la funcion es de tipo actio y se usa donde se espera un valor, el
- * analizador semantico lo reporta como error.
+/*
+ Llamada a una funcion:  calcularPoder(fuerza, 0.5)
+ Es una expresion porque puede aparecer dentro de otra expresion. Si
+ la funcion es de tipo actio y se usa donde se espera un valor, el
+ analizador semantico lo reporta como error.
  */
 
 public class LlamadaFuncion extends Expresion {
