@@ -1,0 +1,765 @@
+##
+    Codex Latinus - Practica 1 (Manejo de errores)
+
+    Proposito: verificar que el compilador detecte, clasifique y
+    reporte correctamente los errores de cada categoria.
+
+    IMPORTANTE: el compilador debe RECUPERARSE de cada error y seguir
+    analizando el resto del archivo para reportarlos todos en una
+    sola pasada.
+
+    NOTA SOBRE EL ORDEN DE LAS FASES
+    Este archivo contiene UNICAMENTE errores semanticos. La razon es
+    que los errores lexicos y sintacticos detienen el pipeline antes
+    de construir el AST, asi que si se mezclaran aqui, los errores
+    semanticos nunca llegarian a reportarse.
+    Los errores lexicos y sintacticos se prueban en archivos aparte.
+
+    RESULTADO ESPERADO: 0 errores lexicos, 0 sintacticos,
+                        aproximadamente 40 errores semanticos.
+                        Cada uno con tipo, linea, columna y mensaje.
+##
+
+
+VARIABILES>
+
+## ================================================================
+   DEFINICIONES VALIDAS - se usan como base para provocar errores
+   ================================================================ ##
+
+structura Persona {
+    esto nombre : textum;
+    esto edad   : numerus;
+    esto activo : bool
+} finis;
+
+structura Punto {
+    esto x : numerus;
+    esto y : numerus
+} finis;
+
+esto entero  : numerus 10;
+esto decimal : decimalis 1.5;
+esto texto   : textum "hola";
+esto bandera : bool verum;
+
+series numeros[3] : numerus {1, 2, 3};
+esto puntoValido : Punto { x: 1, y: 2 }
+
+## Variable dedicada a la prueba de colision de nombres.
+No se usa en ninguna otra parte para que el error no se propague ##
+esto nombreColision : numerus 1;
+
+
+## ================================================================
+   ERROR DE DECLARACION 1
+   Tipo: Semantico
+   Causa: se declara dos veces una variable con el mismo nombre en
+          el mismo ambito.
+   Reporte esperado: la variable "entero" ya fue declarada en este ambito
+   ================================================================ ##
+esto entero : numerus 20;
+
+
+## ================================================================
+   ERROR DE DECLARACION 2
+   Tipo: Semantico
+   Causa: redeclaracion aunque el tipo sea distinto. El nombre es lo
+          que colisiona, no el tipo.
+   Reporte esperado: la variable "texto" ya fue declarada en este ambito
+   ================================================================ ##
+esto texto : numerus 5;
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 1
+   Tipo: Semantico
+   Causa: dos campos con el mismo nombre dentro de la definicion.
+   Reporte esperado: el atributo "campo" esta repetido en la estructura "Mala"
+   ================================================================ ##
+structura Mala {
+    esto campo : textum;
+    esto campo : numerus
+} finis;
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 2
+   Tipo: Semantico
+   Causa: el enunciado exige que TODOS los atributos se inicialicen
+          al instanciar. Aqui faltan edad y activo.
+   Reporte esperado: falta inicializar el atributo "edad"
+                     falta inicializar el atributo "activo"
+   ================================================================ ##
+esto incompleta : Persona {
+    nombre: "Solo el nombre"
+}
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 3
+   Tipo: Semantico
+   Causa: se inicializa un atributo que no existe en la definicion.
+   Reporte esperado: la estructura "Persona" no tiene el atributo "inventado"
+   ================================================================ ##
+esto sobrante : Persona {
+    nombre: "X",
+    edad: 20,
+    activo: verum,
+    inventado: "no existe"
+}
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 4
+   Tipo: Semantico
+   Causa: el mismo atributo se inicializa dos veces.
+   Reporte esperado: el atributo "nombre" se inicializa mas de una vez
+   ================================================================ ##
+esto dobleAtributo : Persona {
+    nombre: "A",
+    nombre: "B",
+    edad: 20,
+    activo: verum
+}
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 5
+   Tipo: Semantico
+   Causa: los valores no corresponden al tipo declarado de cada campo.
+   Reporte esperado: el atributo "edad" es de tipo numerus pero recibe textum
+                     el atributo "activo" es de tipo bool pero recibe numerus
+   ================================================================ ##
+esto tipoMalo : Persona {
+    nombre: "Valido",
+    edad: "veinte",
+    activo: 5
+}
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 6
+   Tipo: Semantico
+   Causa: se instancia una estructura que nunca fue definida.
+   Reporte esperado: no existe la estructura "NoDefinida"
+   ================================================================ ##
+esto inexistente : NoDefinida {
+    algo: 1
+}
+
+
+## ================================================================
+   ERROR DE ARREGLO 1
+   Tipo: Semantico
+   Causa: se dan mas valores iniciales que posiciones declaradas.
+   Reporte esperado: el arreglo "desbordado" declara 2 posiciones pero recibe 4 valores
+   ================================================================ ##
+series desbordado[2] : numerus {1, 2, 3, 4};
+
+
+## ================================================================
+   ERROR DE ARREGLO 2
+   Tipo: Semantico
+   Causa: los valores no corresponden al tipo declarado del arreglo.
+   Reporte esperado: el valor de tipo textum no corresponde al tipo del arreglo (numerus)
+   ================================================================ ##
+series tipoArregloMalo[2] : numerus {"uno", "dos"};
+
+
+## ================================================================
+   ERROR DE ARREGLO 3
+   Tipo: Semantico
+   Causa: la dimension debe ser numerus, no una cadena.
+   Reporte esperado: la dimension de un arreglo debe ser de tipo numerus
+   ================================================================ ##
+series dimensionMala["dos"] : numerus;
+
+
+## ================================================================
+   ERROR DE ARREGLO 4
+   Tipo: Semantico
+   Causa: un arreglo no puede tener dimension cero ni negativa.
+   Reporte esperado: la dimension de un arreglo debe ser mayor que cero
+   ================================================================ ##
+series dimensionCero[0] : numerus;
+
+
+## ================================================================
+   ERROR DE TIPOS 1
+   Tipo: Semantico
+   Causa: textum solo admite el operador mas, como concatenacion.
+          Cualquier otro operador aritmetico es invalido.
+   Reporte esperado: no se puede aplicar el operador * entre textum y numerus
+                     no se puede aplicar el operador - entre textum y numerus
+                     no se puede aplicar el operador / entre textum y numerus
+   ================================================================ ##
+esto tipoMal1 : numerus texto * 2;
+esto tipoMal2 : numerus texto - 1;
+esto tipoMal3 : numerus texto / 2;
+
+
+## ================================================================
+   ERROR DE TIPOS 2
+   Tipo: Semantico
+   Causa: los operadores logicos exigen booleano estricto en ambos
+          lados. No hay conversion implicita hacia bool.
+   Reporte esperado: no se puede aplicar el operador && entre numerus y bool
+                     no se puede aplicar el operador || entre textum y bool
+   ================================================================ ##
+esto tipoMal4 : bool entero && bandera;
+esto tipoMal5 : bool texto || bandera;
+
+
+## ================================================================
+   ERROR DE TIPOS 3
+   Tipo: Semantico
+   Causa: la negacion solo se aplica sobre booleanos.
+   Reporte esperado: no se puede aplicar el operador non sobre numerus
+   ================================================================ ##
+esto tipoMal6 : bool non entero;
+
+
+## ================================================================
+   ERROR DE TIPOS 4
+   Tipo: Semantico
+   Causa: bool no es un tipo ordenable, no se puede comparar con
+          menor, mayor, menor igual ni mayor igual.
+   Reporte esperado: no se puede aplicar el operador > entre bool y numerus
+   ================================================================ ##
+esto tipoMal7 : bool bandera > entero;
+
+
+## ================================================================
+   ERROR DE TIPOS 5
+   Tipo: Semantico
+   Causa: la conversion implicita solo sube en la jerarquia.
+          decimalis(4) no puede bajar a numerus(3) porque se
+          perderian los decimales en silencio.
+   Reporte esperado: no se puede asignar un valor de tipo decimalis a una variable de tipo numerus
+   ================================================================ ##
+esto tipoMal8 : numerus decimal;
+
+
+## ================================================================
+   ERROR DE TIPOS 6
+   Tipo: Semantico
+   Causa: no se puede operar sobre un arreglo completo, hay que
+          acceder primero a una de sus posiciones.
+   Reporte esperado: no se puede aplicar el operador + entre numerus[3] y numerus
+   ================================================================ ##
+esto tipoMal9 : numerus numeros + 1;
+
+
+MUNERA>
+
+## ================================================================
+   ERROR DE FUNCION 1
+   Tipo: Semantico
+   Causa: la funcion declara retornar numerus pero nunca ejecuta un
+          reddere.
+   Reporte esperado: la funcion "sinRetorno" no retorna un valor en todos sus caminos
+   ================================================================ ##
+ratio numerus sinRetorno(esto x : numerus) {
+    >> "no retorna nada";
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 2
+   Tipo: Semantico
+   Causa: el valor retornado no corresponde al tipo declarado.
+   Reporte esperado: la funcion "retornoMalo" declara retornar numerus pero retorna textum
+   ================================================================ ##
+ratio numerus retornoMalo() {
+    reddere "esto es texto";
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 3
+   Tipo: Semantico
+   Causa: existe un camino de ejecucion que no retorna. Falta la
+          rama aliter final, asi que si la condicion es falsa la
+          funcion termina sin devolver nada.
+   Reporte esperado: la funcion "retornoParcial" no retorna un valor en todos sus caminos
+   ================================================================ ##
+ratio numerus retornoParcial(esto x : numerus) {
+    si (x > 0) {
+        reddere 1;
+    } finis;
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 4
+   Tipo: Semantico
+   Causa: hay instrucciones despues de un reddere. Nunca se pueden
+          alcanzar.
+   Reporte esperado: codigo inalcanzable, ya se ejecuto un reddere antes
+   ================================================================ ##
+ratio numerus inalcanzable() {
+    reddere 1;
+    >> "nunca se ejecuta";
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 5
+   Tipo: Semantico
+   Causa: una funcion actio no devuelve valor, asi que su reddere
+          no puede llevar una expresion.
+   Reporte esperado: la funcion "noDebeRetornar" es de tipo actio y no debe retornar ningun valor
+   ================================================================ ##
+actio noDebeRetornar() {
+    reddere 5;
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 6
+   Tipo: Semantico
+   Causa: dos parametros con el mismo nombre en la misma funcion.
+   Reporte esperado: el parametro "a" esta repetido
+   ================================================================ ##
+ratio numerus parametroRepetido(esto a : numerus, esto a : numerus) {
+    reddere a;
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 7
+   Tipo: Semantico
+   Causa: el tipo de retorno declarado es una estructura que no existe.
+   Reporte esperado: no existe la estructura "NoExiste"
+   ================================================================ ##
+ratio NoExiste retornoInexistente() {
+    reddere 1;
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 8
+   Tipo: Semantico
+   Causa: el tipo de un parametro es una estructura que no existe.
+   Reporte esperado: no existe la estructura "TampocoExiste"
+   ================================================================ ##
+actio parametroInexistente(esto p : TampocoExiste) {
+    >> "nada";
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 9
+   Tipo: Semantico
+   Causa: se define una funcion con un nombre que ya pertenece a una
+          variable global. Funciones y variables comparten espacio
+          de nombres en el ambito global.
+   Reporte esperado: ya existe una funcion o variable llamada "nombreColision"
+   ================================================================ ##
+ratio numerus nombreColision() {
+    reddere 1;
+} finis;
+
+
+## ================================================================
+   ERROR DE FUNCION 10
+   Tipo: Semantico
+   Causa: dos funciones con el mismo nombre. El lenguaje no permite
+          sobrecarga.
+   Reporte esperado: ya existe una funcion o variable llamada "duplicada"
+   ================================================================ ##
+ratio numerus duplicada() {
+    reddere 1;
+} finis;
+
+ratio numerus duplicada() {
+    reddere 2;
+} finis;
+
+
+## ================================================================
+   ERROR DE CONTROL DE FLUJO 1
+   Tipo: Semantico
+   Causa: interrumpe y perge solo tienen sentido dentro de un ciclo.
+          Aqui estan dentro de una funcion pero fuera de cualquier
+          ciclo.
+   Reporte esperado: la instruccion "interrumpe" solo se puede usar dentro de un ciclo
+                     la instruccion "perge" solo se puede usar dentro de un ciclo
+   ================================================================ ##
+actio controlSinCiclo() {
+    interrumpe;
+    perge;
+} finis;
+
+
+## ================================================================
+   FUNCION VALIDA - se usa para provocar errores de llamada
+   ================================================================ ##
+ratio numerus buena(esto a : numerus, esto b : numerus) {
+    reddere a + b;
+} finis;
+
+
+MAIOR>
+
+## ================================================================
+   ERROR DE USO 1
+   Tipo: Semantico
+   Causa: se usa una variable que nunca fue declarada.
+   Reporte esperado: la variable "noExiste" no ha sido declarada
+   ================================================================ ##
+>> noExiste;
+
+
+## ================================================================
+   ERROR DE USO 2
+   Tipo: Semantico
+   Causa: se asigna a una variable no declarada.
+   Reporte esperado: la variable "tampocoExiste" no ha sido declarada
+   ================================================================ ##
+tampocoExiste = 5;
+
+
+## ================================================================
+   ERROR DE AMBITO 1
+   Tipo: Semantico
+   Causa: las variables solo se pueden declarar en la seccion
+          VARIABILES global o en el bloque VARIABILES[ ] de una
+          funcion. Nunca en la seccion principal.
+   Reporte esperado: las variables solo se pueden declarar en la seccion VARIABILES
+   ================================================================ ##
+esto fueraDeSeccion : numerus 10;
+
+
+## ================================================================
+   ERROR DE AMBITO 2
+   Tipo: Semantico
+   Causa: lo mismo aplica a los arreglos.
+   Reporte esperado: los arreglos solo se pueden declarar en la seccion VARIABILES
+   ================================================================ ##
+series arregloFuera[2] : numerus {1, 2};
+
+
+## ================================================================
+   ERROR DE AMBITO 3
+   Tipo: Semantico
+   Causa: el foro confirmo que dentro de un bloque de control no se
+          pueden declarar variables.
+   Reporte esperado: las variables solo se pueden declarar en la seccion VARIABILES
+   ================================================================ ##
+si (entero > 0) {
+    esto dentroDelSi : numerus 1;
+} finis;
+
+
+## ================================================================
+   ERROR DE AMBITO 4
+   Tipo: Semantico
+   Causa: las estructuras tampoco se definen en la seccion principal.
+   Reporte esperado: las estructuras solo se pueden definir en la seccion VARIABILES
+   ================================================================ ##
+structura FueraDeLugar {
+    esto campo : numerus
+} finis;
+
+
+## ================================================================
+   ERROR DE LLAMADA 1
+   Tipo: Semantico
+   Causa: se llama a una funcion que no fue declarada.
+   Reporte esperado: la funcion "funcionInexistente" no ha sido declarada
+   ================================================================ ##
+>> funcionInexistente(10, 20);
+
+
+## ================================================================
+   ERROR DE LLAMADA 2
+   Tipo: Semantico
+   Causa: se pasan menos argumentos de los que la funcion espera.
+   Reporte esperado: la funcion "buena" espera 2 argumentos pero recibe 1
+   ================================================================ ##
+>> buena(1);
+
+
+## ================================================================
+   ERROR DE LLAMADA 3
+   Tipo: Semantico
+   Causa: se pasan mas argumentos de los que la funcion espera.
+   Reporte esperado: la funcion "buena" espera 2 argumentos pero recibe 3
+   ================================================================ ##
+>> buena(1, 2, 3);
+
+
+## ================================================================
+   ERROR DE LLAMADA 4
+   Tipo: Semantico
+   Causa: los argumentos no corresponden al tipo de los parametros.
+   Reporte esperado: el argumento 1 de "buena" debe ser de tipo numerus pero es de tipo textum
+                     el argumento 2 de "buena" debe ser de tipo numerus pero es de tipo textum
+   ================================================================ ##
+>> buena("uno", "dos");
+
+
+## ================================================================
+   ERROR DE LLAMADA 5
+   Tipo: Semantico
+   Causa: se usa una funcion sin parentesis, como si fuera variable.
+   Reporte esperado: "buena" es una funcion y debe llamarse con parentesis
+   ================================================================ ##
+>> buena;
+
+
+## ================================================================
+   ERROR DE LLAMADA 6
+   Tipo: Semantico
+   Causa: se usa una variable con parentesis, como si fuera funcion.
+   Reporte esperado: "decimal" no es una funcion
+   ================================================================ ##
+>> decimal();
+
+
+## ================================================================
+   ERROR DE ARREGLO 5
+   Tipo: Semantico
+   Causa: el indice constante supera la dimension declarada.
+          El arreglo tiene 3 posiciones, validas de 0 a 2.
+   Reporte esperado: indice fuera de rango, el arreglo tiene 3 posiciones y se pide la 5
+   ================================================================ ##
+>> numeros[5];
+
+
+## ================================================================
+   ERROR DE ARREGLO 6
+   Tipo: Semantico
+   Causa: lo mismo aplica al escribir, no solo al leer.
+   Reporte esperado: indice fuera de rango, el arreglo tiene 3 posiciones y se pide la 7
+   ================================================================ ##
+numeros[7] = 1;
+
+
+## ================================================================
+   ERROR DE ARREGLO 7
+   Tipo: Semantico
+   Causa: los indices no pueden ser negativos.
+   Reporte esperado: el indice de un arreglo no puede ser negativo
+   ================================================================ ##
+>> numeros[-1];
+
+
+## ================================================================
+   ERROR DE ARREGLO 8
+   Tipo: Semantico
+   Causa: el indice debe ser numerus.
+   Reporte esperado: el indice de un arreglo debe ser de tipo numerus, no textum
+   ================================================================ ##
+>> numeros[texto];
+
+
+## ================================================================
+   ERROR DE ARREGLO 9
+   Tipo: Semantico
+   Causa: se usan corchetes sobre una variable que no es arreglo.
+   Reporte esperado: la variable no es un arreglo, no se puede indexar con corchetes
+   ================================================================ ##
+>> entero[0];
+
+
+## ================================================================
+   ERROR DE ARREGLO 10
+   Tipo: Semantico
+   Causa: no se puede imprimir un arreglo completo, hay que acceder
+          a una posicion.
+   Reporte esperado: no se puede imprimir un arreglo completo
+   ================================================================ ##
+>> numeros;
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 7
+   Tipo: Semantico
+   Causa: se accede a un atributo que no existe en la estructura.
+   Reporte esperado: la estructura "Punto" no tiene el atributo "z"
+   ================================================================ ##
+>> puntoValido.z;
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 8
+   Tipo: Semantico
+   Causa: se usa el punto sobre algo que no es una estructura.
+   Reporte esperado: solo se puede acceder con punto a los atributos de una estructura
+   ================================================================ ##
+>> entero.campo;
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 9
+   Tipo: Semantico
+   Causa: no se puede imprimir una estructura completa, hay que
+          acceder a uno de sus atributos.
+   Reporte esperado: no se puede imprimir una estructura completa
+   ================================================================ ##
+>> puntoValido;
+
+
+## ================================================================
+   ERROR DE ESTRUCTURA 10
+   Tipo: Semantico
+   Causa: se asigna un valor de tipo incorrecto a un atributo.
+   Reporte esperado: no se puede asignar un valor de tipo textum a una variable de tipo numerus
+   ================================================================ ##
+puntoValido.x = "no es numero";
+
+
+## ================================================================
+   ERROR DE CONDICION 1
+   Tipo: Semantico
+   Causa: el enunciado exige que las condiciones sean estrictamente
+          booleanas. Un numerus no se convierte implicitamente.
+   Reporte esperado: la condicion debe ser de tipo booleano, pero es de tipo numerus
+   ================================================================ ##
+si (entero) {
+    >> "no deberia compilar";
+} finis;
+
+
+## ================================================================
+   ERROR DE CONDICION 2
+   Tipo: Semantico
+   Causa: lo mismo aplica al ciclo dum.
+   Reporte esperado: la condicion debe ser de tipo booleano, pero es de tipo textum
+   ================================================================ ##
+dum (texto) {
+    >> "tampoco";
+} finis;
+
+
+## ================================================================
+   ERROR DE CONDICION 3
+   Tipo: Semantico
+   Causa: y al ciclo facere, cuya condicion va al final.
+   Reporte esperado: la condicion debe ser de tipo booleano, pero es de tipo numerus
+   ================================================================ ##
+facere {
+    >> "cuerpo";
+} dum (entero);
+
+
+## ================================================================
+   ERROR DE CONDICION 4
+   Tipo: Semantico
+   Causa: y al ciclo per, cuya condicion va en la parte del medio.
+   Reporte esperado: la condicion debe ser de tipo booleano, pero es de tipo textum
+   ================================================================ ##
+per (esto i : numerus 0; texto; i++) {
+    >> "cuerpo";
+} finis;
+
+
+## ================================================================
+   ERROR DE CONTROL DE FLUJO 2
+   Tipo: Semantico
+   Causa: interrumpe y perge en la seccion principal, fuera de todo
+          ciclo.
+   Reporte esperado: la instruccion "interrumpe" solo se puede usar dentro de un ciclo
+                     la instruccion "perge" solo se puede usar dentro de un ciclo
+   ================================================================ ##
+interrumpe;
+perge;
+
+
+## ================================================================
+   ERROR DE CONTROL DE FLUJO 3
+   Tipo: Semantico
+   Causa: estar dentro de un condicional no basta, el condicional
+          tiene que estar dentro de un ciclo.
+   Reporte esperado: la instruccion "interrumpe" solo se puede usar dentro de un ciclo
+   ================================================================ ##
+si (bandera) {
+    interrumpe;
+} finis;
+
+
+## ================================================================
+   ERROR DE CONTROL DE FLUJO 4
+   Tipo: Semantico
+   Causa: reddere solo tiene sentido dentro de una funcion.
+   Reporte esperado: la instruccion "reddere" solo se puede usar dentro de una funcion
+   ================================================================ ##
+reddere entero;
+
+
+## ================================================================
+   ERROR DE INCREMENTO 1
+   Tipo: Semantico
+   Causa: los operadores de incremento y decremento solo se aplican
+          a valores numericos.
+   Reporte esperado: el operador ++ solo se aplica a valores numericos, no a textum
+                     el operador -- solo se aplica a valores numericos, no a bool
+   ================================================================ ##
+texto++;
+bandera--;
+
+
+## ================================================================
+   ERROR DE LECTURA 1
+   Tipo: Semantico
+   Causa: no se puede leer directamente sobre un arreglo completo,
+          hay que indicar la posicion.
+   Reporte esperado: no se puede leer directamente sobre un arreglo o una estructura
+   ================================================================ ##
+numeros <<
+
+
+## ================================================================
+   ERROR DE LECTURA 2
+   Tipo: Semantico
+   Causa: tampoco sobre una estructura completa.
+   Reporte esperado: no se puede leer directamente sobre un arreglo o una estructura
+   ================================================================ ##
+puntoValido <<
+
+
+## ================================================================
+   VERIFICACION DE RECUPERACION
+   Si el compilador se recupero de todos los errores anteriores y
+   llego hasta aqui, el codigo valido que sigue debe analizarse sin
+   reportar ningun error nuevo.
+
+   Criterios de verificacion:
+     - El reporte contiene alrededor de 40 errores semanticos
+     - Cada error incluye tipo, linea, columna y descripcion
+     - Ninguna de las instrucciones de esta seccion genera error
+     - El AST se construye completo pese a los errores semanticos
+   ================================================================ ##
+
+entero = 100;
+decimal = 2.5;
+texto = "recuperacion correcta";
+bandera = entero > 50;
+
+numeros[0] = 7;
+puntoValido.x = 3;
+puntoValido.y = 4;
+
+si (bandera) {
+    >> "Recuperacion: exito";
+} aliter {
+    >> "Recuperacion: fallida";
+} finis;
+
+per (esto rec : numerus 0; rec < 3; rec++) {
+    si (rec == 1) {
+        perge;
+    } finis;
+    si (rec > 5) {
+        interrumpe;
+    } finis;
+    >> "Vuelta " >> rec;
+} finis;
+
+>> "Suma valida: " >> buena(entero, numeros[0]);
+>> texto;
+
+FINIS;

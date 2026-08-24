@@ -346,6 +346,14 @@ public class ConstructorAST extends CodexLatinusBaseListener {
     }
 
     @Override
+    public void exitDimensionPrimitiva(CodexLatinusParser.DimensionPrimitivaContext ctx) {
+        String nombreTipo = ctx.getChild(0).getText();
+        Identificador base = new Identificador(nombreTipo, linea(ctx), columna(ctx));
+        Expresion indice = expresionDe(ctx.expresion());
+        guardar(ctx, new AccesoArreglo(base, indice, linea(ctx), columna(ctx)));
+    }
+    
+    @Override
     public void exitLiteralEstructura(CodexLatinusParser.LiteralEstructuraContext ctx) {
         List<AtributoInicializado> atributos = new ArrayList<>();
         for (CodexLatinusParser.AsignacionAtributoContext at : ctx.asignacionAtributo()) {
@@ -362,9 +370,7 @@ public class ConstructorAST extends CodexLatinusBaseListener {
         propagar(ctx, ctx.expresion());
     }
 
-    // ============================================================
-    // Declaraciones
-    // ============================================================
+    // Declaraciones------------------------------------------------------------------
 
     @Override
     public void exitDeclaracion(CodexLatinusParser.DeclaracionContext ctx) {

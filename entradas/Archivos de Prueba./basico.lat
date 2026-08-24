@@ -1,0 +1,597 @@
+##
+    Codex Latinus - Practica 1 (Archivo Basico)
+
+    Evalua todos los entregables en sus casos mas simples.
+    Cada seccion prueba un unico concepto de forma aislada.
+
+    NOTA: el lenguaje no se ejecuta. La verificacion es estatica:
+          el archivo debe compilar SIN NINGUN ERROR, y el AST,
+          la tabla de simbolos y la traduccion deben poder generarse.
+
+    RESULTADO ESPERADO: 0 errores lexicos, 0 sintacticos, 0 semanticos.
+##
+
+
+## ================================================================
+   SECCION DE VARIABLES GLOBALES
+   Aqui van variables, arreglos y estructuras. Es la unica seccion
+   donde se pueden declarar, junto al bloque VARIABILES[ ] local
+   de cada funcion.
+   ================================================================ ##
+VARIABILES>
+
+## ----------------------------------------------------------------
+   1. TIPOS PRIMITIVOS
+   Los cinco tipos del lenguaje con valor inicial.
+   Verificar en la tabla de simbolos: 5 variables, rol Variable,
+   ambito global, con el tipo correcto cada una.
+   ---------------------------------------------------------------- ##
+esto v_entero   : numerus 42;
+esto v_decimal  : decimalis 9.81;
+esto v_texto    : textum "Codex Latinus";
+esto v_letra    : littera 'a';
+esto v_booleano : bool verum;
+
+## ----------------------------------------------------------------
+   2. BOOLEANOS EN SUS DOS FORMAS
+   El foro confirmo que conviven la forma tipada y la especial.
+   Ambas deben producir un simbolo de tipo bool.
+   ---------------------------------------------------------------- ##
+esto b_tipado_v   : bool verum;
+esto b_tipado_f   : bool falsus;
+esto b_especial_v : verum;
+esto b_especial_f : falsus;
+
+## ----------------------------------------------------------------
+   3. DECLARACION SIN VALOR INICIAL
+   Es valido declarar solo el tipo.
+   ---------------------------------------------------------------- ##
+esto sin_valor_num : numerus;
+esto sin_valor_txt : textum;
+
+## ----------------------------------------------------------------
+   4. CONVERSION IMPLICITA HACIA ARRIBA
+   Jerarquia: textum(5) > decimalis(4) > numerus(3) > littera(2) > bool(1)
+   Un valor puede subir de nivel, nunca bajar.
+   ---------------------------------------------------------------- ##
+esto sube_a_decimal : decimalis v_entero;
+esto sube_de_letra  : numerus v_letra;
+
+## ----------------------------------------------------------------
+   5. VALOR CALCULADO A PARTIR DE OTRA VARIABLE
+   ---------------------------------------------------------------- ##
+esto calculado : numerus v_entero * 2;
+esto concatena : textum v_texto + " version 1";
+
+## ----------------------------------------------------------------
+   6. ARREGLOS - CREACION
+   Tipado con y sin valores, y con tipo inferido de la lista.
+   Verificar en la tabla de simbolos: rol Arreglo, tipo con corchetes.
+   ---------------------------------------------------------------- ##
+series a_enteros[3]   : numerus {1, 2, 3};
+series a_textos[2]    : textum {"Hola", "Adios"};
+series a_letras[2]    : littera {'a', 'b'};
+series a_decimales[2] : decimalis {1.5, 2.5};
+series a_booleanos[2] : bool {verum, falsus};
+
+## Sin valores iniciales ##
+series a_vacio[5] : numerus;
+
+## Tipo inferido: si aparece verum se asume bool (confirmado en foro) ##
+series a_inferido[2] : {verum, verum};
+
+## Menos valores que la dimension declarada es valido ##
+series a_parcial[5] : numerus {1, 2};
+
+## ----------------------------------------------------------------
+   7. ESTRUCTURAS - DEFINICION
+   El foro confirmo que los campos se separan con ; o con ,
+   Ambas formas deben aceptarse.
+   ---------------------------------------------------------------- ##
+
+## Separador con punto y coma ##
+structura Punto {
+    esto x : numerus;
+    esto y : numerus;
+} finis;
+
+## Separador con coma ##
+structura Caja {
+    esto etiqueta : textum,
+    esto cantidad : numerus,
+    esto precio   : decimalis
+} finis;
+
+## Estructura con campo booleano y campo de otra estructura ##
+structura Persona {
+    esto nombre : textum;
+    esto edad   : numerus;
+    esto activo : bool;
+    esto lugar  : Punto
+} finis;
+
+## Estructura con campo de arreglo sin dimension.
+   El foro confirmo que la dimension se fija al declarar la variable ##
+structura Grupo {
+    esto titulo : textum,
+    series miembros : Persona
+} finis;
+
+## ----------------------------------------------------------------
+   8. ESTRUCTURAS - INSTANCIACION
+   Todos los atributos deben inicializarse, en cualquier orden.
+   ---------------------------------------------------------------- ##
+
+## Instancia simple ##
+esto p1 : Punto {
+    x: 3,
+    y: 7
+}
+
+## Atributos en orden distinto al de la definicion ##
+esto p2 : Punto {
+    y: 20,
+    x: 10
+}
+
+## Instancia con varios tipos ##
+esto caja1 : Caja {
+    etiqueta: "Naranjas",
+    cantidad: 20,
+    precio: 3.5
+}
+
+## Instancia con estructura anidada dentro ##
+esto persona1 : Persona {
+    nombre: "Estudiante",
+    edad: 22,
+    activo: verum,
+    lugar: { x: 1, y: 2 }
+}
+
+## Instancia que fija la dimension del arreglo interno ##
+esto grupo1 : Grupo {
+    titulo: "Equipo A",
+    miembros: Persona[3]
+}
+
+## Arreglo de estructuras declarado directamente ##
+series a_puntos[2] : Punto;
+
+## ----------------------------------------------------------------
+   9. VARIABLES DE APOYO PARA LA SECCION PRINCIPAL
+   ---------------------------------------------------------------- ##
+esto contador  : numerus 0;
+esto acumulado : numerus 0;
+esto indice    : numerus 1;
+esto bandera   : bool verum;
+esto mensaje   : textum "";
+
+## Variables inicializadas con llamadas a funcion.
+   Esto obliga a registrar las firmas antes de validar las globales ##
+esto r_suma       : numerus sumar(3, 7);
+esto r_clasifica  : textum clasificar(75);
+esto r_anidada    : numerus duplicar(duplicar(5));
+esto r_estructura : Punto crearPunto(4, 8);
+
+
+## ================================================================
+   SECCION DE FUNCIONES
+   Es opcional. Aqui solo se definen funciones.
+   ================================================================ ##
+MUNERA>
+
+## ----------------------------------------------------------------
+   10. FUNCION SIN RETORNO Y SIN PARAMETROS
+   Verificar en el AST: Funcion(actio saludar), sin nodo Reddere.
+   ---------------------------------------------------------------- ##
+actio saludar() {
+    >> "Hola desde una funcion";
+} finis;
+
+## ----------------------------------------------------------------
+   11. FUNCION SIN RETORNO CON PARAMETROS
+   Verificar en la tabla: los parametros tienen rol Parametro y su
+   ambito es el nombre de la funcion, no global.
+   ---------------------------------------------------------------- ##
+actio mostrar(esto texto : textum, esto veces : numerus) {
+    VARIABILES[
+        esto i : numerus 0;
+    ]
+    dum (i < veces) {
+        >> texto;
+        i++;
+    } finis;
+} finis;
+
+## ----------------------------------------------------------------
+   12. FUNCION CON RETORNO SIMPLE
+   ---------------------------------------------------------------- ##
+ratio numerus sumar(esto a : numerus, esto b : numerus) {
+    reddere a + b;
+} finis;
+
+ratio numerus duplicar(esto valor : numerus) {
+    reddere valor * 2;
+} finis;
+
+## ----------------------------------------------------------------
+   13. FUNCION CON BLOQUE DE VARIABLES LOCALES
+   Las locales solo pueden ir dentro de VARIABILES[ ] y al inicio.
+   ---------------------------------------------------------------- ##
+ratio numerus calcularPoder(esto fuerza : numerus, esto factor : decimalis) {
+    VARIABILES[
+        esto base  : numerus fuerza * 2;
+        esto extra : numerus 10;
+    ]
+    reddere base + extra;
+} finis;
+
+## ----------------------------------------------------------------
+   14. RETORNO DESDE TODAS LAS RAMAS DE UN CONDICIONAL
+   La validacion de caminos debe aceptarlo porque hay aliter final.
+   ---------------------------------------------------------------- ##
+ratio textum clasificar(esto nota : numerus) {
+    si (nota >= 90) {
+        reddere "Excelente";
+    } aliter (nota >= 70) {
+        reddere "Bueno";
+    } aliter (nota >= 60) {
+        reddere "Suficiente";
+    } aliter {
+        reddere "Insuficiente";
+    } finis;
+} finis;
+
+## ----------------------------------------------------------------
+   15. FUNCION QUE RETORNA UNA ESTRUCTURA
+   Confirmado en el foro como valido.
+   ---------------------------------------------------------------- ##
+ratio Punto crearPunto(esto a : numerus, esto b : numerus) {
+    VARIABILES[
+        esto p : Punto { x: a, y: b };
+    ]
+    reddere p;
+} finis;
+
+## ----------------------------------------------------------------
+   16. FUNCION QUE RECIBE UNA ESTRUCTURA COMO PARAMETRO
+   ---------------------------------------------------------------- ##
+ratio bool esOrigen(esto p : Punto) {
+    reddere p.x == 0 && p.y == 0;
+} finis;
+
+## ----------------------------------------------------------------
+   17. ESTRUCTURA LOCAL DENTRO DEL BLOQUE VARIABILES
+   Confirmado en el foro como valido.
+   ---------------------------------------------------------------- ##
+ratio textum usarLocal() {
+    VARIABILES[
+        structura Temporal {
+            esto etiqueta : textum
+        } finis;
+        esto t : Temporal { etiqueta: "local" };
+    ]
+    reddere t.etiqueta;
+} finis;
+
+## ----------------------------------------------------------------
+   18. LLAMADA A UNA FUNCION DEFINIDA MAS ABAJO
+   Solo funciona porque las firmas se registran en una pasada
+   anterior a la validacion de los cuerpos.
+   ---------------------------------------------------------------- ##
+ratio numerus usarPosterior(esto valor : numerus) {
+    reddere ayudante(valor);
+} finis;
+
+ratio numerus ayudante(esto valor : numerus) {
+    reddere valor + 1;
+} finis;
+
+## ----------------------------------------------------------------
+   19. FUNCION ACTIO CON REDDERE SIN VALOR
+   Sirve para salir antes de tiempo, no devuelve nada.
+   ---------------------------------------------------------------- ##
+actio validar(esto valor : numerus) {
+    si (valor < 0) {
+        reddere;
+    } finis;
+    >> "Valor valido";
+} finis;
+
+## ----------------------------------------------------------------
+   20. FUNCION RECURSIVA
+   La firma ya esta registrada cuando se valida su propio cuerpo.
+   ---------------------------------------------------------------- ##
+ratio numerus factorial(esto n : numerus) {
+    si (n <= 1) {
+        reddere 1;
+    } aliter {
+        reddere n * factorial(n - 1);
+    } finis;
+} finis;
+
+
+## ================================================================
+   SECCION PRINCIPAL
+   Es obligatoria y cierra con FINIS;
+   Aqui NO se pueden declarar variables.
+   ================================================================ ##
+MAIOR>
+
+## ----------------------------------------------------------------
+   21. OPERADORES ARITMETICOS Y PRECEDENCIA
+   En el AST, la multiplicacion debe quedar MAS ABAJO que la suma.
+   Si estan al mismo nivel, la precedencia de la gramatica esta mal.
+   ---------------------------------------------------------------- ##
+acumulado = v_entero + contador * 2;
+acumulado = (v_entero + contador) * 2;
+acumulado = v_entero / 2;
+acumulado = v_entero - contador - 1;
+
+## Menos unario ##
+acumulado = -v_entero;
+acumulado = v_entero * -1;
+
+## ----------------------------------------------------------------
+   22. OPERADORES RELACIONALES Y LOGICOS
+   Todos producen un valor booleano.
+   ---------------------------------------------------------------- ##
+bandera = v_entero > contador;
+bandera = v_entero >= contador;
+bandera = v_entero < contador;
+bandera = v_entero <= contador;
+bandera = v_entero == contador;
+bandera = v_entero != contador;
+bandera = b_tipado_v && b_tipado_f;
+bandera = b_tipado_v || b_tipado_f;
+bandera = non b_tipado_v;
+
+## Combinacion con precedencia mezclada:
+   se debe leer como  ((a>b) && (b<100)) || (non x)  ##
+bandera = v_entero > contador && contador < 100 || non b_tipado_v;
+
+## ----------------------------------------------------------------
+   23. CONCATENACION DE TEXTO
+   textum solo admite el operador mas.
+   ---------------------------------------------------------------- ##
+mensaje = v_texto + " mundo";
+mensaje = v_texto + v_entero;
+
+## ----------------------------------------------------------------
+   24. INCREMENTO Y DECREMENTO
+   El foro confirmo que valen en cualquier ambito, no solo en el per.
+   ---------------------------------------------------------------- ##
+contador++;
+contador--;
+
+## ----------------------------------------------------------------
+   25. ARREGLOS - LECTURA Y ESCRITURA
+   ---------------------------------------------------------------- ##
+>> "Primero: " >> a_enteros[0];
+>> "Por variable: " >> a_enteros[indice];
+a_enteros[2] = 99;
+a_textos[0] = "Modificado";
+a_booleanos[1] = verum;
+acumulado = a_enteros[0] + a_enteros[1];
+
+## ----------------------------------------------------------------
+   26. ESTRUCTURAS - ACCESO A ATRIBUTOS
+   El foro confirmo que el encadenamiento puede seguir indefinidamente.
+   ---------------------------------------------------------------- ##
+>> "Coordenada x: " >> p1.x;
+>> "Anidado: " >> persona1.lugar.x;
+persona1.edad = 23;
+persona1.lugar.y = 99;
+
+## Asignacion de una instancia completa a un elemento de arreglo ##
+a_puntos[0] = { x: 5, y: 6 };
+grupo1.miembros[0] = {
+    nombre: "Miembro uno",
+    edad: 30,
+    activo: verum,
+    lugar: { x: 0, y: 0 }
+}
+
+## Acceso a atributo de un elemento de arreglo ##
+>> "Miembro: " >> grupo1.miembros[0].nombre;
+
+## Acceso encadenado de tres niveles ##
+>> "Profundo: " >> grupo1.miembros[0].lugar.x;
+
+## ----------------------------------------------------------------
+   27. CONDICIONAL SIMPLE
+   En el AST debe aparecer Condicional(1 ramas).
+   ---------------------------------------------------------------- ##
+si (contador > 10) {
+    mensaje = "mayor que diez";
+} finis;
+
+## ----------------------------------------------------------------
+   28. CONDICIONAL CON ALITER FINAL
+   ---------------------------------------------------------------- ##
+si (contador > 100) {
+    mensaje = "muy alto";
+} aliter {
+    mensaje = "normal";
+} finis;
+
+## ----------------------------------------------------------------
+   29. CADENA DE ALITER CON CONDICION
+   En el AST debe aparecer Condicional(3 ramas) mas la rama final.
+   ---------------------------------------------------------------- ##
+si (contador > 100 && bandera) {
+    mensaje = "alto y activo";
+} aliter (contador > 50) {
+    mensaje = "medio";
+} aliter (contador > 10) {
+    mensaje = "bajo";
+} aliter {
+    mensaje = "minimo";
+} finis;
+
+## ----------------------------------------------------------------
+   30. CONDICIONALES ANIDADOS
+   ---------------------------------------------------------------- ##
+si (bandera) {
+    si (contador > 50) {
+        mensaje = "anidado interno";
+    } aliter {
+        mensaje = "anidado alterno";
+    } finis;
+} finis;
+
+## ----------------------------------------------------------------
+   31. CICLO DUM
+   La condicion se evalua antes de cada vuelta.
+   ---------------------------------------------------------------- ##
+dum (contador < 5) {
+    acumulado = acumulado + contador;
+    contador++;
+} finis;
+
+## ----------------------------------------------------------------
+   32. CICLO FACERE
+   La condicion va al final, el cuerpo corre al menos una vez.
+   ---------------------------------------------------------------- ##
+contador = 0;
+facere {
+    acumulado = acumulado + 1;
+    contador++;
+} dum (contador < 3);
+
+## ----------------------------------------------------------------
+   33. CICLO PER CON DECLARACION EN LA INICIALIZACION
+   La variable del per vive solo dentro del ciclo. En la tabla de
+   simbolos debe aparecer con ambito per, no global.
+   ---------------------------------------------------------------- ##
+per (esto i : numerus 0; i < 5; i++) {
+    acumulado = acumulado + i;
+} finis;
+
+## ----------------------------------------------------------------
+   34. CICLO PER CON ASIGNACION EN LA INICIALIZACION
+   ---------------------------------------------------------------- ##
+per (contador = 0; contador < 3; contador++) {
+    acumulado = acumulado + 1;
+} finis;
+
+## ----------------------------------------------------------------
+   35. CICLO PER CON ASIGNACION EN LA ACTUALIZACION
+   ---------------------------------------------------------------- ##
+per (esto k : numerus 0; k < 10; k = k + 2) {
+    acumulado = acumulado + k;
+} finis;
+
+## ----------------------------------------------------------------
+   36. INTERRUMPE DENTRO DE UN CICLO
+   Valido porque esta dentro del cuerpo de un per.
+   ---------------------------------------------------------------- ##
+per (esto m : numerus 0; m < 100; m++) {
+    si (m > 5) {
+        interrumpe;
+    } finis;
+    acumulado = acumulado + m;
+} finis;
+
+## ----------------------------------------------------------------
+   37. PERGE DENTRO DE UN CICLO
+   ---------------------------------------------------------------- ##
+per (esto n : numerus 0; n < 10; n++) {
+    si (n == 3) {
+        perge;
+    } finis;
+    acumulado = acumulado + 1;
+} finis;
+
+## ----------------------------------------------------------------
+   38. CICLOS ANIDADOS CON CONTROL DE FLUJO EN EL INTERNO
+   ---------------------------------------------------------------- ##
+per (esto p : numerus 0; p < 3; p++) {
+    dum (contador < 10) {
+        contador++;
+        si (contador == 7) {
+            interrumpe;
+        } finis;
+    } finis;
+} finis;
+
+## ----------------------------------------------------------------
+   39. LLAMADAS A FUNCION
+   ---------------------------------------------------------------- ##
+
+## Como instruccion, el retorno se ignora ##
+saludar();
+mostrar("Repetido", 2);
+validar(5);
+
+## Dentro de una asignacion ##
+acumulado = sumar(3, 7);
+acumulado = duplicar(21);
+acumulado = calcularPoder(10, 0.5);
+acumulado = factorial(5);
+acumulado = usarPosterior(9);
+
+## Llamada anidada ##
+acumulado = duplicar(duplicar(sumar(1, 2)));
+
+## Pasando una estructura como argumento ##
+bandera = esOrigen(p1);
+
+## Usando el retorno de estructura ##
+>> "Punto creado x: " >> r_estructura.x;
+
+## ----------------------------------------------------------------
+   40. ENTRADA Y SALIDA
+   En la traduccion, >> debe volverse %OINK y << debe volverse
+   %OINK_OINK por la ley porcina.
+   ---------------------------------------------------------------- ##
+
+## Impresion de un solo valor ##
+>> "Hola mundo";
+
+## Impresion encadenada ##
+>> "Contador: " >> contador >> " Bandera: " >> bandera;
+
+## Impresion de expresiones ##
+>> "Suma: " >> contador + 10;
+>> "Comparacion: " >> contador > 18;
+
+## Lectura en variable simple ##
+contador <<
+mensaje <<
+
+## Lectura en elemento de arreglo ##
+a_enteros[0] <<
+
+## Lectura en atributo de estructura ##
+persona1.edad <<
+
+## Lectura sin destino, el valor se descarta ##
+<<
+
+## ----------------------------------------------------------------
+   41. ENTRADA Y SALIDA DENTRO DE BLOQUES
+   El foro confirmo que pueden ir en cualquier parte del codigo.
+   ---------------------------------------------------------------- ##
+si (contador >= 18) {
+    >> "Mayor de edad";
+    bandera = verum;
+} aliter {
+    >> "Menor de edad";
+    contador <<
+} finis;
+
+per (esto q : numerus 0; q < 3; q++) {
+    >> "Iteracion " >> q;
+    a_enteros[q] <<
+} finis;
+
+## ----------------------------------------------------------------
+   CIERRE DEL PROGRAMA
+   FINIS en mayusculas cierra el programa completo.
+   Es un token distinto de finis en minusculas, que cierra bloques.
+   ---------------------------------------------------------------- ##
+>> "Fin del archivo basico";
+
+FINIS;

@@ -1,9 +1,0 @@
-##
-    Prueba: seccion de variables sin seccion de funciones
-##
-VARIABILES>
-esto valor : numerus 7;
-
-MAIOR>
->> "Valor: " >> valor;
-FINIS;

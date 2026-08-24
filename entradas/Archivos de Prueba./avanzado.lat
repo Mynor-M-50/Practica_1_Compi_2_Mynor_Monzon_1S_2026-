@@ -1,0 +1,799 @@
+##
+    Codex Latinus - Practica 1 (Archivo Avanzado)
+
+    Saca el maximo provecho del lenguaje combinando todos los
+    entregables en programas no triviales.
+
+    NOTA: el lenguaje no se ejecuta. La verificacion es estatica.
+
+    Programas incluidos:
+      1. Ordenamiento burbuja con ciclos anidados
+      2. Estadisticas con arreglo de estructuras
+      3. Arbol binario con estructuras anidadas en tres niveles
+      4. Fibonacci iterativo y factorial recursivo
+      5. Funcion de Ackermann (recursion doble)
+      6. Sistema de inventario con estructuras y condicionales
+      7. Procesador de texto con arreglos
+      8. Matriz simulada con estructura contenedora
+      9. Control de flujo profundo con perge e interrumpe
+     10. Expresiones con precedencia compleja
+
+    RESULTADO ESPERADO: 0 errores lexicos, 0 sintacticos, 0 semanticos.
+##
+
+
+VARIABILES>
+
+## ================================================================
+   ESTRUCTURAS BASE
+   ================================================================ ##
+
+structura Alumno {
+    esto nombre   : textum;
+    esto nota     : decimalis;
+    esto aprobado : bool
+} finis;
+
+structura Producto {
+    esto nombre   : textum;
+    esto cantidad : numerus;
+    esto precio   : decimalis;
+    esto activo   : bool
+} finis;
+
+## ================================================================
+   ESTRUCTURAS PARA EL ARBOL BINARIO
+   Tres niveles de anidamiento: Arbol contiene NodoMedio, que
+   contiene Hoja. Es el caso mas exigente de acceso encadenado.
+   ================================================================ ##
+
+## Nivel mas profundo, sin hijos ##
+structura Hoja {
+    esto valor  : textum;
+    esto existe : bool
+} finis;
+
+## Nivel intermedio, sus hijos son Hojas ##
+structura NodoMedio {
+    esto valor  : textum;
+    esto existe : bool;
+    esto izq    : Hoja;
+    esto der    : Hoja
+} finis;
+
+## Raiz, sus hijos son NodoMedios ##
+structura Arbol {
+    esto valor : textum;
+    esto izq   : NodoMedio;
+    esto der   : NodoMedio
+} finis;
+
+## ================================================================
+   ESTRUCTURA CONTENEDORA DE ARREGLO
+   Como el lenguaje no define arreglos de dos dimensiones, una
+   matriz se simula con una estructura que contiene un arreglo.
+   ================================================================ ##
+
+structura Fila {
+    series celdas : numerus
+} finis;
+
+structura Matriz {
+    esto titulo : textum;
+    esto ancho  : numerus;
+    esto alto   : numerus;
+    series filas : Fila
+} finis;
+
+## ================================================================
+   DATOS DEL PROGRAMA
+   ================================================================ ##
+
+## Arreglo a ordenar con burbuja ##
+series datos[7] : numerus {64, 34, 25, 12, 22, 11, 90};
+
+## Notas para las estadisticas ##
+series notas[8] : decimalis {85.5, 92.0, 61.0, 45.0, 78.5, 99.0, 55.0, 70.0};
+
+## Arreglo de estructuras ##
+series alumnos[3] : Alumno;
+series inventario[3] : Producto;
+
+## Palabras para el procesador de texto ##
+series palabras[5] : textum {"el", "lenguaje", "Codex", "es", "divertido"};
+series invertidas[5] : textum;
+
+## Secuencia de Fibonacci ##
+series fibonacci[10] : numerus;
+
+## Arbol binario:        1
+                        / \
+                       2   3
+                      /
+                     4                      ##
+esto hoja4 : Hoja {
+    valor: "4",
+    existe: verum
+}
+
+esto hojaVacia : Hoja {
+    valor: "",
+    existe: falsus
+}
+
+esto nodo2 : NodoMedio {
+    valor: "2",
+    existe: verum,
+    izq: { valor: "4", existe: verum },
+    der: { valor: "", existe: falsus }
+}
+
+esto nodo3 : NodoMedio {
+    valor: "3",
+    existe: verum,
+    izq: { valor: "", existe: falsus },
+    der: { valor: "", existe: falsus }
+}
+
+esto arbol : Arbol {
+    valor: "1",
+    izq: {
+        valor: "2",
+        existe: verum,
+        izq: { valor: "4", existe: verum },
+        der: { valor: "", existe: falsus }
+    },
+    der: {
+        valor: "3",
+        existe: verum,
+        izq: { valor: "", existe: falsus },
+        der: { valor: "", existe: falsus }
+    }
+}
+
+## Matriz simulada de 3 por 3 ##
+esto matriz : Matriz {
+    titulo: "Tabla de multiplicar",
+    ancho: 3,
+    alto: 3,
+    filas: Fila[3]
+}
+
+## Acumuladores y auxiliares ##
+esto n_datos     : numerus 7;
+esto temporal    : numerus 0;
+esto suma        : numerus 0;
+esto maximo      : decimalis 0.0;
+esto minimo      : decimalis 100.0;
+esto aprobados   : numerus 0;
+esto ordenado    : bool verum;
+esto reporte     : textum "";
+esto acumulador  : numerus 0;
+
+## Resultados calculados por funciones ##
+esto fib_9    : numerus fib(9);
+esto fact_5   : numerus factorial(5);
+esto ack_3_2  : numerus ackermann(3, 2);
+esto suma_arr : numerus sumaArreglo(7);
+esto repr_arb : textum reprArbol();
+
+
+MUNERA>
+
+## ================================================================
+   PROGRAMA 1 - ORDENAMIENTO BURBUJA
+   Dos ciclos anidados, intercambio con variable temporal y
+   acceso a arreglo por indice calculado.
+   ================================================================ ##
+actio burbuja(esto n : numerus) {
+    VARIABILES[
+        esto i    : numerus 0;
+        esto j    : numerus 0;
+        esto temp : numerus 0;
+    ]
+    per (i = 0; i < n - 1; i++) {
+        per (j = 0; j < n - 1 - i; j++) {
+            si (datos[j] > datos[j + 1]) {
+                temp = datos[j];
+                datos[j] = datos[j + 1];
+                datos[j + 1] = temp;
+            } finis;
+        } finis;
+    } finis;
+} finis;
+
+## Verifica que el arreglo quedo ordenado de menor a mayor ##
+ratio bool estaOrdenado(esto n : numerus) {
+    VARIABILES[
+        esto i  : numerus 0;
+        esto ok : bool verum;
+    ]
+    per (i = 0; i < n - 1; i++) {
+        si (datos[i] > datos[i + 1]) {
+            ok = falsus;
+        } finis;
+    } finis;
+    reddere ok;
+} finis;
+
+## ================================================================
+   PROGRAMA 2 - SUMA Y ESTADISTICAS
+   ================================================================ ##
+ratio numerus sumaArreglo(esto n : numerus) {
+    VARIABILES[
+        esto i     : numerus 0;
+        esto total : numerus 0;
+    ]
+    per (i = 0; i < n; i++) {
+        total = total + datos[i];
+    } finis;
+    reddere total;
+} finis;
+
+ratio decimalis maximoNota(esto n : numerus) {
+    VARIABILES[
+        esto i   : numerus 1;
+        esto max : decimalis 0.0;
+    ]
+    max = notas[0];
+    per (i = 1; i < n; i++) {
+        si (notas[i] > max) {
+            max = notas[i];
+        } finis;
+    } finis;
+    reddere max;
+} finis;
+
+ratio decimalis minimoNota(esto n : numerus) {
+    VARIABILES[
+        esto i   : numerus 1;
+        esto min : decimalis 0.0;
+    ]
+    min = notas[0];
+    per (i = 1; i < n; i++) {
+        si (notas[i] < min) {
+            min = notas[i];
+        } finis;
+    } finis;
+    reddere min;
+} finis;
+
+ratio numerus contarAprobados(esto n : numerus) {
+    VARIABILES[
+        esto i     : numerus 0;
+        esto total : numerus 0;
+    ]
+    per (i = 0; i < n; i++) {
+        si (notas[i] >= 60) {
+            total = total + 1;
+        } finis;
+    } finis;
+    reddere total;
+} finis;
+
+## ================================================================
+   PROGRAMA 3 - CLASIFICACION CON CADENA DE CONDICIONALES
+   Retorna desde las cuatro ramas. La validacion de caminos debe
+   aceptarlo porque existe la rama aliter final.
+   ================================================================ ##
+ratio textum evaluar(esto nota : decimalis) {
+    si (nota >= 90) {
+        reddere "Excelente";
+    } aliter (nota >= 70) {
+        reddere "Bueno";
+    } aliter (nota >= 60) {
+        reddere "Suficiente";
+    } aliter {
+        reddere "Insuficiente";
+    } finis;
+} finis;
+
+## Recibe una estructura como parametro y accede a sus atributos ##
+ratio bool mejorNota(esto a1 : Alumno, esto a2 : Alumno) {
+    reddere a1.nota > a2.nota;
+} finis;
+
+ratio decimalis promedioTres(esto a1 : Alumno, esto a2 : Alumno, esto a3 : Alumno) {
+    reddere (a1.nota + a2.nota + a3.nota) / 3.0;
+} finis;
+
+## Retorna una estructura construida dentro de la funcion ##
+ratio Alumno crearAlumno(esto nom : textum, esto nt : decimalis) {
+    VARIABILES[
+        esto nuevo : Alumno { nombre: nom, nota: nt, aprobado: falsus };
+    ]
+    si (nt >= 60) {
+        nuevo.aprobado = verum;
+    } finis;
+    reddere nuevo;
+} finis;
+
+## ================================================================
+   PROGRAMA 4 - FIBONACCI ITERATIVO Y FACTORIAL RECURSIVO
+   ================================================================ ##
+ratio numerus fib(esto n : numerus) {
+    VARIABILES[
+        esto a : numerus 0;
+        esto b : numerus 1;
+        esto c : numerus 0;
+        esto i : numerus 2;
+    ]
+    si (n <= 0) {
+        reddere 0;
+    } aliter (n == 1) {
+        reddere 1;
+    } aliter {
+        per (i = 2; i <= n; i++) {
+            c = a + b;
+            a = b;
+            b = c;
+        } finis;
+        reddere b;
+    } finis;
+} finis;
+
+## Recursion simple ##
+ratio numerus factorial(esto n : numerus) {
+    si (n <= 1) {
+        reddere 1;
+    } aliter {
+        reddere n * factorial(n - 1);
+    } finis;
+} finis;
+
+## ================================================================
+   PROGRAMA 5 - FUNCION DE ACKERMANN
+   Recursion doble: la llamada recursiva aparece dentro del
+   argumento de otra llamada recursiva.
+       A(0, n) = n + 1
+       A(m, 0) = A(m-1, 1)
+       A(m, n) = A(m-1, A(m, n-1))
+   ================================================================ ##
+ratio numerus ackermann(esto m : numerus, esto n : numerus) {
+    si (m == 0) {
+        reddere n + 1;
+    } aliter (n == 0) {
+        reddere ackermann(m - 1, 1);
+    } aliter {
+        reddere ackermann(m - 1, ackermann(m, n - 1));
+    } finis;
+} finis;
+
+## ================================================================
+   PROGRAMA 6 - INVENTARIO
+   Estructuras dentro de arreglos y acceso encadenado con indice.
+   ================================================================ ##
+ratio decimalis totalInventario(esto p : Producto) {
+    reddere p.precio * p.cantidad;
+} finis;
+
+ratio bool esRentable(esto p : Producto, esto umbral : decimalis) {
+    reddere p.precio * p.cantidad > umbral;
+} finis;
+
+actio reabastecer(esto posicion : numerus, esto cantidad : numerus) {
+    inventario[posicion].cantidad = inventario[posicion].cantidad + cantidad;
+} finis;
+
+actio desactivar(esto posicion : numerus) {
+    inventario[posicion].activo = falsus;
+} finis;
+
+## ================================================================
+   PROGRAMA 7 - PROCESADOR DE TEXTO
+   Invierte un arreglo de textum usando dos indices que se cruzan.
+   ================================================================ ##
+actio invertirPalabras(esto n : numerus) {
+    VARIABILES[
+        esto izq  : numerus 0;
+        esto der  : numerus 0;
+        esto temp : textum "";
+    ]
+    izq = 0;
+    der = n - 1;
+    dum (izq < der) {
+        temp = palabras[izq];
+        palabras[izq] = palabras[der];
+        palabras[der] = temp;
+        izq = izq + 1;
+        der = der - 1;
+    } finis;
+} finis;
+
+ratio textum unirPalabras(esto n : numerus, esto separador : textum) {
+    VARIABILES[
+        esto i        : numerus 0;
+        esto acumulada : textum "";
+    ]
+    per (i = 0; i < n; i++) {
+        si (i == 0) {
+            acumulada = palabras[i];
+        } aliter {
+            acumulada = acumulada + separador + palabras[i];
+        } finis;
+    } finis;
+    reddere acumulada;
+} finis;
+
+## Busca una palabra y devuelve su posicion, o -1 si no esta ##
+ratio numerus buscarPalabra(esto objetivo : textum, esto n : numerus) {
+    VARIABILES[
+        esto i : numerus 0;
+    ]
+    per (i = 0; i < n; i++) {
+        si (palabras[i] == objetivo) {
+            reddere i;
+        } finis;
+    } finis;
+    reddere -1;
+} finis;
+
+## ================================================================
+   PROGRAMA 8 - ARBOL BINARIO
+   Reconstruye la representacion en corchetes recorriendo la
+   estructura anidada de tres niveles.
+       Hoja existente     -> [valor]
+       Hoja vacia         -> []
+       Nodo sin hijos     -> [valor]
+       Nodo con hijos     -> [valor izq der]
+   ================================================================ ##
+ratio textum reprHoja(esto h : Hoja) {
+    si (h.existe) {
+        reddere "[" + h.valor + "]";
+    } aliter {
+        reddere "[]";
+    } finis;
+} finis;
+
+ratio textum reprNodo(esto n : NodoMedio) {
+    VARIABILES[
+        esto izquierda : textum "";
+        esto derecha   : textum "";
+    ]
+    si (non n.existe) {
+        reddere "[]";
+    } aliter (non n.izq.existe && non n.der.existe) {
+        reddere "[" + n.valor + "]";
+    } aliter {
+        izquierda = reprHoja(n.izq);
+        derecha = reprHoja(n.der);
+        reddere "[" + n.valor + " " + izquierda + " " + derecha + "]";
+    } finis;
+} finis;
+
+## Recorre los tres niveles de anidamiento ##
+ratio textum reprArbol() {
+    VARIABILES[
+        esto izquierda : textum "";
+        esto derecha   : textum "";
+    ]
+    izquierda = reprNodo(arbol.izq);
+    derecha = reprNodo(arbol.der);
+    reddere "[" + arbol.valor + " " + izquierda + " " + derecha + "]";
+} finis;
+
+## ================================================================
+   PROGRAMA 9 - MATRIZ SIMULADA
+   Acceso de dos niveles: matriz.filas[i].celdas[j]
+   ================================================================ ##
+actio llenarMatriz() {
+    VARIABILES[
+        esto i : numerus 0;
+        esto j : numerus 0;
+    ]
+    per (i = 0; i < matriz.alto; i++) {
+        per (j = 0; j < matriz.ancho; j++) {
+            matriz.filas[i].celdas[j] = (i + 1) * (j + 1);
+        } finis;
+    } finis;
+} finis;
+
+ratio numerus sumarMatriz() {
+    VARIABILES[
+        esto i     : numerus 0;
+        esto j     : numerus 0;
+        esto total : numerus 0;
+    ]
+    per (i = 0; i < matriz.alto; i++) {
+        per (j = 0; j < matriz.ancho; j++) {
+            total = total + matriz.filas[i].celdas[j];
+        } finis;
+    } finis;
+    reddere total;
+} finis;
+
+## ================================================================
+   PROGRAMA 10 - CONTROL DE FLUJO PROFUNDO
+   Tres ciclos anidados con perge e interrumpe en niveles distintos.
+   ================================================================ ##
+ratio numerus flujoComplejo(esto limite : numerus) {
+    VARIABILES[
+        esto i     : numerus 0;
+        esto j     : numerus 0;
+        esto k     : numerus 0;
+        esto total : numerus 0;
+    ]
+    per (i = 0; i < limite; i++) {
+
+        ## perge en el nivel externo ##
+        si (i == 0) {
+            perge;
+        } finis;
+
+        per (j = 0; j < limite; j++) {
+
+            ## interrumpe en el nivel intermedio ##
+            si (j > 3) {
+                interrumpe;
+            } finis;
+
+            k = 0;
+            dum (k < limite) {
+
+                ## perge en el nivel mas interno ##
+                si (k == 1) {
+                    k++;
+                    perge;
+                } finis;
+
+                si (k > 4) {
+                    interrumpe;
+                } finis;
+
+                total = total + 1;
+                k++;
+            } finis;
+        } finis;
+    } finis;
+    reddere total;
+} finis;
+
+## Ciclo facere anidado dentro de un per ##
+ratio numerus facereAnidado(esto vueltas : numerus) {
+    VARIABILES[
+        esto i     : numerus 0;
+        esto j     : numerus 0;
+        esto total : numerus 0;
+    ]
+    per (i = 0; i < vueltas; i++) {
+        j = 0;
+        facere {
+            total = total + 1;
+            j++;
+        } dum (j < 3);
+    } finis;
+    reddere total;
+} finis;
+
+
+MAIOR>
+
+## ================================================================
+   1. ORDENAMIENTO BURBUJA
+   Antes:   64 34 25 12 22 11 90
+   Despues: 11 12 22 25 34 64 90
+   Suma:    258
+   ================================================================ ##
+>> "=== ORDENAMIENTO BURBUJA ===";
+>> "Antes, primer elemento: " >> datos[0];
+
+burbuja(n_datos);
+
+>> "Despues, primer elemento: " >> datos[0];
+>> "Despues, ultimo elemento: " >> datos[6];
+
+ordenado = estaOrdenado(n_datos);
+>> "Quedo ordenado: " >> ordenado;
+>> "Suma total: " >> suma_arr;
+
+## ================================================================
+   2. ESTADISTICAS
+   Maximo 99.0, minimo 45.0, aprobados 6 de 8
+   ================================================================ ##
+>> "=== ESTADISTICAS ===";
+
+maximo = maximoNota(8);
+minimo = minimoNota(8);
+aprobados = contarAprobados(8);
+
+>> "Nota maxima: " >> maximo;
+>> "Nota minima: " >> minimo;
+>> "Aprobados: " >> aprobados;
+
+## ================================================================
+   3. ARREGLO DE ESTRUCTURAS
+   Asignacion de instancias completas a posiciones del arreglo.
+   ================================================================ ##
+>> "=== ALUMNOS ===";
+
+alumnos[0] = { nombre: "Ana", nota: 92.0, aprobado: verum };
+alumnos[1] = { nombre: "Luis", nota: 45.0, aprobado: falsus };
+alumnos[2] = { nombre: "Eva", nota: 75.5, aprobado: verum };
+
+>> alumnos[0].nombre >> " -> " >> evaluar(alumnos[0].nota);
+>> alumnos[1].nombre >> " -> " >> evaluar(alumnos[1].nota);
+>> alumnos[2].nombre >> " -> " >> evaluar(alumnos[2].nota);
+
+## Modificacion de un atributo dentro del arreglo ##
+alumnos[1].nota = 65.0;
+alumnos[1].aprobado = verum;
+>> "Luis actualizado: " >> alumnos[1].nota;
+
+## Estructuras como argumentos de funcion ##
+>> "Ana mejor que Luis: " >> mejorNota(alumnos[0], alumnos[1]);
+>> "Promedio de los tres: " >> promedioTres(alumnos[0], alumnos[1], alumnos[2]);
+
+## Funcion que retorna una estructura ##
+alumnos[2] = crearAlumno("Nuevo", 88.0);
+>> "Nuevo alumno: " >> alumnos[2].nombre;
+
+## ================================================================
+   4. FIBONACCI Y FACTORIAL
+   F(9) = 34, factorial(5) = 120
+   ================================================================ ##
+>> "=== FIBONACCI Y FACTORIAL ===";
+
+per (esto f : numerus 0; f < 10; f++) {
+    fibonacci[f] = fib(f);
+} finis;
+
+>> "F(0): " >> fibonacci[0];
+>> "F(6): " >> fibonacci[6];
+>> "F(9): " >> fibonacci[9];
+>> "Fibonacci nueve directo: " >> fib_9;
+>> "Factorial de cinco: " >> fact_5;
+
+## ================================================================
+   5. ACKERMANN
+   A(0,0)=1  A(1,1)=3  A(2,2)=7  A(3,2)=29
+   ================================================================ ##
+>> "=== ACKERMANN ===";
+>> "A(0,0): " >> ackermann(0, 0);
+>> "A(1,1): " >> ackermann(1, 1);
+>> "A(2,2): " >> ackermann(2, 2);
+>> "A(3,2): " >> ack_3_2;
+
+## ================================================================
+   6. INVENTARIO
+   ================================================================ ##
+>> "=== INVENTARIO ===";
+
+inventario[0] = { nombre: "Manzana", cantidad: 100, precio: 2.5, activo: verum };
+inventario[1] = { nombre: "Banana", cantidad: 50, precio: 2.0, activo: verum };
+inventario[2] = { nombre: "Naranja", cantidad: 0, precio: 3.0, activo: falsus };
+
+>> "Total manzana: " >> totalInventario(inventario[0]);
+>> "Total banana: " >> totalInventario(inventario[1]);
+
+reabastecer(1, 30);
+>> "Banana tras reabastecer: " >> inventario[1].cantidad;
+
+desactivar(0);
+>> "Manzana activa: " >> inventario[0].activo;
+
+>> "Silla rentable: " >> esRentable(inventario[1], 100.0);
+
+## Recorrido del inventario con condicional dentro del ciclo ##
+per (esto inv : numerus 0; inv < 3; inv++) {
+    si (inventario[inv].activo) {
+        >> inventario[inv].nombre >> " -> Activo";
+    } aliter {
+        >> inventario[inv].nombre >> " -> Inactivo";
+    } finis;
+} finis;
+
+## ================================================================
+   7. PROCESADOR DE TEXTO
+   Original:  el lenguaje Codex es divertido
+   Invertido: divertido es Codex lenguaje el
+   ================================================================ ##
+>> "=== PROCESADOR DE TEXTO ===";
+
+reporte = unirPalabras(5, " ");
+>> "Frase original: " >> reporte;
+
+reporte = unirPalabras(5, "-");
+>> "Slug: " >> reporte;
+
+>> "Indice de Codex: " >> buscarPalabra("Codex", 5);
+>> "Indice inexistente: " >> buscarPalabra("Python", 5);
+
+invertirPalabras(5);
+reporte = unirPalabras(5, " ");
+>> "Frase invertida: " >> reporte;
+
+## ================================================================
+   8. MATRIZ SIMULADA
+   Tabla de multiplicar 3x3, suma total 36
+   ================================================================ ##
+>> "=== MATRIZ ===";
+
+matriz.filas[0] = { celdas: numerus[3] };
+matriz.filas[1] = { celdas: numerus[3] };
+matriz.filas[2] = { celdas: numerus[3] };
+
+llenarMatriz();
+
+>> "Titulo: " >> matriz.titulo;
+>> "Celda 1,1: " >> matriz.filas[1].celdas[1];
+>> "Celda 2,2: " >> matriz.filas[2].celdas[2];
+>> "Suma de la matriz: " >> sumarMatriz();
+
+## ================================================================
+   9. ARBOL BINARIO
+   Estructura de tres niveles, acceso encadenado profundo.
+   Representacion esperada: [1 [2 [4] []] [3]]
+   ================================================================ ##
+>> "=== ARBOL BINARIO ===";
+
+>> "Raiz: " >> arbol.valor;
+>> "Hijo izquierdo: " >> arbol.izq.valor;
+>> "Nieto izquierdo: " >> arbol.izq.izq.valor;
+>> "Nieto existe: " >> arbol.izq.izq.existe;
+>> "Hijo derecho: " >> arbol.der.valor;
+
+>> "Representacion de la hoja: " >> reprHoja(hoja4);
+>> "Representacion del nodo: " >> reprNodo(nodo2);
+>> "Representacion completa: " >> repr_arb;
+
+## Modificacion en el nivel mas profundo ##
+arbol.izq.izq.valor = "9";
+>> "Nieto modificado: " >> arbol.izq.izq.valor;
+
+## ================================================================
+   10. CONTROL DE FLUJO PROFUNDO
+   ================================================================ ##
+>> "=== CONTROL DE FLUJO ===";
+
+acumulador = flujoComplejo(5);
+>> "Flujo complejo: " >> acumulador;
+
+acumulador = facereAnidado(4);
+>> "Facere anidado: " >> acumulador;
+
+## ================================================================
+   11. EXPRESIONES CON PRECEDENCIA COMPLEJA
+   Verificar en el AST que el anidamiento respeta la precedencia:
+       or < and < igualdad < relacional < suma < multiplicacion
+   ================================================================ ##
+>> "=== PRECEDENCIA ===";
+
+## Se debe leer como  ((2*3) + (4*5)) - (6/2)  ##
+temporal = 2 * 3 + 4 * 5 - 6 / 2;
+>> "Aritmetica mezclada: " >> temporal;
+
+## Los parentesis cambian el orden ##
+temporal = 2 * (3 + 4) * (5 - 6) / 2;
+>> "Con parentesis: " >> temporal;
+
+## Se debe leer como  ((a>b) && (c<d)) || (non e)  ##
+ordenado = temporal > 0 && aprobados < 10 || non ordenado;
+>> "Logica mezclada: " >> ordenado;
+
+## Negacion sobre una comparacion agrupada ##
+ordenado = non (temporal > 0 && aprobados > 0);
+>> "Negacion agrupada: " >> ordenado;
+
+## Menos unario dentro de una expresion mayor ##
+temporal = -temporal + 10 * -2;
+>> "Unarios: " >> temporal;
+
+## Concatenacion encadenada con numeros ##
+reporte = "Total: " + temporal + " unidades";
+>> reporte;
+
+## ================================================================
+   12. LECTURA EN DESTINOS COMPLEJOS
+   << debe aceptar cualquier destino asignable.
+   ================================================================ ##
+>> "=== LECTURA ===";
+
+temporal <<
+datos[0] <<
+alumnos[0].nombre <<
+matriz.filas[0].celdas[0] <<
+arbol.izq.izq.valor <<
+
+>> "Fin del archivo avanzado";
+
+FINIS;

@@ -111,9 +111,15 @@ asignacionAtributo
 valorAtributo
     : literalEstructura
     | listaValores
+    | dimensionPrimitiva
     | expresion
     ;
 
+// Fija la dimension de un arreglo de tipo primitivo dentro de una
+// instancia de estructura
+dimensionPrimitiva
+    : (NUMERUS | DECIMALIS | TEXTUM | LITTERA | BOOL) COR_A expresion COR_C
+    ;
 
 // ----------------------------------------------------
 // FUNCIONES
