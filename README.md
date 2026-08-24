@@ -53,7 +53,7 @@ mvn clean compile
 mvn clean package
 
 # Ejecutar el programa
-java -jar target/java -jar target/Practica_1_Compi_2_Mynor_Monzon_1S_2026.jar
+java -jar target/Practica_1_Compi_2_Mynor_Monzon_1S_2026.jar
 ```
 
 ### Desde un IDE (NetBeans / IntelliJ)
